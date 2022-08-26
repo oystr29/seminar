@@ -1,0 +1,35 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  @apply bg-zinc-900 text-zinc-50
+}
+
+@layer components {
+  .items {
+    @apply mb-5 border-2 rounded-lg p-5 text-white
+  }
+
+  .notyet {
+    @apply border-purple-400 
+  }
+  .notyet > p {
+    @apply text-pink-500
+  }
+  .scheduled {
+    @apply border-sky-500 
+  }
+  .scheduled > p {
+    @apply text-blue-500
+  }
+  
+
+  .current {
+    @apply border-green-400 text-green-300
+  }
+
+  .passed {
+    @apply border-gray-500 text-gray-400
+  }
+}
