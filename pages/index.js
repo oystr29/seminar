@@ -1,5 +1,5 @@
-import Head from 'next/head'
-import { google } from 'googleapis'
+import Head from 'next/head';
+import { google } from 'googleapis';
 import Countdown from 'react-countdown'
 import { useEffect, useState } from 'react';
 import { HiOutlineCalendar, HiOutlineClock, HiOutlineLocationMarker } from 'react-icons/hi';
@@ -53,9 +53,7 @@ function getTime(text) {
     jamAkhir: splitter[1]
   }
 }
-
-export async function getStaticProps() {
-
+const getData = async () => {
   const arrays = [];
   const currents = [];
   const notyet = [];
@@ -156,11 +154,20 @@ export async function getStaticProps() {
   });
 
   notyet.sort((a, b) => {
-    return b.dateInt.mulai - a.dateInt.mulai;
+    return a.dateInt.mulai - b.dateInt.mulai;
   });
 
-  // console.log(Date.now());
-  // console.log(arrays[0].date.time);
+  return {
+    currents,
+    scheduled,
+    notyet,
+    passed,
+  }
+}
+
+export async function getStaticProps() {
+
+  const {currents, scheduled, notyet, passed} = await getData();
 
   return {
     props: {
@@ -193,7 +200,6 @@ export default function Home({ currents, scheduled, notyet, passed }) {
         <title>Seminar IF</title>
       </Head>
       <div className='container mx-auto mt-10'>
-
         {
           curr.map((e, i) => {
             return (
@@ -206,7 +212,7 @@ export default function Home({ currents, scheduled, notyet, passed }) {
             return (
               <Item e={e} key={e.nim + i} classes="notyet" />
             );
-          }).reverse()
+          })
         }
         {schedule.map((e, i) => {
           return (
@@ -222,8 +228,6 @@ export default function Home({ currents, scheduled, notyet, passed }) {
     </>
   );
 }
-
-
 
 const Item = (props) => {
   const { e, classes } = props;
@@ -257,6 +261,6 @@ const Item = (props) => {
         <Countdown date={e.dateInt.mulai} className="font-semibold" />
       }
     </div>
-  )
+  );
 }
 
