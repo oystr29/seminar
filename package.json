@@ -6,12 +6,13 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "vercel": "vercel build && vercel deploy --prebuilt"
   },
   "dependencies": {
     "googleapis": "^107.0.0",
     "next": "12.2.5",
-    "react": "17.0.2",
+    "react": "18.x.x",
     "react-countdown": "^2.3.2",
     "react-dom": "18.2.0",
     "react-icons": "^4.4.0"

@@ -1,5 +1,4 @@
 import Head from 'next/head'
-import React from 'react';
 import { google } from 'googleapis'
 import Countdown from 'react-countdown'
 import { useEffect, useState } from 'react';
@@ -124,8 +123,8 @@ export async function getStaticProps() {
         const ar = arrays[currIndex];
         const ar2 = arrays[currIndex].date
 
-        ar.dateInt.mulai = Date.parse(new Date(`${ar2.day.tahun}-${ar2.day.bulan}-${ar2.day.tanggal}T${ar2.time.jamMulai}:00Z`));
-        ar.dateInt.akhir = Date.parse(new Date(`${ar2.day.tahun}-${ar2.day.bulan}-${ar2.day.tanggal}T${ar2.time.jamAkhir}:00Z`));
+        ar.dateInt.mulai = Date.parse(new Date(`${ar2.day.tahun}-${ar2.day.bulan}-${ar2.day.tanggal}T${ar2.time.jamMulai}:00`));
+        ar.dateInt.akhir = Date.parse(new Date(`${ar2.day.tahun}-${ar2.day.bulan}-${ar2.day.tanggal}T${ar2.time.jamAkhir}:00`));
       }
     } else if (index === 2) {
       if (e[7] !== undefined) {
@@ -156,9 +155,13 @@ export async function getStaticProps() {
     }
   });
 
+  notyet.sort((a, b) => {
+    return b.dateInt.mulai - a.dateInt.mulai;
+  });
+
   // console.log(Date.now());
   // console.log(arrays[0].date.time);
-  // console.log(arrays);
+  console.log(notyet[0].dateInt.mulai);
 
   return {
     props: {
@@ -186,7 +189,7 @@ export default function Home({ currents, scheduled, notyet, passed }) {
 
 
   return (
-    <ErrorBoundary>
+    <>
       <Head>
         <title>Seminar IF</title>
       </Head>
@@ -217,7 +220,7 @@ export default function Home({ currents, scheduled, notyet, passed }) {
           );
         }).reverse()}
       </div>
-    </ErrorBoundary>
+    </>
   );
 }
 
@@ -227,7 +230,7 @@ const Item = (props) => {
   const { e, classes } = props;
   return (
     <div className={`items ${classes}`} >
-      <div className={`font-bold text-xl`}>{e.judul}</div>
+      <div className={`font-bold text-xl mb-2`}>{e.judul}</div>
       <span className='uppercase font-semibold'>{e.nama} </span>
       <span> - </span>
       <span className='font-semibold'>{e.nim}</span>
@@ -258,28 +261,3 @@ const Item = (props) => {
   )
 }
 
-class ErrorBoundary extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { hasError: false };
-  }
-
-  static getDerivedStateFromError(error) {
-    // Update state so the next render will show the fallback UI.
-    return { hasError: true };
-  }
-
-  componentDidCatch(error, errorInfo) {
-    // You can also log the error to an error reporting service
-    logErrorToMyService(error, errorInfo);
-  }
-
-  render() {
-    if (this.state.hasError) {
-      // You can render any custom fallback UI
-      return <h1>Something went wrong.</h1>;
-    }
-
-    return this.props.children; 
-  }
-}
