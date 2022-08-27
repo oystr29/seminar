@@ -161,7 +161,6 @@ export async function getStaticProps() {
 
   // console.log(Date.now());
   // console.log(arrays[0].date.time);
-  console.log(notyet[0].dateInt.mulai);
 
   return {
     props: {
