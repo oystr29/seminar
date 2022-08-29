@@ -195,36 +195,36 @@ export default function Home({ currents, scheduled, notyet, passed }) {
 
 
   return (
-      <div className='container mx-auto mt-10'>
-        {curr.length !== 0 && <div>Makan</div>}
-        {
-          curr.map((e, i) => {
-            return (
-              <Item e={e} key={e.nim + i} classes="current" />
-            );
-          })
-        }
-        {coming.length !== 0 && <div className='p-1 px-2 mb-2 rounded-xl mt-3 text-base border-2 text-purple-300 border-purple-800 w-max'>Coming Soon!</div>}
-        {
-          coming.map((e, i) => {
-            return (
-              <Item e={e} key={e.nim + i} classes="notyet" />
-            );
-          })
-        }
-        {schedule.length !== 0 && <div className='p-1 px-2 mb-2 mt-3 rounded-xl text-base border-2 text-yellow-300 border-yellow-800 w-max'>Belum Ada Jadwalnya</div>}
-        {schedule.map((e, i) => {
+    <div className='container )
+    mx-auto mt-10'>
+      {
+        curr.map((e, i) => {
           return (
-            <Item e={e} key={e.nim + i} classes="scheduled" />
+            <Item e={e} key={e.nim + i} classes="current" />
           );
-        })}
-        {pass.length !== 0 && <div className='p-1 px-2 mb-2 mt-3 rounded-xl text-base border-2 text-gray-300 border-gray-500 w-max'>Udah Lewat</div>}
-        {pass.map((e, i) => {
+        })
+      }
+      {coming.length !== 0 && <div className='p-1 px-2 mb-2 rounded-xl mt-3 text-base border-2 text-purple-300 border-purple-800 w-max'>Coming Soon!</div>}
+      {
+        coming.map((e, i) => {
           return (
-            <Item e={e} key={e.nim + i} classes="passed" />
+            <Item e={e} key={e.nim + i} classes="notyet" />
           );
-        }).reverse()}
-      </div>
+        })
+      }
+      {schedule.length !== 0 && <div className='p-1 px-2 mb-2 mt-3 rounded-xl text-base border-2 text-yellow-300 border-yellow-800 w-max'>Belum Ada Jadwalnya</div>}
+      {schedule.map((e, i) => {
+        return (
+          <Item e={e} key={e.nim + i} classes="scheduled" />
+        );
+      })}
+      {pass.length !== 0 && <div className='p-1 px-2 mb-2 mt-3 rounded-xl text-base border-2 text-gray-300 border-gray-500 w-max'>Udah Lewat</div>}
+      {pass.map((e, i) => {
+        return (
+          <Item e={e} key={e.nim + i} classes="passed" />
+        );
+      }).reverse()}
+    </div>
   );
 }
 
@@ -257,7 +257,10 @@ const Item = (props) => {
             </div>
           }
         </div>
-        {Date.now() <= e.dateInt.mulai &&
+        {Date.now() <= e.dateInt.akhir && classes === 'current' &&
+          <Countdown date={e.dateInt.akhir} className="font-semibold" />
+        }
+        {Date.now() <= e.dateInt.mulai && classes === 'notyet' &&
           <Countdown date={e.dateInt.mulai} className="font-semibold" />
         }
       </div>
