@@ -1,225 +1,61 @@
-import { google } from 'googleapis';
-import Countdown from 'react-countdown'
+import useSWR from 'swr';
+import Countdown from 'react-countdown';
 import { useEffect, useState } from 'react';
 import { HiOutlineCalendar, HiOutlineClock, HiOutlineLocationMarker } from 'react-icons/hi';
 
-function getMonth(month) {
-  const bulan = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+// export async function getStaticProps() {
 
-  const monthNumber = bulan.indexOf(month) + 1;
+//   const data = await fetch(`${process.env.BASE_URL}/api/hello`);
+//   const {currents, scheduled, notyet, passed} = await data.json();
 
-  let value;
+//   return {
+//     props: {
+//       currents,
+//       scheduled,
+//       notyet,
+//       passed,
+//     },
+//   }
+// }
 
-  if (monthNumber < 10) {
-    value = "0" + monthNumber.toString();
-  } else {
-    value = monthNumber.toString();
-  }
-  return value;
-}
+const fetcher = (...args) => fetch(...args).then(res => res.json());
 
-function getDate(text) {
-  const daysExp = /Senin|Selasa|Rabu|Kamis|Jum'at/ig
-  const monthsExp = /Januari|Februari|Maret|April|Mei|Juni|Juli|Agustus|September|Oktober|November|Desember/ig
-  const yearsExp = /\b(20)\d{2}\b/ig
-  const tanggalExp = /^([0-9])|([0-3][0-9])/ig
+export default function Home() {
+  const base = process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://seminar.dalamkotak.com';
+  const url = `${base}/api/hello`;
+  const { data, error } = useSWR(url, fetcher);
 
-  const hari = text.match(daysExp) || [''];
-  const tanggal = text.match(tanggalExp) || [''];
-  const bulan = text.match(monthsExp) || [''];
-  const tahun = text.match(yearsExp) || [''];
-
-
-  return {
-    hari: hari[0],
-    tanggal: tanggal[0],
-    bulan: getMonth(bulan[0]),
-    bulanAsli: bulan[0],
-    tahun: tahun[0]
-  }
-}
-
-function getTime(text) {
-
-  const regex = /\d{2}.\d{2}-\d{2}.\d{2}/g
-
-  const result = text.match(regex);
-  const replace = result[0].replace(/\./gi, ":");
-  const splitter = replace.split("-");
-
-  return {
-    jamMulai: splitter[0],
-    jamAkhir: splitter[1]
-  }
-}
-const getData = async () => {
-  const arrays = [];
-  const currents = [];
-  const notyet = [];
-  const passed = [];
-  const scheduled = [];
-
-  // Auth
-  const auth = await google.auth.getClient({ scopes: ['https://www.googleapis.com/auth/spreadsheets.readonly'] });
-
-  const sheets = google.sheets({ version: 'v4', auth });
-
-  const range = `DATA SEMINAR!A6:I`;
-
-  const response = await sheets.spreadsheets.values.get({
-    spreadsheetId: process.env.SHEET_ID,
-    range,
-  });
-
-  let index = 0;
-  let currIndex = 0;
-  const array = response.data.values;
-
-  array.forEach((e) => {
-    const property = {
-      no: '',
-      nama: '',
-      nim: '',
-      judul: '',
-      sempro: '',
-      semhas: '',
-      pendadaran: '',
-      jadwal: {
-        tanggal: '',
-        jam: '',
-        ruang: ''
-      },
-      date: {
-        day: '',
-        time: ''
-      },
-      dateInt: {
-        mulai: 0,
-        akhir: 0,
-      },
-      hp: ''
-    }
-    if (index === 0) {
-      property.no = e[0];
-      property.nama = e[1];
-      property.nim = e[2];
-      property.judul = e[3];
-      property.sempro = e[4];
-      property.semhas = e[5];
-      property.pendadaran = e[6];
-      property.jadwal.tanggal = e[7];
-      property.date.day = getDate(e[7]);
-      property.hp = e[8];
-      arrays.push(property);
-    } else if (index === 1) {
-      if (e[7] !== undefined) {
-        arrays[currIndex].jadwal.jam = e[7];
-        arrays[currIndex].date.time = getTime(e[7]);
-
-        // Masukkan Date
-        const ar = arrays[currIndex];
-        const ar2 = arrays[currIndex].date
-
-        ar.dateInt.mulai = Date.parse(new Date(`${ar2.day.tahun}-${ar2.day.bulan}-${ar2.day.tanggal}T${ar2.time.jamMulai}:00`));
-        ar.dateInt.akhir = Date.parse(new Date(`${ar2.day.tahun}-${ar2.day.bulan}-${ar2.day.tanggal}T${ar2.time.jamAkhir}:00`));
-      }
-    } else if (index === 2) {
-      if (e[7] !== undefined) {
-        arrays[currIndex].jadwal.ruang = e[7];
-      }
-    }
-
-    if (index === 2) {
-      index = 0;
-      if (arrays[currIndex].dateInt.mulai === 0) {
-        scheduled.push(arrays[currIndex]);
-      }
-      // not yet
-      else if (arrays[currIndex].dateInt.mulai >= Date.now()) {
-        notyet.push(arrays[currIndex]);
-      }
-      // Current
-      else if (Date.now() >= arrays[currIndex].dateInt.mulai && Date.now() <= arrays[currIndex].dateInt.akhir) {
-        currents.push(arrays[currIndex]);
-      }
-      // Passed
-      else if (arrays[currIndex].dateInt.akhir <= Date.now()) {
-        passed.push(arrays[currIndex]);
-      }
-      currIndex++;
-    } else if (index !== 2) {
-      index++;
-    }
-  });
-
-  notyet.sort((a, b) => {
-    return a.dateInt.mulai - b.dateInt.mulai;
-  });
-
-  return {
-    currents,
-    scheduled,
-    notyet,
-    passed,
-  }
-}
-
-export async function getStaticProps() {
-
-  const { currents, scheduled, notyet, passed } = await getData();
-
-
-  return {
-    props: {
-      currents,
-      scheduled,
-      notyet,
-      passed,
-    }
-  }
-}
-
-export default function Home({ currents, scheduled, notyet, passed }) {
-
-  const [curr, setCurrent] = useState([]);
-  const [schedule, setSchedule] = useState([]);
-  const [coming, setComing] = useState([]);
-  const [pass, setPass] = useState([]);
-
-  useEffect(() => {
-    setCurrent(currents);
-    setSchedule(scheduled);
-    setComing(notyet);
-    setPass(passed);
-  }, [currents, scheduled, notyet, passed]);
-
+  if (error) return "An error has occurred.";
+  if (!data) return <Spinner />
+  const { currents, scheduled, notyet, passed } = data
+  console.log(data);
 
   return (
-    <div className='container )
+    <div className='container 
     mx-auto mt-10'>
       {
-        curr.map((e, i) => {
+        currents.length !== 0 && currents.map((e, i) => {
           return (
             <Item e={e} key={e.nim + i} classes="current" />
           );
         })
       }
-      {coming.length !== 0 && <div className='p-1 px-2 mb-2 rounded-xl mt-3 text-base border-2 text-purple-300 border-purple-800 w-max'>Coming Soon!</div>}
+      {notyet.length !== 0 && <div className='p-1 px-2 mb-2 rounded-xl mt-3 text-base border-2 text-purple-300 border-purple-800 w-max'>Coming Soon!</div>}
       {
-        coming.map((e, i) => {
+        notyet.map((e, i) => {
           return (
             <Item e={e} key={e.nim + i} classes="notyet" />
           );
         })
       }
-      {schedule.length !== 0 && <div className='p-1 px-2 mb-2 mt-3 rounded-xl text-base border-2 text-yellow-300 border-yellow-800 w-max'>Belum Ada Jadwalnya</div>}
-      {schedule.map((e, i) => {
+      {scheduled.length !== 0 && <div className='p-1 px-2 mb-2 mt-3 rounded-xl text-base border-2 text-yellow-300 border-yellow-800 w-max'>Belum Ada Jadwalnya</div>}
+      {scheduled.map((e, i) => {
         return (
           <Item e={e} key={e.nim + i} classes="scheduled" />
         );
       })}
-      {pass.length !== 0 && <div className='p-1 px-2 mb-2 mt-3 rounded-xl text-base border-2 text-gray-300 border-gray-500 w-max'>Udah Lewat</div>}
-      {pass.map((e, i) => {
+      {passed.length !== 0 && <div className='p-1 px-2 mb-2 mt-3 rounded-xl text-base border-2 text-gray-300 border-gray-500 w-max'>Udah Lewat</div>}
+      {passed.map((e, i) => {
         return (
           <Item e={e} key={e.nim + i} classes="passed" />
         );
@@ -266,4 +102,13 @@ const Item = (props) => {
       </div>
     </div>
   );
+}
+
+const Spinner = () => {
+  return <div className='flex justify-center items-center  '>
+    <svg className="animate-spin  text-white h-20 w-20" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+    </svg>
+  </div>
 }
