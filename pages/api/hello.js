@@ -61,7 +61,7 @@ const getData = async () => {
 
   const sheets = google.sheets({ version: 'v4', auth });
 
-  const range = `DATA SEMINAR!A6:I`;
+  const range = `Sheet1!A6:I`;
 
   const response = await sheets.spreadsheets.values.get({
     spreadsheetId: process.env.SHEET_ID,
