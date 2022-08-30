@@ -1,7 +1,8 @@
 import useSWR from 'swr';
 import Countdown from 'react-countdown';
 import { useEffect, useState } from 'react';
-import { HiOutlineCalendar, HiOutlineClock, HiOutlineLocationMarker } from 'react-icons/hi';
+import { HiOutlineCalendar, HiOutlineClock, HiOutlineLocationMarker, HiDocument, HiPresentationChartLine } from 'react-icons/hi';
+import { MdSchool } from 'react-icons/md';
 
 // export async function getStaticProps() {
 
@@ -28,7 +29,6 @@ export default function Home() {
   if (error) return "An error has occurred.";
   if (!data) return <Spinner />
   const { currents, scheduled, notyet, passed } = data
-  console.log(data);
 
   return (
     <div className='container 
@@ -92,7 +92,26 @@ const Item = (props) => {
               <span>{e.jadwal.ruang}</span>
             </div>
           }
+          {e.sempro &&
+            <div className='flex flex-row items-center mt-4'>
+              <HiDocument className='mr-2' />
+              <span>Seminar Proposal</span>
+            </div>
+          }
+          {e.semhas &&
+            <div className='flex flex-row items-center mt-4'>
+              <HiPresentationChartLine className='mr-2' />
+              <span>Seminar Hasil</span>
+            </div>
+          }
+          {e.pendadaran &&
+            <div className='flex flex-row items-center mt-4'>
+              <MdSchool className='mr-2' />
+              <span>Seminar Akhir</span>
+            </div>
+          }
         </div>
+
         {Date.now() <= e.dateInt.akhir && classes === 'current' &&
           <Countdown date={e.dateInt.akhir} className="font-semibold" />
         }

@@ -67,20 +67,28 @@ const getData = async () => {
     spreadsheetId: process.env.SHEET_ID,
     range,
   });
+  const res = await sheets.spreadsheets.get({
+    spreadsheetId: process.env.SHEET_ID,
+    ranges: range,
+    includeGridData: true,
+    fields: "sheets(data(rowData(values(effectiveFormat.backgroundColor))))"
+  });
+
+  const resData = res.data.sheets[0].data[0].rowData;
 
   let index = 0;
   let currIndex = 0;
   const array = response.data.values;
 
-  array.forEach((e) => {
+  array.forEach((e, i) => {
     const property = {
       no: '',
       nama: '',
       nim: '',
       judul: '',
-      sempro: '',
-      semhas: '',
-      pendadaran: '',
+      sempro: false,
+      semhas: false,
+      pendadaran: false,
       jadwal: {
         tanggal: '',
         jam: '',
@@ -101,9 +109,9 @@ const getData = async () => {
       property.nama = e[1];
       property.nim = e[2];
       property.judul = e[3];
-      property.sempro = e[4];
-      property.semhas = e[5];
-      property.pendadaran = e[6];
+      property.sempro = resData[i].values[4].effectiveFormat.backgroundColor.blue === 1 && resData[i].values[4].effectiveFormat.backgroundColor.blue ? false : true;
+      property.semhas = resData[i].values[5].effectiveFormat.backgroundColor.blue === 1 && resData[i].values[4].effectiveFormat.backgroundColor.blue ? false : true;
+      property.pendadaran = resData[i].values[6].effectiveFormat.backgroundColor.blue === 1 && resData[i].values[4].effectiveFormat.backgroundColor.blue ? false : true;
       property.jadwal.tanggal = e[7];
       property.date.day = getDate(e[7]);
       property.hp = e[8];
