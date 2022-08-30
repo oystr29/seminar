@@ -57,7 +57,10 @@ const getData = async () => {
   const scheduled = [];
 
   // Auth
-  const auth = await google.auth.getClient({ scopes: ['https://www.googleapis.com/auth/spreadsheets.readonly'] });
+  const credentials = JSON.parse(process.env.GOOGLE_APPLICATION_CREDENTIALS);
+  const auth = await google.auth.getClient({
+    scopes: ['https://www.googleapis.com/auth/spreadsheets.readonly'], credentials: credentials
+  });
 
   const sheets = google.sheets({ version: 'v4', auth });
 
@@ -169,6 +172,6 @@ const getData = async () => {
   }
 }
 export default async function handler(req, res) {
-  const {currents, scheduled, notyet, passed} = await getData();
+  const { currents, scheduled, notyet, passed } = await getData();
   res.status(200).json({ currents: currents, scheduled: scheduled, notyet: notyet, passed: passed })
 }
