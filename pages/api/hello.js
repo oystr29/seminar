@@ -128,8 +128,8 @@ const getData = async () => {
         const ar = arrays[currIndex];
         const ar2 = arrays[currIndex].date
 
-        ar.dateInt.mulai = Date.parse(new Date(`${ar2.day.tahun}-${ar2.day.bulan}-${ar2.day.tanggal}T${ar2.time.jamMulai}:00`));
-        ar.dateInt.akhir = Date.parse(new Date(`${ar2.day.tahun}-${ar2.day.bulan}-${ar2.day.tanggal}T${ar2.time.jamAkhir}:00`));
+        ar.dateInt.mulai = Date.parse(new Date(`${ar2.day.tahun}-${ar2.day.bulan}-${ar2.day.tanggal}T${ar2.time.jamMulai}:00+0800`));
+        ar.dateInt.akhir = Date.parse(new Date(`${ar2.day.tahun}-${ar2.day.bulan}-${ar2.day.tanggal}T${ar2.time.jamAkhir}:00+0800`));
       }
     } else if (index === 2) {
       if (e[7] !== undefined) {
