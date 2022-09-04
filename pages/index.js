@@ -70,8 +70,8 @@ export default function Home(props) {
       className="container 
     mx-auto mt-10"
     >
-      <div className="flex flex-col justify-center items-center">
-        <h1 className="text-5xl font-bold mb-5">
+      <div className="flex flex-col justify-center items-center mb-5">
+        <h1 className="text-5xl font-bold mb-5 text-center">
           Jadwal Seminar Informatika
         </h1>
         <button
