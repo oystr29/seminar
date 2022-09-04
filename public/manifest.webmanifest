@@ -1,7 +1,7 @@
 {
   "name": "Seminar IF Unmul",
   "short_name": "SeminarIF",
-  "theme_color": "#9E38B3",
+  "theme_color": "#1e1e1e",
   "background_color": "#18181B",
   "display": "standalone",
   "scope": "./",

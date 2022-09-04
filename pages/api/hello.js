@@ -105,7 +105,6 @@ const getData = async () => {
         mulai: 0,
         akhir: 0,
       },
-      hp: ''
     }
     if (index === 0) {
       property.no = e[0];
@@ -117,7 +116,6 @@ const getData = async () => {
       property.pendadaran = resData[i].values[6].effectiveFormat.backgroundColor.blue === 1 && resData[i].values[4].effectiveFormat.backgroundColor.blue ? false : true;
       property.jadwal.tanggal = e[7];
       property.date.day = getDate(e[7]);
-      property.hp = e[8];
       arrays.push(property);
     } else if (index === 1) {
       if (e[7] !== undefined) {
