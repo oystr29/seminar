@@ -12,7 +12,7 @@ function MyApp({ Component, pageProps }) {
       <meta name="format-detection" content="telephone=no" />
       <meta name="mobile-web-app-capable" content="yes" />
       <meta name="msapplication-config" content="/assets/icons/browserconfig.xml" />
-      <meta name="msapplication-TileColor" content="#9E38B3" />
+      <meta name="msapplication-TileColor" content="#000000" />
       <meta name="msapplication-tap-highlight" content="no" />
       <meta name="theme-color" content="#000000" />
       <link rel="manifest" href="/manifest.webmanifest" />
