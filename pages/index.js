@@ -171,7 +171,7 @@ const Item = (props) => {
         {Date.now() <= e.dateInt.mulai && classes === "notyet" && (
           <div>
             <div className="font-medium mb-2">Dimulai dalam:</div>
-            <Countdown precision={1} renderer={MyCoundown} date={e.dateInt.mulai} className="font-semibold" />
+            <Countdown renderer={MyCoundown} date={e.dateInt.mulai} className="font-semibold" />
           </div>
         )}
       </div>
@@ -181,10 +181,9 @@ const Item = (props) => {
 
 const MyCoundown = ({ formatted }) => {
 
-  const { day, hours, minutes, seconds } = formatted;
-
+  const { days, hours, minutes, seconds } = formatted;
   return <div className="flex" suppressHydrationWarning={true}>
-    <Time time="Hari" count={day} />
+    <Time time="Hari" count={days} />
     <Time time="Jam" count={hours} />
     <Time time="Menit" count={minutes} />
     <Time time="Detik" count={seconds} />
@@ -194,7 +193,7 @@ const MyCoundown = ({ formatted }) => {
 
 const Time = ({ count, time }) => {
 
-  if (count === undefined) return null;
+  if (count === '00' && time !== 'Detik') return null;
 
   return (
     <div className="flex flex-col items-center justify-center mr-2">
