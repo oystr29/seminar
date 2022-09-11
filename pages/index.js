@@ -182,7 +182,7 @@ const Item = (props) => {
 const MyCoundown = ({ formatted }) => {
 
   const { days, hours, minutes, seconds } = formatted;
-  return <div className="flex" suppressHydrationWarning={true}>
+  return <div className="flex" >
     <Time time="Hari" count={days} />
     <Time time="Jam" count={hours} />
     <Time time="Menit" count={minutes} />
@@ -197,7 +197,7 @@ const Time = ({ count, time }) => {
 
   return (
     <div className="flex flex-col items-center justify-center mr-2">
-      <div suppressHydrationWarning={true} className="mb-1 rounded-full p-1 w-7 text-sm text-center bg-black text-zinc-50">{count}</div>
+      <div suppressHydrationWarning={true} className="mb-1 rounded-lg p-1 w-7 text-sm text-center bg-black text-zinc-50">{count}</div>
       <div className="text-zinc-100">{time}</div>
     </div>
   );
