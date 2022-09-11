@@ -98,8 +98,17 @@ const getData = async () => {
         ruang: ''
       },
       date: {
-        day: '',
-        time: ''
+        day: {
+          hari: '',
+          tanggal: '',
+          bulan: '',
+          bulanAsli: '',
+          tahun: ''
+        },
+        time: {
+          jamMulai: '',
+          jamAkhir: ''
+        }
       },
       dateInt: {
         mulai: 0,
@@ -157,6 +166,40 @@ const getData = async () => {
       index++;
     }
   });
+
+  // notyet.push(
+  //   {
+  //     no: '99',
+  //     nama: 'Oktavian',
+  //     nim: '1915016074',
+  //     judul: 'Makan',
+  //     sempro: true,
+  //     semhas: false,
+  //     pendadaran: false,
+  //     jadwal: {
+  //       tanggal: '',
+  //       jam: '',
+  //       ruang: ''
+  //     },
+  //     date: {
+  //       day: {
+  //         hari: '',
+  //         tanggal: '',
+  //         bulan: '',
+  //         bulanAsli: '',
+  //         tahun: ''
+  //       },
+  //       time: {
+  //         jamMulai: '',
+  //         jamAkhir: ''
+  //       }
+  //     },
+  //     dateInt: {
+  //       mulai: Date.now() + 10,
+  //       akhir: Date.now() + 15,
+  //     },
+  //   }
+  // );
 
   notyet.sort((a, b) => {
     return a.dateInt.mulai - b.dateInt.mulai;

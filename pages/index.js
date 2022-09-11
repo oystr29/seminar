@@ -30,9 +30,6 @@ export async function getServerSideProps() {
 const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
 export default function Home(props) {
-  // const base = process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://seminar.dalamkotak.com';
-  // const url = `${base}/api/hello`;
-  // const { data, error } = useSWR(url, fetcher);
   const [deferredPrompt, setDeferredPrompt] = useState(null);
   const [isInstall, setIsInstall] = useState(true);
 
@@ -41,18 +38,12 @@ export default function Home(props) {
     deferredPrompt.prompt();
     // Wait for the user to respond to the prompt
     deferredPrompt.userChoice.then((choiceResult) => {
-      if (choiceResult.outcome === "accepted") {
-        console.log("User accepted the A2HS prompt");
-      } else {
-        console.log("User dismissed the A2HS prompt");
-      }
       setDeferredPrompt(null);
     });
   }
 
   useEffect(() => {
     window.addEventListener("beforeinstallprompt", (e) => {
-      console.log('Belum terinstall')
       // Prevent Chrome 67 and earlier from automatically showing the prompt
       e.preventDefault();
       // Stash the event so it can be triggered later.
@@ -62,8 +53,6 @@ export default function Home(props) {
     });
   }, []);
 
-  // if (error) return "An error has occurred.";
-  // if (!data) return <Spinner />
   const { currents, scheduled, notyet, passed } = props;
 
   return (
@@ -167,7 +156,7 @@ const Item = (props) => {
           {e.pendadaran && (
             <div className="flex flex-row items-center mt-4">
               <MdSchool className="mr-2" />
-              <span>Seminar Akhir</span>
+              <span>Sidang Akhir</span>
             </div>
           )}
         </div>
@@ -175,7 +164,7 @@ const Item = (props) => {
           <Countdown date={e.dateInt.akhir} className="font-semibold" />
         )}
         {Date.now() <= e.dateInt.mulai && classes === "notyet" && (
-          <Countdown date={e.dateInt.mulai} className="font-semibold" />
+          <Countdown autoStart={false} suppressHydrationWarning={true} date={e.dateInt.mulai} className="font-semibold" />
         )}
       </div>
     </div>
