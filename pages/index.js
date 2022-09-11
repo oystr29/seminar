@@ -1,4 +1,4 @@
-import Countdown from "react-countdown";
+import Countdown, { CountdownApi } from "react-countdown";
 import { useEffect, useState } from "react";
 import {
   HiOutlineCalendar,
@@ -114,9 +114,11 @@ const Item = (props) => {
     <div className={`items ${classes}`}>
       <div className={`${classes === "current" ? "gradient" : null}`}>
         <div className={`font-bold text-xl mb-2`}>{e.judul}</div>
-        <span className="uppercase font-semibold">{e.nama} </span>
-        <span> - </span>
-        <span className="font-semibold">{e.nim}</span>
+        <div className="">
+          <span className="uppercase font-semibold">{e.nama} </span>
+          <span> - </span>
+          <span className="font-semibold">{e.nim}</span>
+        </div>
         <div className="mb-5">
           {e.date.day.hari !== "" && (
             <div className="flex items-center flex-row my-1">
@@ -161,39 +163,43 @@ const Item = (props) => {
           )}
         </div>
         {Date.now() <= e.dateInt.akhir && classes === "current" && (
-          <Countdown date={e.dateInt.akhir} className="font-semibold" />
+          <>
+            <div className="font-medium mb-2">Berakhir dalam:</div>
+            <Countdown renderer={MyCoundown} date={e.dateInt.akhir} className="font-semibold" />
+          </>
         )}
         {Date.now() <= e.dateInt.mulai && classes === "notyet" && (
-          <Countdown autoStart={false} suppressHydrationWarning={true} date={e.dateInt.mulai} className="font-semibold" />
+          <div>
+            <div className="font-medium mb-2">Dimulai dalam:</div>
+            <Countdown precision={1} renderer={MyCoundown} date={e.dateInt.mulai} className="font-semibold" />
+          </div>
         )}
       </div>
     </div>
   );
 };
 
-const Spinner = () => {
+const MyCoundown = ({ formatted }) => {
+
+  const { day, hours, minutes, seconds } = formatted;
+
+  return <div className="flex" suppressHydrationWarning={true}>
+    <Time time="Hari" count={day} />
+    <Time time="Jam" count={hours} />
+    <Time time="Menit" count={minutes} />
+    <Time time="Detik" count={seconds} />
+  </div>
+}
+
+
+const Time = ({ count, time }) => {
+
+  if (count === undefined) return null;
+
   return (
-    <div className="flex justify-center items-center  ">
-      <svg
-        className="animate-spin  text-white h-20 w-20"
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-      >
-        <circle
-          className="opacity-25"
-          cx="12"
-          cy="12"
-          r="10"
-          stroke="currentColor"
-          strokeWidth="4"
-        ></circle>
-        <path
-          className="opacity-75"
-          fill="currentColor"
-          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-        ></path>
-      </svg>
+    <div className="flex flex-col items-center justify-center mr-2">
+      <div suppressHydrationWarning={true} className="mb-1 rounded-full p-1 w-7 text-sm text-center bg-black text-zinc-50">{count}</div>
+      <div className="text-zinc-100">{time}</div>
     </div>
   );
-};
+}
