@@ -19,17 +19,16 @@ function getDate(text) {
   const daysExp = /Senin|Selasa|Rabu|Kamis|Jum'at/ig
   const monthsExp = /Januari|Februari|Maret|April|Mei|Juni|Juli|Agustus|September|Oktober|November|Desember/ig
   const yearsExp = /\b(20)\d{2}\b/ig
-  const tanggalExp = /^([0-9])|([0-3][0-9])/ig
+  const tanggalExp = /([0-3][0-9])|([0-9])/ig
 
   const hari = text.match(daysExp) || [''];
   const tanggal = text.match(tanggalExp) || [''];
   const bulan = text.match(monthsExp) || [''];
   const tahun = text.match(yearsExp) || [''];
 
-
   return {
     hari: hari[0],
-    tanggal: tanggal[0],
+    tanggal: tanggal[0].length === 2 ? tanggal[0] : "0" + tanggal[0],
     bulan: getMonth(bulan[0]),
     bulanAsli: bulan[0],
     tahun: tahun[0]
@@ -143,6 +142,7 @@ const getData = async () => {
         arrays[currIndex].jadwal.ruang = e[7];
       }
     }
+
 
     if (index === 2) {
       index = 0;

@@ -8,7 +8,7 @@ function MyApp({ Component, pageProps }) {
       <meta name="apple-mobile-web-app-capable" content="yes" />
       <meta name="apple-mobile-web-app-status-bar-style" content="default" />
       <meta name="apple-mobile-web-app-title" content="Seminar App" />
-      <meta name="description" content="Best PWA App in the world" />
+      <meta name="description" content="Untuk kalian yang mau nonton Seminar" />
       <meta name="format-detection" content="telephone=no" />
       <meta name="mobile-web-app-capable" content="yes" />
       <meta name="msapplication-config" content="/assets/icons/browserconfig.xml" />
@@ -47,7 +47,7 @@ function MyApp({ Component, pageProps }) {
       <meta property="og:type" content="website" />
       <meta property="og:title" content="Seminar IF" />
       <meta property="og:description" content="Seminar Informatika Unmul" />
-      <meta property="og:site_name" content="PWA App" />
+      <meta property="og:site_name" content="Untuk kalian yang mau nonton Seminar" />
       <meta property="og:url" content="https://seminar.dalamkotak.com" />
       <meta property="og:image" content="https://cc-og-image.vercel.app/**Seminar%20IF**.png?theme=dark&md=1&fontFamily=roboto-condensed&fontSize=100px&images=https%3A%2F%2Fcc-vocabulary.netlify.app%2Flogos%2Fcc%2Flettermark.svg%23lettermark&images=https%3A%2F%2Fpic.onlinewebfonts.com%2Fsvg%2Fimg_452496.png&widths=auto&heights=auto" />
 
