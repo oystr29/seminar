@@ -65,10 +65,11 @@ export default function Home(props) {
           Jadwal Seminar Informatika
         </h1>
         <button
-          className={`${isInstall ? "hidden" : "block"} bg-gradient-to-r ${currents.length !== 0
-            ? " from-indigo-500 via-pink-500 to-yellow-500 hover:from-indigo-600 hover:via-pink-600 hover:to-red-600 "
-            : " from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600"
-            } text-white  rounded-lg focus:outline-none px-5 py-2 font-semibold`}
+          className={`${isInstall ? "hidden" : "block"} bg-gradient-to-r ${
+            currents.length !== 0
+              ? " from-indigo-500 via-pink-500 to-yellow-500 hover:from-indigo-600 hover:via-pink-600 hover:to-red-600 "
+              : " from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600"
+          } text-white  rounded-lg focus:outline-none px-5 py-2 font-semibold`}
           onClick={listenUserAction}
         >
           Install
@@ -104,6 +105,24 @@ export default function Home(props) {
           return <Item e={e} key={e.nim + i} classes="passed" />;
         })
         .reverse()}
+      <div className="flex justify-center items-center py-5">
+        <a
+          href="https://s.id/JadwalSeminarSkripsi"
+          target="_blank"
+          rel="noreferrer"
+          className="mr-5 text-green-500 hover:underline font-bold cursor-pointer hover:text-green-300"
+        >
+          Source Data
+        </a>
+        <a
+          href="https://github.com/oktoala/seminar"
+          target="_blank"
+          rel="noreferrer"
+          className="text-fuchsia-500 hover:underline font-bold cursor-pointer hover:text-fuchsia-300"
+        >
+          Source Code
+        </a>
+      </div>
     </div>
   );
 }
@@ -165,13 +184,21 @@ const Item = (props) => {
         {Date.now() <= e.dateInt.akhir && classes === "current" && (
           <>
             <div className="font-medium mb-2">Berakhir dalam:</div>
-            <Countdown renderer={MyCoundown} date={e.dateInt.akhir} className="font-semibold" />
+            <Countdown
+              renderer={MyCoundown}
+              date={e.dateInt.akhir}
+              className="font-semibold"
+            />
           </>
         )}
         {Date.now() <= e.dateInt.mulai && classes === "notyet" && (
           <div>
             <div className="font-medium mb-2">Dimulai dalam:</div>
-            <Countdown renderer={MyCoundown} date={e.dateInt.mulai} className="font-semibold" />
+            <Countdown
+              renderer={MyCoundown}
+              date={e.dateInt.mulai}
+              className="font-semibold"
+            />
           </div>
         )}
       </div>
@@ -180,25 +207,29 @@ const Item = (props) => {
 };
 
 const MyCoundown = ({ formatted }) => {
-
   const { days, hours, minutes, seconds } = formatted;
-  return <div className="flex" >
-    <Time time="Hari" count={days} />
-    <Time time="Jam" count={hours} />
-    <Time time="Menit" count={minutes} />
-    <Time time="Detik" count={seconds} />
-  </div>
-}
-
+  return (
+    <div className="flex">
+      <Time time="Hari" count={days} />
+      <Time time="Jam" count={hours} />
+      <Time time="Menit" count={minutes} />
+      <Time time="Detik" count={seconds} />
+    </div>
+  );
+};
 
 const Time = ({ count, time }) => {
-
-  if (count === '00' && time !== 'Detik') return null;
+  if (count === "00" && time !== "Detik") return null;
 
   return (
     <div className="flex flex-col items-center justify-center mr-2">
-      <div suppressHydrationWarning={true} className="mb-1 rounded-lg p-1 w-7 text-sm text-center bg-black text-zinc-50">{count}</div>
+      <div
+        suppressHydrationWarning={true}
+        className="mb-1 rounded-lg p-1 w-7 text-sm text-center bg-black text-zinc-50"
+      >
+        {count}
+      </div>
       <div className="text-zinc-100">{time}</div>
     </div>
   );
-}
+};
