@@ -40,7 +40,6 @@ function getTime(text) {
   const regex = /\d{2}.\d{2}-\d{2}.\d{1,}/g
 
   const result = text.match(regex);
-  console.log(result);
   const replace = result[0].replace(/\./gi, ":");
   const splitter = replace.split("-");
 
