@@ -1,7 +1,20 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-import { google } from 'googleapis';
+import { google } from "googleapis";
 function getMonth(month) {
-  const bulan = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+  const bulan = [
+    "Januari",
+    "Februari",
+    "Maret",
+    "April",
+    "Mei",
+    "Juni",
+    "Juli",
+    "Agustus",
+    "September",
+    "Oktober",
+    "November",
+    "Desember",
+  ];
 
   const monthNumber = bulan.indexOf(month) + 1;
 
@@ -16,37 +29,48 @@ function getMonth(month) {
 }
 
 function getDate(text) {
-  const daysExp = /Senin|Selasa|Rabu|Kamis|Jum'at/ig
-  const monthsExp = /Januari|Februari|Maret|April|Mei|Juni|Juli|Agustus|September|Oktober|November|Desember/ig
-  const yearsExp = /\b(20)\d{2}\b/ig
-  const tanggalExp = /([0-3][0-9])|([0-9])/ig
+  const daysExp = /Senin|Selasa|Rabu|Kamis|Jum'at/gi;
+  const monthsExp =
+    /Januari|Februari|Maret|April|Mei|Juni|Juli|Agustus|September|Oktober|November|Desember/gi;
+  const yearsExp = /\b(20)\d{2}\b/gi;
+  const tanggalExp = /([0-3][0-9])|([0-9])/gi;
 
-  const hari = text.match(daysExp) || [''];
-  const tanggal = text.match(tanggalExp) || [''];
-  const bulan = text.match(monthsExp) || [''];
-  const tahun = text.match(yearsExp) || [''];
+  const hari = text.match(daysExp) || [""];
+  const tanggal = text.match(tanggalExp) || [""];
+  const bulan = text.match(monthsExp) || [""];
+  const tahun = text.match(yearsExp) || [""];
 
   return {
     hari: hari[0],
     tanggal: tanggal[0].length === 2 ? tanggal[0] : "0" + tanggal[0],
     bulan: getMonth(bulan[0]),
     bulanAsli: bulan[0],
-    tahun: tahun[0]
+    tahun: tahun[0],
+  };
+}
+
+function splitterr(jam) {
+  const a = jam.split(":");
+  const numberA = parseInt(a[0]);
+  if (numberA < 7) {
+    console.log(numberA);
+    const num = numberA + 12;
+    return `${num}:${a[1]}`;
   }
+  return jam;
 }
 
 function getTime(text) {
-
-  const regex = /\d{2}.\d{2}-\d{2}.\d{1,}/g
+  const regex = /\d{1,}.\d{1,}-\d{1,}.\d{1,}/g;
 
   const result = text.match(regex);
   const replace = result[0].replace(/\./gi, ":");
   const splitter = replace.split("-");
 
   return {
-    jamMulai: splitter[0],
-    jamAkhir: splitter[1]
-  }
+    jamMulai: splitterr(splitter[0]),
+    jamAkhir: splitterr(splitter[1]),
+  };
 }
 const getData = async () => {
   const arrays = [];
@@ -58,10 +82,11 @@ const getData = async () => {
   // Auth
   const credentials = JSON.parse(process.env.GOOGLE_APPLICATION_CREDENTIALS);
   const auth = await google.auth.getClient({
-    scopes: ['https://www.googleapis.com/auth/spreadsheets.readonly'], credentials: credentials
+    scopes: ["https://www.googleapis.com/auth/spreadsheets.readonly"],
+    credentials: credentials,
   });
 
-  const sheets = google.sheets({ version: 'v4', auth });
+  const sheets = google.sheets({ version: "v4", auth });
 
   const range = `Sheet1!A6:I`;
 
@@ -73,7 +98,7 @@ const getData = async () => {
     spreadsheetId: process.env.SHEET_ID,
     ranges: range,
     includeGridData: true,
-    fields: "sheets(data(rowData(values(effectiveFormat.backgroundColor))))"
+    fields: "sheets(data(rowData(values(effectiveFormat.backgroundColor))))",
   });
 
   const resData = res.data.sheets[0].data[0].rowData;
@@ -84,65 +109,85 @@ const getData = async () => {
 
   array.forEach((e, i) => {
     const property = {
-      no: '',
-      nama: '',
-      nim: '',
-      judul: '',
+      no: "",
+      nama: "",
+      nim: "",
+      judul: "",
       sempro: false,
       semhas: false,
       pendadaran: false,
       jadwal: {
-        tanggal: '',
-        jam: '',
-        ruang: ''
+        tanggal: "",
+        jam: "",
+        ruang: "",
       },
       date: {
         day: {
-          hari: '',
-          tanggal: '',
-          bulan: '',
-          bulanAsli: '',
-          tahun: ''
+          hari: "",
+          tanggal: "",
+          bulan: "",
+          bulanAsli: "",
+          tahun: "",
         },
         time: {
-          jamMulai: '',
-          jamAkhir: ''
-        }
+          jamMulai: "",
+          jamAkhir: "",
+        },
       },
       dateInt: {
         mulai: 0,
         akhir: 0,
       },
-    }
+    };
     if (index === 0) {
       property.no = e[0];
       property.nama = e[1];
       property.nim = e[2];
       property.judul = e[3];
-      property.sempro = resData[i].values[4].effectiveFormat.backgroundColor.blue === 1 && resData[i].values[4].effectiveFormat.backgroundColor.blue ? false : true;
-      property.semhas = resData[i].values[5].effectiveFormat.backgroundColor.blue === 1 && resData[i].values[4].effectiveFormat.backgroundColor.blue ? false : true;
-      property.pendadaran = resData[i].values[6].effectiveFormat.backgroundColor.blue === 1 && resData[i].values[4].effectiveFormat.backgroundColor.blue ? false : true;
+      property.sempro =
+        resData[i].values[4].effectiveFormat.backgroundColor.blue === 1 &&
+        resData[i].values[4].effectiveFormat.backgroundColor.blue
+          ? false
+          : true;
+      property.semhas =
+        resData[i].values[5].effectiveFormat.backgroundColor.blue === 1 &&
+        resData[i].values[4].effectiveFormat.backgroundColor.blue
+          ? false
+          : true;
+      property.pendadaran =
+        resData[i].values[6].effectiveFormat.backgroundColor.blue === 1 &&
+        resData[i].values[4].effectiveFormat.backgroundColor.blue
+          ? false
+          : true;
       property.jadwal.tanggal = e[7];
       property.date.day = getDate(e[7]);
       arrays.push(property);
     } else if (index === 1) {
       if (e[7] !== undefined) {
+        // console.log(e[7]);
         arrays[currIndex].jadwal.jam = e[7];
         arrays[currIndex].date.time = getTime(e[7]);
 
         // Masukkan Date
         const ar = arrays[currIndex];
-        const ar2 = arrays[currIndex].date
+        const ar2 = arrays[currIndex].date;
 
-        ar.dateInt.mulai = Date.parse(new Date(`${ar2.day.tahun}-${ar2.day.bulan}-${ar2.day.tanggal}T${ar2.time.jamMulai}:00+0800`));
-        ar.dateInt.akhir = Date.parse(new Date(`${ar2.day.tahun}-${ar2.day.bulan}-${ar2.day.tanggal}T${ar2.time.jamAkhir}:00+0800`));
+        ar.dateInt.mulai = Date.parse(
+          new Date(
+            `${ar2.day.tahun}-${ar2.day.bulan}-${ar2.day.tanggal}T${ar2.time.jamMulai}:00+0800`
+          )
+        );
+        ar.dateInt.akhir = Date.parse(
+          new Date(
+            `${ar2.day.tahun}-${ar2.day.bulan}-${ar2.day.tanggal}T${ar2.time.jamAkhir}:00+0800`
+          )
+        );
       }
     } else if (index === 2) {
       if (e[7] !== undefined) {
         arrays[currIndex].jadwal.ruang = e[7];
       }
     }
-
 
     if (index === 2) {
       index = 0;
@@ -154,7 +199,10 @@ const getData = async () => {
         notyet.push(arrays[currIndex]);
       }
       // Current
-      else if (Date.now() >= arrays[currIndex].dateInt.mulai && Date.now() <= arrays[currIndex].dateInt.akhir) {
+      else if (
+        Date.now() >= arrays[currIndex].dateInt.mulai &&
+        Date.now() <= arrays[currIndex].dateInt.akhir
+      ) {
         currents.push(arrays[currIndex]);
       }
       // Passed
@@ -210,9 +258,14 @@ const getData = async () => {
     scheduled,
     notyet,
     passed,
-  }
-}
+  };
+};
 export default async function handler(req, res) {
   const { currents, scheduled, notyet, passed } = await getData();
-  res.status(200).json({ currents: currents, scheduled: scheduled, notyet: notyet, passed: passed })
+  res.status(200).json({
+    currents: currents,
+    scheduled: scheduled,
+    notyet: notyet,
+    passed: passed,
+  });
 }
