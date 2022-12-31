@@ -89,7 +89,7 @@ const getData = async () => {
 
     const sheets = google.sheets({ version: "v4", auth });
 
-    const range = `OKT-DES 22!A6:I`;
+    const range = `JAN-MAR 23!A6:I`;
     
     const response = await sheets.spreadsheets.values.get({
       spreadsheetId: process.env.SHEET_ID,
