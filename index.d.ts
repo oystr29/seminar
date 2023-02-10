@@ -19,13 +19,13 @@ export interface Seminar {
       bulanAsli: string;
       tahun: string;
     },
-    time: {
+    time?:  {
       jamMulai: string;
       jamAkhir: string;
-    }
+    } 
   },
   dateInt: {
-    mulai:  number ;
+    mulai: number;
     akhir: number;
   }
 }
@@ -34,4 +34,5 @@ export interface DataSem {
   currents?: Seminar[];
   scheduled?: Seminar[];
   notyet?: Seminar[];
+  passed?: Seminar[];
 }

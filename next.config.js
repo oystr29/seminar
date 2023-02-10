@@ -5,9 +5,12 @@ const withPWA = require('next-pwa')({
   disable: dev ? true : false
 });
 const nextConfig = {
+  experimental: {
+    appDir: true
+  },
   reactStrictMode: true,
   swcMinify: true,
-  
+
 }
 
 module.exports = withPWA(nextConfig);
