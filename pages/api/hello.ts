@@ -1,6 +1,9 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
+import { NextApiRequest, NextApiResponse } from 'next';
+
 import { google } from "googleapis";
-function getMonth(month) {
+import { DataSem, Seminar } from '../..';
+function getMonth(month: string) {
   const bulan = [
     "Januari",
     "Februari",
@@ -28,7 +31,7 @@ function getMonth(month) {
   return value;
 }
 
-function getDate(text) {
+function getDate(text: string) {
   const daysExp = /Senin|Selasa|Rabu|Kamis|Jum'at/gi;
   const monthsExp =
     /Januari|Februari|Maret|April|Mei|Juni|Juli|Agustus|September|Oktober|November|Desember/gi;
@@ -49,7 +52,7 @@ function getDate(text) {
   };
 }
 
-function splitterr(jam) {
+function splitterr(jam: string) {
   const a = jam.split(":");
   const numberA = parseInt(a[0]);
   if (numberA < 7) {
@@ -60,7 +63,7 @@ function splitterr(jam) {
   return jam;
 }
 
-function getTime(text) {
+function getTime(text: string) {
   const regex = /\d{1,}.\d{1,}-\d{1,}.\d{1,}/g;
 
   const result = text.match(regex);
@@ -73,7 +76,7 @@ function getTime(text) {
   };
 }
 const getData = async () => {
-  const arrays = [];
+  const arrays: Seminar[] = [];
   const currents = [];
   const notyet = [];
   const passed = [];
@@ -90,14 +93,15 @@ const getData = async () => {
     const sheets = google.sheets({ version: "v4", auth });
 
     const range = `JAN-MAR 23!A6:I`;
-    
+
     const response = await sheets.spreadsheets.values.get({
       spreadsheetId: process.env.SHEET_ID,
       range,
     });
+
     const res = await sheets.spreadsheets.get({
       spreadsheetId: process.env.SHEET_ID,
-      ranges: range,
+      ranges: [range],
       includeGridData: true,
       fields: "sheets(data(rowData(values(effectiveFormat.backgroundColor))))",
     });
@@ -109,7 +113,7 @@ const getData = async () => {
     const array = response.data.values;
 
     array.forEach((e, i) => {
-      const property = {
+      const property: Seminar = {
         no: "",
         nama: "",
         nim: "",
@@ -147,17 +151,17 @@ const getData = async () => {
         property.judul = e[3];
         property.sempro =
           resData[i].values[4].effectiveFormat.backgroundColor.blue === 1 &&
-          resData[i].values[4].effectiveFormat.backgroundColor.blue
+            resData[i].values[4].effectiveFormat.backgroundColor.blue
             ? false
             : true;
         property.semhas =
           resData[i].values[5].effectiveFormat.backgroundColor.blue === 1 &&
-          resData[i].values[4].effectiveFormat.backgroundColor.blue
+            resData[i].values[4].effectiveFormat.backgroundColor.blue
             ? false
             : true;
         property.pendadaran =
           resData[i].values[6].effectiveFormat.backgroundColor.blue === 1 &&
-          resData[i].values[4].effectiveFormat.backgroundColor.blue
+            resData[i].values[4].effectiveFormat.backgroundColor.blue
             ? false
             : true;
         property.jadwal.tanggal = e[7];
@@ -174,15 +178,14 @@ const getData = async () => {
           const ar2 = arrays[currIndex].date;
 
           ar.dateInt.mulai = Date.parse(
-            new Date(
-              `${ar2.day.tahun}-${ar2.day.bulan}-${ar2.day.tanggal}T${ar2.time.jamMulai}:00+0800`
-            )
+            `${ar2.day.tahun}-${ar2.day.bulan}-${ar2.day.tanggal}T${ar2.time.jamMulai}:00+0800`
           );
           ar.dateInt.akhir = Date.parse(
-            new Date(
-              `${ar2.day.tahun}-${ar2.day.bulan}-${ar2.day.tanggal}T${ar2.time.jamAkhir}:00+0800`
-            )
+            `${ar2.day.tahun}-${ar2.day.bulan}-${ar2.day.tanggal}T${ar2.time.jamAkhir}:00+0800`
           );
+          console.log(`Awal: ${ar2.day.tahun}-${ar2.day.bulan}-${ar2.day.tanggal}T${ar2.time.jamAkhir}:00+0800`);
+          console.log(`Awal: ${ar2.day.tahun}-${ar2.day.bulan}-${ar2.day.tanggal}T${ar2.time.jamMulai}:00+0800`);
+
         }
       } else if (index === 2) {
         if (e[7] !== undefined) {
@@ -264,7 +267,7 @@ const getData = async () => {
     console.log(error);
   }
 };
-export default async function handler(req, res) {
+export default async function handler(req: NextApiRequest, res) {
   const { currents, scheduled, notyet, passed } = await getData();
   res.status(200).json({
     currents: currents,
