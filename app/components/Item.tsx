@@ -1,11 +1,23 @@
 import Countdown from "react-countdown";
-import { HiDocument, HiOutlineCalendar, HiOutlineClock, HiOutlineLocationMarker, HiPresentationChartLine } from "react-icons/hi";
+import {
+  HiDocument,
+  HiOutlineCalendar,
+  HiOutlineClock,
+  HiOutlineLocationMarker,
+  HiPresentationChartLine,
+} from "react-icons/hi";
 import { MdSchool } from "react-icons/md";
 import { DataSem, Seminar } from "../..";
 import MyCountDown from "./MyCountDown";
+import { Dispatch, SetStateAction } from "react";
+import FlipClockCountdown from "./FlipClockCountdown";
 
-export default (props: { e: Seminar; classes: string }) => {
-  const { e, classes } = props;
+export default (props: {
+  e: Seminar;
+  classes: string;
+  setData: Dispatch<SetStateAction<DataSem>>;
+}) => {
+  const { e, classes, setData } = props;
   return (
     <div className={`items ${classes}`}>
       <div className={`${classes === "current" ? "gradient" : null}`}>
@@ -61,20 +73,46 @@ export default (props: { e: Seminar; classes: string }) => {
         {Date.now() <= e.dateInt.akhir && classes === "current" && (
           <>
             <div className="font-medium mb-2">Berakhir dalam:</div>
-            <Countdown
+            {/* <Countdown
               renderer={MyCountDown}
               date={e.dateInt.akhir}
               className="font-semibold"
+            /> */}
+            <FlipClockCountdown
+              showSeparators={false}
+              className="flip-clock"
+              labels={["Hari", "Jam", "Menit", "Detik"]}
+              onComplete={() =>
+                setData((old) => ({
+                  ...old,
+                  passed: [...old.passed, e],
+                  currents: old.currents.filter((cc) => cc.nim !== e.nim),
+                }))
+              }
+              to={e.dateInt.akhir}
             />
           </>
         )}
         {Date.now() <= e.dateInt.mulai && classes === "notyet" && (
           <div>
             <div className="font-medium mb-2">Dimulai dalam:</div>
-            <Countdown
+            {/* <Countdown
               renderer={MyCountDown}
               date={e.dateInt.mulai}
               className="font-semibold"
+            /> */}
+            <FlipClockCountdown
+              showSeparators={false}
+              className="flip-clock"
+              labels={["Hari", "Jam", "Menit", "Detik"]}
+              onComplete={() =>
+                setData((old) => ({
+                  ...old,
+                  currents: [...old.currents, e],
+                  notyet: old.notyet.filter((cc) => cc.nim !== e.nim),
+                }))
+              }
+              to={e.dateInt.mulai}
             />
           </div>
         )}

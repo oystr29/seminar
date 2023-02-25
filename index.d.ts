@@ -36,3 +36,7 @@ export interface DataSem {
   notyet?: Seminar[];
   passed?: Seminar[];
 }
+
+declare module '@rumess/react-flip-countdown' {
+
+}

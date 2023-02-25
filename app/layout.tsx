@@ -1,4 +1,5 @@
-import './globals.css';
+import Header from "./components/Header";
+import "./globals.css";
 
 // export const metadata = {
 //   icons: {
@@ -60,12 +61,15 @@ import './globals.css';
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
   return (
     <html>
       <head />
-      <body>{children}</body>
+      <body className="container mx-auto mt-10">
+        <Header />
+        <main>{children}</main>
+      </body>
     </html>
-  )
+  );
 }

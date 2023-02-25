@@ -2,85 +2,15 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 
 import { google } from "googleapis";
-import { DataSem, Seminar } from '../..';
-function getMonth(month: string) {
-  const bulan = [
-    "Januari",
-    "Februari",
-    "Maret",
-    "April",
-    "Mei",
-    "Juni",
-    "Juli",
-    "Agustus",
-    "September",
-    "Oktober",
-    "November",
-    "Desember",
-  ];
+import { Seminar } from '../..';
+import { getDate, getTime } from '../lib/utils';
 
-  const monthNumber = bulan.indexOf(month) + 1;
-
-  let value;
-
-  if (monthNumber < 10) {
-    value = "0" + monthNumber.toString();
-  } else {
-    value = monthNumber.toString();
-  }
-  return value;
-}
-
-function getDate(text: string) {
-  const daysExp = /Senin|Selasa|Rabu|Kamis|Jum'at/gi;
-  const monthsExp =
-    /Januari|Februari|Maret|April|Mei|Juni|Juli|Agustus|September|Oktober|November|Desember/gi;
-  const yearsExp = /\b(20)\d{2}\b/gi;
-  const tanggalExp = /([0-3][0-9])|([0-9])/gi;
-
-  const hari = text.match(daysExp) || [""];
-  const tanggal = text.match(tanggalExp) || [""];
-  const bulan = text.match(monthsExp) || [""];
-  const tahun = text.match(yearsExp) || [""];
-
-  return {
-    hari: hari[0],
-    tanggal: tanggal[0].length === 2 ? tanggal[0] : "0" + tanggal[0],
-    bulan: getMonth(bulan[0]),
-    bulanAsli: bulan[0],
-    tahun: tahun[0],
-  };
-}
-
-function splitterr(jam: string) {
-  const a = jam.split(":");
-  const numberA = parseInt(a[0]);
-  if (numberA < 7) {
-    console.log(numberA);
-    const num = numberA + 12;
-    return `${num}:${a[1]}`;
-  }
-  return jam;
-}
-
-function getTime(text: string) {
-  const regex = /\d{1,}.\d{1,}-\d{1,}.\d{1,}/g;
-
-  const result = text.match(regex);
-  const replace = result[0].replace(/\./gi, ":");
-  const splitter = replace.split("-");
-
-  return {
-    jamMulai: splitterr(splitter[0]),
-    jamAkhir: splitterr(splitter[1]),
-  };
-}
 const getData = async () => {
   const arrays: Seminar[] = [];
-  const currents = [];
-  const notyet = [];
-  const passed = [];
-  const scheduled = [];
+  const currents: Seminar[] = [];
+  const notyet: Seminar[] = [];
+  const passed: Seminar[] = [];
+  const scheduled: Seminar[] = [];
 
   // Auth
   const credentials = JSON.parse(process.env.GOOGLE_APPLICATION_CREDENTIALS);
@@ -169,7 +99,6 @@ const getData = async () => {
         arrays.push(property);
       } else if (index === 1) {
         if (e[7] !== undefined) {
-          // console.log(e[7]);
           arrays[currIndex].jadwal.jam = e[7];
           arrays[currIndex].date.time = getTime(e[7]);
 
@@ -183,8 +112,6 @@ const getData = async () => {
           ar.dateInt.akhir = Date.parse(
             `${ar2.day.tahun}-${ar2.day.bulan}-${ar2.day.tanggal}T${ar2.time.jamAkhir}:00+0800`
           );
-          console.log(`Awal: ${ar2.day.tahun}-${ar2.day.bulan}-${ar2.day.tanggal}T${ar2.time.jamAkhir}:00+0800`);
-          console.log(`Awal: ${ar2.day.tahun}-${ar2.day.bulan}-${ar2.day.tanggal}T${ar2.time.jamMulai}:00+0800`);
 
         }
       } else if (index === 2) {
@@ -218,42 +145,46 @@ const getData = async () => {
         index++;
       }
     });
+    const t = new Date();
 
-    // notyet.push(
-    //   {
-    //     no: '99',
-    //     nama: 'Oktavian',
-    //     nim: '1915016074',
-    //     judul: 'Makan',
-    //     sempro: true,
-    //     semhas: false,
-    //     pendadaran: false,
-    //     jadwal: {
-    //       tanggal: '',
-    //       jam: '',
-    //       ruang: ''
-    //     },
-    //     date: {
-    //       day: {
-    //         hari: '',
-    //         tanggal: '',
-    //         bulan: '',
-    //         bulanAsli: '',
-    //         tahun: ''
-    //       },
-    //       time: {
-    //         jamMulai: '',
-    //         jamAkhir: ''
-    //       }
-    //     },
-    //     dateInt: {
-    //       mulai: Date.now() + 10,
-    //       akhir: Date.now() + 15,
-    //     },
-    //   }
-    // );
+    notyet.push(
+      {
+        no: '99',
+        nama: 'Oktavian',
+        nim: '1915016074',
+        judul: 'Makan',
+        sempro: true,
+        semhas: false,
+        pendadaran: false,
+        jadwal: {
+          tanggal: 'Hari/Tgl : Senin, 27 Februari 2023',
+          jam: 'Pukul     : 10.00-12.00 wita',
+          ruang: 'Ruang   : Gedung Lab Lantai 2 D211'
+        },
+        date: {
+          day: {
+            hari: 'Senin',
+            tanggal: '27',
+            bulan: '02',
+            bulanAsli: 'Februari',
+            tahun: '2023'
+          },
+          time: {
+            jamMulai: '10:00',
+            jamAkhir: '12:00'
+          }
+        },
+        dateInt: {
+          mulai: t.setSeconds(t.getSeconds() + 10),
+          akhir: t.setSeconds(t.getSeconds() + 15),
+        },
+      }
+    );
 
     notyet.sort((a, b) => {
+      return a.dateInt.mulai - b.dateInt.mulai;
+    });
+    passed.sort((a, b) => {
       return a.dateInt.mulai - b.dateInt.mulai;
     });
 
@@ -267,12 +198,12 @@ const getData = async () => {
     console.log(error);
   }
 };
-export default async function handler(req: NextApiRequest, res) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { currents, scheduled, notyet, passed } = await getData();
   res.status(200).json({
-    currents: currents,
-    scheduled: scheduled,
-    notyet: notyet,
-    passed: passed,
+    currents,
+    scheduled,
+    notyet,
+    passed,
   });
 }
