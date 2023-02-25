@@ -7,33 +7,57 @@ import Item from "./Item";
 
 export default (props: DataSem) => {
   const [data, setData] = useState(props);
-  const { currents, notyet, scheduled, passed } = data;
+  const { currents, notyet, scheduled, passed, sheetName } = data;
+  const { sheets } = props;
   const [currentParent] = useAutoAnimate();
   const [notyetParent] = useAutoAnimate();
   const [passedParent] = useAutoAnimate();
 
   return (
-    <div>
-      <div ref={currentParent}>
+    <>
+      <section className="flex items-center mb-5">
+        {sheets?.map((sheet) => (
+          <button
+            onClick={async () => {
+              const base = process.env.NEXT_PUBLIC_API_URL;
+              const res = await fetch(
+                `${base}/api/data?sheet=${sheet.properties?.title}`,
+                {
+                  cache: "no-store",
+                }
+              );
+              const dataa = await res.json();
+              setData(dataa);
+            }}
+            key={sheet.properties?.title}
+            className={`border border-white ${
+              sheetName === sheet.properties?.title && "bg-white text-gray-900"
+            } px-3 py-1 rounded-xl mr-4`}
+          >
+            {sheet.properties?.title}
+          </button>
+        ))}
+      </section>
+      <section ref={currentParent}>
         {currents.length !== 0 &&
           currents.map((e, i) => {
             return (
               <Item setData={setData} e={e} key={e.nim + i} classes="current" />
             );
           })}
-      </div>
+      </section>
       {notyet.length !== 0 && (
         <div className="p-1 px-2 mb-2 rounded-xl mt-3 text-base border-2 text-purple-50 border-purple-800 w-max">
           Coming Soon!
         </div>
       )}
-      <div ref={notyetParent}>
+      <section ref={notyetParent}>
         {notyet.map((e, i) => {
           return (
             <Item setData={setData} e={e} key={e.nim + i} classes="notyet" />
           );
         })}
-      </div>
+      </section>
       {scheduled.length !== 0 && (
         <div className="p-1 px-2 mb-2 mt-3 rounded-xl text-base border-2 text-yellow-300 border-yellow-800 w-max">
           Belum Ada Jadwalnya
@@ -76,6 +100,6 @@ export default (props: DataSem) => {
           Source Code
         </a>
       </div>
-    </div>
+    </>
   );
 };

@@ -1,11 +1,9 @@
-// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-import { NextApiRequest, NextApiResponse } from 'next';
-
 import { google } from "googleapis";
-import { Seminar } from '../..';
-import { getDate, getTime } from '../../lib/utils';
+import { NextRequest, NextResponse } from "next/server";
+import { Seminar } from "../../..";
+import { getDate, getTime } from "../../../lib/utils";
 
-const getData = async () => {
+const getData = async (sheet: string | null) => {
   const arrays: Seminar[] = [];
   const currents: Seminar[] = [];
   const notyet: Seminar[] = [];
@@ -14,15 +12,30 @@ const getData = async () => {
 
   // Auth
   const credentials = JSON.parse(`${process.env.GOOGLE_APPLICATION_CREDENTIALS}`);
+  const cells = '!A6:I';
+  let sheetName = sheet;
   try {
     const auth = await google.auth.getClient({
       scopes: ["https://www.googleapis.com/auth/spreadsheets.readonly"],
       credentials: credentials,
     });
+    let range = '';
 
     const sheets = google.sheets({ version: "v4", auth });
 
-    const range = `JAN-MAR 23!A6:I`;
+
+    if (sheet === null) {
+      const resSheet = await sheets.spreadsheets.get({
+        spreadsheetId: process.env.SHEET_ID,
+      });
+
+      const lenSheets = resSheet.data.sheets?.length as number;
+      sheetName = `${resSheet.data.sheets?.[lenSheets - 1].properties?.title}`;
+      range = `${sheetName}${cells}`
+    } else {
+      range = `${sheet}${cells}`;
+    }
+
 
     const response = await sheets.spreadsheets.values.get({
       spreadsheetId: process.env.SHEET_ID,
@@ -193,6 +206,7 @@ const getData = async () => {
       scheduled,
       notyet,
       passed,
+      sheetName
     };
   } catch (error) {
     console.log(error);
@@ -201,15 +215,12 @@ const getData = async () => {
       scheduled,
       notyet,
       passed,
+      sheetName
     };
   }
 };
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  const { currents, scheduled, notyet, passed } = await getData();
-  res.status(200).json({
-    currents,
-    scheduled,
-    notyet,
-    passed,
-  });
+export async function GET(request: NextRequest) {
+  const sheetName = request.nextUrl.searchParams.get('sheet')
+  const res = await getData(sheetName);
+  return NextResponse.json(res);
 }

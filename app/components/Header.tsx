@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { Seminar } from "../..";
 
 export default () => {
-  const [deferredPrompt, setDeferredPrompt] = useState(null);
+  const [deferredPrompt, setDeferredPrompt] = useState<any>();
   const [isInstall, setIsInstall] = useState(true);
   function listenUserAction() {
     setIsInstall(true);
@@ -18,6 +18,7 @@ export default () => {
     window.addEventListener("beforeinstallprompt", (e) => {
       // Prevent Chrome 67 and earlier from automatically showing the prompt
       e.preventDefault();
+      e;
       // Stash the event so it can be triggered later.
       setDeferredPrompt(e);
       // Update UI to notify the user they can add to home screen

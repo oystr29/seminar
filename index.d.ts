@@ -1,3 +1,5 @@
+import { sheets_v4 } from "googleapis";
+
 export interface Seminar {
   no: string;
   nama: string;
@@ -19,10 +21,10 @@ export interface Seminar {
       bulanAsli: string;
       tahun: string;
     },
-    time?:  {
+    time: {
       jamMulai: string;
       jamAkhir: string;
-    } 
+    }
   },
   dateInt: {
     mulai: number;
@@ -31,10 +33,12 @@ export interface Seminar {
 }
 
 export interface DataSem {
-  currents?: Seminar[];
-  scheduled?: Seminar[];
-  notyet?: Seminar[];
-  passed?: Seminar[];
+  currents: Seminar[];
+  scheduled: Seminar[];
+  notyet: Seminar[];
+  passed: Seminar[];
+  sheetName: string | null;
+  sheets?: sheets_v4.Schema$Sheet[];
 }
 
 declare module '@rumess/react-flip-countdown' {

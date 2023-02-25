@@ -61,11 +61,11 @@ export function getTime(text: string) {
   const regex = /\d{1,}.\d{1,}-\d{1,}.\d{1,}/g;
 
   const result = text.match(regex);
-  const replace = result[0].replace(/\./gi, ":");
-  const splitter = replace.split("-");
+  const replace = result?.[0].replace(/\./gi, ":");
+  const splitter = replace?.split("-");
 
   return {
-    jamMulai: splitterr(splitter[0]),
-    jamAkhir: splitterr(splitter[1]),
+    jamMulai: splitterr(splitter![0]),
+    jamAkhir: splitterr(splitter![1]),
   };
 }

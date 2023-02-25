@@ -1,3 +1,4 @@
+import { sheets_v4 } from "googleapis";
 import { DataSem } from "..";
 import Home from "./components/Home";
 
@@ -5,13 +6,15 @@ export const metadata = {
   title: "Seminar IF Unmul",
   description: "Website Seminar Informatika Unmul",
 };
+const base = process.env.NEXT_PUBLIC_API_URL;
+async function getSheets(): Promise<sheets_v4.Schema$Sheet[] | undefined> {
+  const res = await fetch(`${base}/api/sheets`, { cache: "no-store" });
+
+  return res.json();
+}
 
 async function getSeminarData(): Promise<DataSem> {
-  const base =
-    process.env.NODE_ENV === "development"
-      ? "http://localhost:3000"
-      : "https://seminar.dalamkotak.com";
-  const res = await fetch(`${base}/api/hello`, { cache: "no-store" });
+  const res = await fetch(`${base}/api/data`, { cache: "no-store" });
   const seminar = await res.json();
 
   return seminar;
@@ -19,6 +22,8 @@ async function getSeminarData(): Promise<DataSem> {
 
 export default async function Page() {
   const seminar = await getSeminarData();
+  console.log(seminar.sheetName);
+  const sheets = await getSheets();
 
-  return <Home {...seminar} />;
+  return <Home {...seminar}  sheets={sheets} />;
 }
