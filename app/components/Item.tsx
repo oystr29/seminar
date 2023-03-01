@@ -12,11 +12,11 @@ import MyCountDown from "./MyCountDown";
 import { Dispatch, SetStateAction } from "react";
 import FlipClockCountdown from "./FlipClockCountdown";
 
-export default (props: {
+export default function Item(props: {
   e: Seminar;
   classes: string;
   setData: Dispatch<SetStateAction<DataSem>>;
-}) => {
+}) {
   const { e, classes, setData } = props;
   return (
     <div className={`items ${classes}`}>
@@ -119,4 +119,4 @@ export default (props: {
       </div>
     </div>
   );
-};
+}

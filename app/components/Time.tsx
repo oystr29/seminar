@@ -1,4 +1,4 @@
-export default ({ count, time }) => {
+export default function Time({ count, time }) {
   if (count === "00" && time !== "Detik") return null;
 
   return (
@@ -12,4 +12,4 @@ export default ({ count, time }) => {
       <div className="text-zinc-100">{time}</div>
     </div>
   );
-};
+}

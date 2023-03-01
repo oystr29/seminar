@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { Seminar } from "../..";
 
-export default () => {
+export default function Header() {
   const [deferredPrompt, setDeferredPrompt] = useState<any>();
   const [isInstall, setIsInstall] = useState(true);
   function listenUserAction() {
@@ -40,4 +40,4 @@ export default () => {
       </button>
     </div>
   );
-};
+}

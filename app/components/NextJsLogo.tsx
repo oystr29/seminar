@@ -1,4 +1,4 @@
-export default () => {
+export default function NextJsLogo() {
   return (
     <svg
       fill="none"
@@ -43,4 +43,4 @@ export default () => {
       ></path>
     </svg>
   );
-};
+}

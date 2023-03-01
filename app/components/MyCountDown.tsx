@@ -1,6 +1,6 @@
 import Time from "./Time";
 
-export default ({ formatted }) => {
+export default function MyCountDown({ formatted }) {
   const { days, hours, minutes, seconds } = formatted;
   return (
     <div className="flex">
@@ -10,4 +10,4 @@ export default ({ formatted }) => {
       <Time time="Detik" count={seconds} />
     </div>
   );
-};
+}

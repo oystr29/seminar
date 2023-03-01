@@ -5,7 +5,7 @@ import { useAutoAnimate } from "@formkit/auto-animate/react";
 import { DataSem } from "../..";
 import Item from "./Item";
 
-export default (props: DataSem) => {
+export default function Home (props: DataSem) {
   const [data, setData] = useState(props);
   const { currents, notyet, scheduled, passed, sheetName } = data;
   const { sheets } = props;
@@ -102,4 +102,4 @@ export default (props: DataSem) => {
       </div>
     </>
   );
-};
+}
