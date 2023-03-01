@@ -26,8 +26,8 @@ export async function getServerSideProps() {
     },
   };
 }
-
-const pemalu = ["19150160107"];
+1915016107
+const pemalu = ["1915016107"];
 
 const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
