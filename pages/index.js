@@ -26,8 +26,6 @@ export async function getServerSideProps() {
     },
   };
 }
-1915016107
-const pemalu = ["1915016107"];
 
 const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
@@ -131,8 +129,6 @@ export default function Home(props) {
 
 const Item = (props) => {
   const { e, classes } = props;
-
-  if (pemalu.includes(e.nim)) return null;
 
   return (
     <div className={`items ${classes}`}>
