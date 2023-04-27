@@ -90,7 +90,7 @@ const getData = async () => {
     const sheets = google.sheets({ version: "v4", auth });
 
     const range = `JAN-MAR 23!A6:I`;
-    
+
     const response = await sheets.spreadsheets.values.get({
       spreadsheetId: process.env.SHEET_ID,
       range,
@@ -147,17 +147,17 @@ const getData = async () => {
         property.judul = e[3];
         property.sempro =
           resData[i].values[4].effectiveFormat.backgroundColor.blue === 1 &&
-          resData[i].values[4].effectiveFormat.backgroundColor.blue
+            resData[i].values[4].effectiveFormat.backgroundColor.blue
             ? false
             : true;
         property.semhas =
           resData[i].values[5].effectiveFormat.backgroundColor.blue === 1 &&
-          resData[i].values[4].effectiveFormat.backgroundColor.blue
+            resData[i].values[4].effectiveFormat.backgroundColor.blue
             ? false
             : true;
         property.pendadaran =
           resData[i].values[6].effectiveFormat.backgroundColor.blue === 1 &&
-          resData[i].values[4].effectiveFormat.backgroundColor.blue
+            resData[i].values[4].effectiveFormat.backgroundColor.blue
             ? false
             : true;
         property.jadwal.tanggal = e[7];
@@ -261,7 +261,12 @@ const getData = async () => {
       passed,
     };
   } catch (error) {
-    console.log(error);
+    return {
+      currents,
+      scheduled,
+      notyet,
+      passed,
+    }
   }
 };
 export default async function handler(req, res) {
