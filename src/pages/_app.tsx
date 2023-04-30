@@ -3,6 +3,7 @@ import type { AppProps } from "next/app";
 import "../styles/globals.css";
 import Script from "next/script";
 import { trpc } from "~/utils/trpc";
+import Layout from "~/pages/_layout";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
@@ -162,7 +163,9 @@ function MyApp({ Component, pageProps }: AppProps) {
 
         <title>Seminar IF</title>
       </Head>
-      <Component {...pageProps} />
+      <Layout>
+        <Component {...pageProps} />
+      </Layout>
     </>
   );
 }

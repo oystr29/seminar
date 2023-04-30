@@ -24,8 +24,8 @@ const seminarSchema = z.object({
       tahun: z.string(),
     }),
     time: z.object({
-      jamMulai: z.string(),
-      jamAkhir: z.string(),
+      jamMulai: z.string().optional(),
+      jamAkhir: z.string().optional(),
     }),
   }),
   dateInt: z.object({
@@ -43,7 +43,7 @@ const dataSemSchema = z.object({
 });
 
 // Type
-type Seminar = z.infer<typeof seminarSchema>;
+export type Seminar = z.infer<typeof seminarSchema>;
 type DateSem = z.infer<typeof dataSemSchema>;
 
 // Function
