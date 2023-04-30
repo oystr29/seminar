@@ -12,7 +12,7 @@ export default function Home() {
     <>
       {data.currents.length !== 0 &&
         data.currents.map((e, i) => {
-          return <Item e={e} key={e.nim + i} classes="current" />;
+          return <Item e={e} key={e.nim + i} type="current" />;
         })}
       {data.notyet.length !== 0 && (
         <div className="p-1 px-2 mb-2 rounded-xl mt-3 text-base border-2 text-purple-300 border-purple-800 w-max">
@@ -20,7 +20,7 @@ export default function Home() {
         </div>
       )}
       {data.notyet.map((e, i) => {
-        return <Item e={e} key={e.nim + i} classes="notyet" />;
+        return <Item e={e} key={e.nim + i} type="notyet" />;
       })}
       {data.scheduled.length !== 0 && (
         <div className="p-1 px-2 mb-2 mt-3 rounded-xl text-base border-2 text-yellow-300 border-yellow-800 w-max">
@@ -28,7 +28,7 @@ export default function Home() {
         </div>
       )}
       {data.scheduled.map((e, i) => {
-        return <Item e={e} key={e.nim + i} classes="scheduled" />;
+        return <Item e={e} key={e.nim + i} type="scheduled" />;
       })}
       {data.passed.length !== 0 && (
         <div className="p-1 px-2 mb-2 mt-3 rounded-xl text-base border-2 text-gray-300 border-gray-500 w-max">
@@ -37,7 +37,7 @@ export default function Home() {
       )}
       {data.passed
         .map((e, i) => {
-          return <Item e={e} key={e.nim + i} classes="passed" />;
+          return <Item e={e} key={e.nim + i} type="passed" />;
         })
         .reverse()}
       <div className="flex justify-center items-center py-5">
@@ -61,6 +61,3 @@ export default function Home() {
     </>
   );
 }
-
-
-

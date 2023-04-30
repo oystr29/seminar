@@ -37,12 +37,34 @@ const MyCountdown = ({ formatted }: CountdownRenderProps) => {
   );
 };
 
-const Item = (props: { e: Seminar; classes: string }) => {
-  const { e, classes } = props;
+type TypeSem = "current" | "notyet" | "scheduled" | "passed";
+
+const Item = (props: { e: Seminar; type: TypeSem }) => {
+  const getClasess = (t: TypeSem) => {
+    let className = "";
+    if (t === "current") {
+      className = "border-none bg-gradient-to-tr p-1 from-green-500 to-sky-500";
+    } else if (t === "scheduled") {
+      className = "border-yellow-400";
+    } else if (t === "notyet") {
+      className = "border-purple-400 ";
+    } else if (t === "passed") {
+      className = "border-gray-500 text-gray-400";
+    }
+    return className;
+  };
+
+  const { e, type } = props;
 
   return (
-    <div className={`items ${classes}`}>
-      <div className={`${classes === "current" ? "gradient" : null}`}>
+    <div
+      className={`mb-5 border-2 rounded-lg p-5 text-white ${getClasess(type)}`}
+    >
+      <div
+        className={`${
+          type === "current" ? "gradient rounded-lg bg-zinc-900 p-4" : null
+        }`}
+      >
         <div className={`font-bold text-xl mb-2`}>{e.judul}</div>
         <div className="">
           <span className="uppercase font-semibold">{e.nama} </span>
@@ -92,7 +114,7 @@ const Item = (props: { e: Seminar; classes: string }) => {
             </div>
           )}
         </div>
-        {Date.now() <= e.dateInt.akhir && classes === "current" && (
+        {Date.now() <= e.dateInt.akhir && type === "current" && (
           <>
             <div className="font-medium mb-2">Berakhir dalam:</div>
             <Countdown
@@ -102,7 +124,7 @@ const Item = (props: { e: Seminar; classes: string }) => {
             />
           </>
         )}
-        {Date.now() <= e.dateInt.mulai && classes === "notyet" && (
+        {Date.now() <= e.dateInt.mulai && type === "notyet" && (
           <div>
             <div className="font-medium mb-2">Dimulai dalam:</div>
             <Countdown

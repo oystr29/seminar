@@ -12,23 +12,24 @@ body {
   }
 
   .notyet {
-    @apply border-purple-400 
+    @apply border-purple-400
   }
+
   .scheduled {
-    @apply border-yellow-400 
+    @apply border-yellow-400
   }
-  .scheduled > p {
+
+  .scheduled>p {
     @apply text-blue-500
   }
-  
+
   .items.current {
-    @apply border-none bg-gradient-to-tr p-1 from-green-500 to-sky-500 
+    @apply border-none bg-gradient-to-tr p-1 from-green-500 to-sky-500
   }
 
   .gradient {
     @apply rounded-lg bg-zinc-900 p-4
   }
-
 
   .passed {
     @apply border-gray-500 text-gray-400
