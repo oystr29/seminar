@@ -8,6 +8,7 @@ import {
   HiPresentationChartLine,
 } from "react-icons/hi";
 import { MdSchool } from "react-icons/md";
+import { trpc } from "~/utils/trpc";
 
 export async function getServerSideProps() {
   const base =
@@ -29,7 +30,7 @@ export async function getServerSideProps() {
 
 const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
-export default function Home(props) {
+export default function Home() {
   const [deferredPrompt, setDeferredPrompt] = useState(null);
   const [isInstall, setIsInstall] = useState(true);
 
@@ -53,7 +54,11 @@ export default function Home(props) {
     });
   }, []);
 
-  const { currents, scheduled, notyet, passed } = props;
+  const { data } = trpc.hello.seminar.useQuery();
+
+  if (!data) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div
@@ -66,7 +71,7 @@ export default function Home(props) {
         </h1>
         <button
           className={`${isInstall ? "hidden" : "block"} bg-gradient-to-r ${
-            currents.length !== 0
+            data.currents.length !== 0
               ? " from-indigo-500 via-pink-500 to-yellow-500 hover:from-indigo-600 hover:via-pink-600 hover:to-red-600 "
               : " from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600"
           } text-white  rounded-lg focus:outline-none px-5 py-2 font-semibold`}
@@ -75,32 +80,32 @@ export default function Home(props) {
           Install
         </button>
       </div>
-      {currents.length !== 0 &&
-        currents.map((e, i) => {
+      {data.currents.length !== 0 &&
+        data.currents.map((e, i) => {
           return <Item e={e} key={e.nim + i} classes="current" />;
         })}
-      {notyet.length !== 0 && (
+      {data.notyet.length !== 0 && (
         <div className="p-1 px-2 mb-2 rounded-xl mt-3 text-base border-2 text-purple-300 border-purple-800 w-max">
           Coming Soon!
         </div>
       )}
-      {notyet.map((e, i) => {
+      {data.notyet.map((e, i) => {
         return <Item e={e} key={e.nim + i} classes="notyet" />;
       })}
-      {scheduled.length !== 0 && (
+      {data.scheduled.length !== 0 && (
         <div className="p-1 px-2 mb-2 mt-3 rounded-xl text-base border-2 text-yellow-300 border-yellow-800 w-max">
           Belum Ada Jadwalnya
         </div>
       )}
-      {scheduled.map((e, i) => {
+      {data.scheduled.map((e, i) => {
         return <Item e={e} key={e.nim + i} classes="scheduled" />;
       })}
-      {passed.length !== 0 && (
+      {data.passed.length !== 0 && (
         <div className="p-1 px-2 mb-2 mt-3 rounded-xl text-base border-2 text-gray-300 border-gray-500 w-max">
           Udah Lewat
         </div>
       )}
-      {passed
+      {data.passed
         .map((e, i) => {
           return <Item e={e} key={e.nim + i} classes="passed" />;
         })

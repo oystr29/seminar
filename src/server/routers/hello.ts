@@ -1,6 +1,52 @@
-// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import { google } from "googleapis";
-import { NextApiRequest, NextApiResponse } from "next";
+import { z } from "zod";
+import { procedure, router } from "~/server/trpc";
+
+const seminarSchema = z.object({
+  no: z.string(),
+  nama: z.string(),
+  nim: z.string(),
+  judul: z.string(),
+  sempro: z.boolean(),
+  semhas: z.boolean(),
+  pendadaran: z.boolean(),
+  jadwal: z.object({
+    tanggal: z.string(),
+    jam: z.string(),
+    ruang: z.string(),
+  }),
+  date: z.object({
+    day: z.object({
+      hari: z.string(),
+      tanggal: z.string(),
+      bulan: z.string(),
+      bulanAsli: z.string(),
+      tahun: z.string(),
+    }),
+    time: z.object({
+      jamMulai: z.string(),
+      jamAkhir: z.string(),
+    }),
+  }),
+  dateInt: z.object({
+    mulai: z.number(),
+    akhir: z.number(),
+  }),
+});
+
+const dataSemSchema = z.object({
+  currents: z.array(seminarSchema),
+  scheduled: z.array(seminarSchema),
+  notyet: z.array(seminarSchema),
+  passed: z.array(seminarSchema),
+  sheetName: z.string().nullable(),
+});
+
+// Type
+type Seminar = z.infer<typeof seminarSchema>;
+type DateSem = z.infer<typeof dataSemSchema>;
+
+// Function
 function getMonth(month: string) {
   const bulan = [
     "Januari",
@@ -29,7 +75,18 @@ function getMonth(month: string) {
   return value;
 }
 
-function getDate(text: string) {
+function splitterr(jam: string) {
+  const a = jam.split(":");
+  const numberA = parseInt(a[0]);
+  if (numberA < 7) {
+    console.log(numberA);
+    const num = numberA + 12;
+    return `${num}:${a[1]}`;
+  }
+  return jam;
+}
+
+export function getDate(text: string) {
   const daysExp = /Senin|Selasa|Rabu|Kamis|Jum'at/gi;
   const monthsExp =
     /Januari|Februari|Maret|April|Mei|Juni|Juli|Agustus|September|Oktober|November|Desember/gi;
@@ -50,17 +107,6 @@ function getDate(text: string) {
   };
 }
 
-function splitterr(jam: string) {
-  const a = jam.split(":");
-  const numberA = parseInt(a[0]);
-  if (numberA < 7) {
-    console.log(numberA);
-    const num = numberA + 12;
-    return `${num}:${a[1]}`;
-  }
-  return jam;
-}
-
 function getTime(text: string) {
   const regex = /\d{1,}.\d{1,}-\d{1,}.\d{1,}/g;
 
@@ -73,46 +119,60 @@ function getTime(text: string) {
     jamAkhir: splitterr(`${splitter?.[1]}`),
   };
 }
-const getData = async () => {
-  const arrays = [];
-  const currents = [];
-  const notyet = [];
-  const passed = [];
-  const scheduled = [];
+const getData = async (sheet: string | null) => {
+  const arrays: Seminar[] = [];
+  const currents: Seminar[] = [];
+  const notyet: Seminar[] = [];
+  const passed: Seminar[] = [];
+  const scheduled: Seminar[] = [];
 
   // Auth
   const credentials = JSON.parse(
-    process.env.GOOGLE_APPLICATION_CREDENTIALS ?? ""
+    `${process.env.GOOGLE_APPLICATION_CREDENTIALS}`
   );
+  const cells = "!A6:I";
+  let sheetName = sheet;
   try {
     const auth = await google.auth.getClient({
       scopes: ["https://www.googleapis.com/auth/spreadsheets.readonly"],
       credentials: credentials,
     });
+    let range = "";
 
     const sheets = google.sheets({ version: "v4", auth });
 
-    const range = `JAN-MAR 23!A6:I`;
+    if (sheet === null) {
+      const resSheet = await sheets.spreadsheets.get({
+        spreadsheetId: process.env.SHEET_ID,
+      });
+
+      const lenSheets = resSheet.data.sheets?.length as number;
+      sheetName = `${resSheet.data.sheets?.[lenSheets - 1].properties?.title}`;
+      range = `${sheetName}${cells}`;
+    } else {
+      range = `${sheet}${cells}`;
+    }
 
     const response = await sheets.spreadsheets.values.get({
       spreadsheetId: process.env.SHEET_ID,
       range,
     });
+
     const res = await sheets.spreadsheets.get({
       spreadsheetId: process.env.SHEET_ID,
-      ranges: range,
+      ranges: [range],
       includeGridData: true,
       fields: "sheets(data(rowData(values(effectiveFormat.backgroundColor))))",
     });
 
-    const resData = res.data.sheets[0].data[0].rowData;
+    const resData = res.data.sheets?.[0].data?.[0].rowData;
 
     let index = 0;
     let currIndex = 0;
     const array = response.data.values;
 
-    array.forEach((e, i) => {
-      const property = {
+    array?.forEach((e, i) => {
+      const property: Seminar = {
         no: "",
         nama: "",
         nim: "",
@@ -149,18 +209,18 @@ const getData = async () => {
         property.nim = e[2];
         property.judul = e[3];
         property.sempro =
-          resData[i].values[4].effectiveFormat.backgroundColor.blue === 1 &&
-          resData[i].values[4].effectiveFormat.backgroundColor.blue
+          resData?.[i].values?.[4].effectiveFormat?.backgroundColor?.blue ===
+            1 && resData?.[i].values?.[4].effectiveFormat?.backgroundColor?.blue
             ? false
             : true;
         property.semhas =
-          resData[i].values[5].effectiveFormat.backgroundColor.blue === 1 &&
-          resData[i].values[4].effectiveFormat.backgroundColor.blue
+          resData?.[i].values?.[5].effectiveFormat?.backgroundColor?.blue ===
+            1 && resData?.[i].values?.[4].effectiveFormat?.backgroundColor?.blue
             ? false
             : true;
         property.pendadaran =
-          resData[i].values[6].effectiveFormat.backgroundColor.blue === 1 &&
-          resData[i].values[4].effectiveFormat.backgroundColor.blue
+          resData?.[i].values?.[6].effectiveFormat?.backgroundColor?.blue ===
+            1 && resData?.[i].values?.[4].effectiveFormat?.backgroundColor?.blue
             ? false
             : true;
         property.jadwal.tanggal = e[7];
@@ -168,7 +228,6 @@ const getData = async () => {
         arrays.push(property);
       } else if (index === 1) {
         if (e[7] !== undefined) {
-          // console.log(e[7]);
           arrays[currIndex].jadwal.jam = e[7];
           arrays[currIndex].date.time = getTime(e[7]);
 
@@ -177,14 +236,10 @@ const getData = async () => {
           const ar2 = arrays[currIndex].date;
 
           ar.dateInt.mulai = Date.parse(
-            new Date(
-              `${ar2.day.tahun}-${ar2.day.bulan}-${ar2.day.tanggal}T${ar2.time.jamMulai}:00+0800`
-            )
+            `${ar2.day.tahun}-${ar2.day.bulan}-${ar2.day.tanggal}T${ar2.time.jamMulai}:00+0800`
           );
           ar.dateInt.akhir = Date.parse(
-            new Date(
-              `${ar2.day.tahun}-${ar2.day.bulan}-${ar2.day.tanggal}T${ar2.time.jamAkhir}:00+0800`
-            )
+            `${ar2.day.tahun}-${ar2.day.bulan}-${ar2.day.tanggal}T${ar2.time.jamAkhir}:00+0800`
           );
         }
       } else if (index === 2) {
@@ -218,42 +273,44 @@ const getData = async () => {
         index++;
       }
     });
+    // const t = new Date();
 
-    // notyet.push(
-    //   {
-    //     no: '99',
-    //     nama: 'Oktavian',
-    //     nim: '1915016074',
-    //     judul: 'Makan',
-    //     sempro: true,
-    //     semhas: false,
-    //     pendadaran: false,
-    //     jadwal: {
-    //       tanggal: '',
-    //       jam: '',
-    //       ruang: ''
+    // notyet.push({
+    //   no: "99",
+    //   nama: "Oktavian",
+    //   nim: "1915016074",
+    //   judul: "Makan",
+    //   sempro: true,
+    //   semhas: false,
+    //   pendadaran: false,
+    //   jadwal: {
+    //     tanggal: "Hari/Tgl : Senin, 27 Februari 2023",
+    //     jam: "Pukul     : 10.00-12.00 wita",
+    //     ruang: "Ruang   : Gedung Lab Lantai 2 D211",
+    //   },
+    //   date: {
+    //     day: {
+    //       hari: "Senin",
+    //       tanggal: "27",
+    //       bulan: "02",
+    //       bulanAsli: "Februari",
+    //       tahun: "2023",
     //     },
-    //     date: {
-    //       day: {
-    //         hari: '',
-    //         tanggal: '',
-    //         bulan: '',
-    //         bulanAsli: '',
-    //         tahun: ''
-    //       },
-    //       time: {
-    //         jamMulai: '',
-    //         jamAkhir: ''
-    //       }
+    //     time: {
+    //       jamMulai: "10:00",
+    //       jamAkhir: "12:00",
     //     },
-    //     dateInt: {
-    //       mulai: Date.now() + 10,
-    //       akhir: Date.now() + 15,
-    //     },
-    //   }
-    // );
+    //   },
+    //   dateInt: {
+    //     mulai: t.setSeconds(t.getSeconds() + 10),
+    //     akhir: t.setSeconds(t.getSeconds() + 15),
+    //   },
+    // });
 
     notyet.sort((a, b) => {
+      return a.dateInt.mulai - b.dateInt.mulai;
+    });
+    passed.sort((a, b) => {
       return a.dateInt.mulai - b.dateInt.mulai;
     });
 
@@ -262,25 +319,25 @@ const getData = async () => {
       scheduled,
       notyet,
       passed,
+      sheetName,
     };
   } catch (error) {
+    console.log(error);
     return {
       currents,
       scheduled,
       notyet,
       passed,
+      sheetName,
     };
   }
 };
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
-  const { currents, scheduled, notyet, passed } = await getData();
-  res.status(200).json({
-    currents: currents,
-    scheduled: scheduled,
-    notyet: notyet,
-    passed: passed,
-  });
-}
+
+const helloRouter = router({
+  seminar: procedure.query<DateSem>(async () => {
+    const data = await getData("JAN-MAR 23");
+    return data;
+  }),
+});
+
+export default helloRouter;

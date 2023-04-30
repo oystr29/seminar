@@ -1,8 +1,10 @@
 import Head from "next/head";
+import type { AppProps } from "next/app";
 import "../styles/globals.css";
 import Script from "next/script";
+import { trpc } from "~/utils/trpc";
 
-function MyApp({ Component, pageProps }) {
+function MyApp({ Component, pageProps }: AppProps) {
   return (
     <>
       <Script
@@ -165,4 +167,4 @@ function MyApp({ Component, pageProps }) {
   );
 }
 
-export default MyApp;
+export default trpc.withTRPC(MyApp);
