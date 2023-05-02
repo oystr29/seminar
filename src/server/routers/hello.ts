@@ -86,7 +86,7 @@ function splitterr(jam: string) {
   return jam;
 }
 
-export function getDate(text: string) {
+function getDate(text: string) {
   const daysExp = /Senin|Selasa|Rabu|Kamis|Jum'at/gi;
   const monthsExp =
     /Januari|Februari|Maret|April|Mei|Juni|Juli|Agustus|September|Oktober|November|Desember/gi;
@@ -119,6 +119,15 @@ function getTime(text: string) {
     jamAkhir: splitterr(`${splitter?.[1]}`),
   };
 }
+
+const getDateTemp = (mulai: number, akhir: number) => {
+  const t = new Date();
+  return {
+    mulai: t.setSeconds(t.getSeconds() + mulai),
+    akhir: t.setSeconds(t.getSeconds() + akhir),
+  };
+};
+
 const getData = async (sheet: string | null) => {
   const arrays: Seminar[] = [];
   const currents: Seminar[] = [];
@@ -273,39 +282,38 @@ const getData = async (sheet: string | null) => {
         index++;
       }
     });
-    // const t = new Date();
 
-    // notyet.push({
-    //   no: "99",
-    //   nama: "Oktavian",
-    //   nim: "1915016074",
-    //   judul: "Makan",
-    //   sempro: true,
-    //   semhas: false,
-    //   pendadaran: false,
-    //   jadwal: {
-    //     tanggal: "Hari/Tgl : Senin, 27 Februari 2023",
-    //     jam: "Pukul     : 10.00-12.00 wita",
-    //     ruang: "Ruang   : Gedung Lab Lantai 2 D211",
-    //   },
-    //   date: {
-    //     day: {
-    //       hari: "Senin",
-    //       tanggal: "27",
-    //       bulan: "02",
-    //       bulanAsli: "Februari",
-    //       tahun: "2023",
-    //     },
-    //     time: {
-    //       jamMulai: "10:00",
-    //       jamAkhir: "12:00",
-    //     },
-    //   },
-    //   dateInt: {
-    //     mulai: t.setSeconds(t.getSeconds() + 10),
-    //     akhir: t.setSeconds(t.getSeconds() + 15),
-    //   },
-    // });
+    currents.push({
+      no: "99",
+      nama: "Oktavian",
+      nim: "1915016074",
+      judul: "Makan",
+      sempro: true,
+      semhas: false,
+      pendadaran: false,
+      jadwal: {
+        tanggal: "Hari/Tgl : Senin, 27 Februari 2023",
+        jam: "Pukul     : 10.00-12.00 wita",
+        ruang: "Ruang   : Gedung Lab Lantai 2 D211",
+      },
+      date: {
+        day: {
+          hari: "Senin",
+          tanggal: "27",
+          bulan: "02",
+          bulanAsli: "Februari",
+          tahun: "2023",
+        },
+        time: {
+          jamMulai: "10:00",
+          jamAkhir: "12:00",
+        },
+      },
+      dateInt: {
+        mulai: getDateTemp(-1, 15).mulai,
+        akhir: getDateTemp(-1, 15).akhir,
+      },
+    });
 
     notyet.sort((a, b) => {
       return a.dateInt.mulai - b.dateInt.mulai;

@@ -7,7 +7,9 @@ import {
   HiPresentationChartLine,
 } from "react-icons/hi";
 import { MdSchool } from "react-icons/md";
+import FlipClockCountdown from "~/components/FlipClockCountdown";
 import { Seminar } from "~/server/routers/hello";
+import { trpc } from "~/utils/trpc";
 
 const Time = ({ count, time }: { count: string; time: string }) => {
   if (count === "00" && time !== "Detik") return null;
@@ -40,6 +42,8 @@ const MyCountdown = ({ formatted }: CountdownRenderProps) => {
 type TypeSem = "current" | "notyet" | "scheduled" | "passed";
 
 const Item = (props: { e: Seminar; type: TypeSem }) => {
+  const utils = trpc.useContext();
+
   const getClasess = (t: TypeSem) => {
     let className = "";
     if (t === "current") {
@@ -58,7 +62,9 @@ const Item = (props: { e: Seminar; type: TypeSem }) => {
 
   return (
     <div
-      className={`mb-5 border-2 rounded-lg p-5 text-white ${getClasess(type)}`}
+      className={`mb-5 border-2 rounded-lg ${
+        type !== "current" && "p-5"
+      }  text-white ${getClasess(type)}`}
     >
       <div
         className={`${
@@ -117,20 +123,35 @@ const Item = (props: { e: Seminar; type: TypeSem }) => {
         {Date.now() <= e.dateInt.akhir && type === "current" && (
           <>
             <div className="font-medium mb-2">Berakhir dalam:</div>
-            <Countdown
-              renderer={MyCountdown}
-              date={e.dateInt.akhir}
-              className="font-semibold"
+            <FlipClockCountdown
+              showSeparators={false}
+              className="flip-clock"
+              labels={["Hari", "Jam", "Menit", "Detik"]}
+              onComplete={() => {
+                console.log("Refetch Done");
+                utils.hello.seminar.refetch();
+              }}
+              to={e.dateInt.akhir}
             />
           </>
         )}
         {Date.now() <= e.dateInt.mulai && type === "notyet" && (
           <div>
             <div className="font-medium mb-2">Dimulai dalam:</div>
-            <Countdown
+            {/* <Countdown
               renderer={MyCountdown}
               date={e.dateInt.mulai}
               className="font-semibold"
+            /> */}
+            <FlipClockCountdown
+              showSeparators={false}
+              className="flip-clock"
+              labels={["Hari", "Jam", "Menit", "Detik"]}
+              onComplete={() => {
+                console.log("Refetch");
+                utils.hello.seminar.refetch();
+              }}
+              to={e.dateInt.mulai}
             />
           </div>
         )}
