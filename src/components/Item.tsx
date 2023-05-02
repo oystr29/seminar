@@ -138,12 +138,8 @@ const Item = (props: { e: Seminar; type: TypeSem }) => {
         {Date.now() <= e.dateInt.mulai && type === "notyet" && (
           <div>
             <div className="font-medium mb-2">Dimulai dalam:</div>
-            {/* <Countdown
-              renderer={MyCountdown}
-              date={e.dateInt.mulai}
-              className="font-semibold"
-            /> */}
             <FlipClockCountdown
+              
               showSeparators={false}
               className="flip-clock"
               labels={["Hari", "Jam", "Menit", "Detik"]}

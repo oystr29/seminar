@@ -17,7 +17,7 @@ function FlipClockCountdown({
   onComplete = () => {},
   onTick = () => {},
   labels = ["Days", "Hours", "Minutes", "Seconds"],
-  renderMap = [true, true, true, true],
+  renderMap = [false, true, true, true],
   showLabels = true,
   showSeparators = true,
   to,
@@ -116,11 +116,23 @@ function FlipClockCountdown({
     return undefined;
   }, [digitBlockStyle]);
 
+  function ifHasDone(time: FlipClockCountdownUnitTimeFormatted) {
+    if (time.current[0] == "0" && time.current[1] == "0") {
+      return false;
+    }
+    return true;
+  }
+
   const sections = React.useMemo(() => {
     if (state === undefined) return undefined;
     const formatted = parseTimeDelta(state.timeDelta);
-    const _renderMap =
-      renderMap.length >= 4 ? renderMap.slice(0, 4) : [true, true, true, true];
+    const _renderMap = [
+      ifHasDone(formatted.days),
+      ifHasDone(formatted.hours),
+      ifHasDone(formatted.minutes),
+      true,
+    ];
+    // renderMap.length >= 4 ? renderMap.slice(0, 4) : [true, true, true, true];
     const _labels =
       labels.length >= 4
         ? labels.slice(0, 4)
