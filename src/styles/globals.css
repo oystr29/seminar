@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 body {
-  @apply bg-zinc-900 text-zinc-50
+  @apply bg-gray-950 text-zinc-50 scrollbar-thin scrollbar-track-gray-950 scrollbar-thumb-white
 }
 
 @layer components {

@@ -122,7 +122,6 @@ function FlipClockCountdown({
     }
     return true;
   }
-
   const sections = React.useMemo(() => {
     if (state === undefined) return undefined;
     const formatted = parseTimeDelta(state.timeDelta);
