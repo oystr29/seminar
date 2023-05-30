@@ -128,7 +128,6 @@ const Item = (props: { e: Seminar; type: TypeSem }) => {
               className="flip-clock"
               labels={["Hari", "Jam", "Menit", "Detik"]}
               onComplete={() => {
-                console.log("Refetch Done");
                 utils.hello.seminar.refetch();
               }}
               to={e.dateInt.akhir}
@@ -139,12 +138,10 @@ const Item = (props: { e: Seminar; type: TypeSem }) => {
           <div>
             <div className="font-medium mb-2">Dimulai dalam:</div>
             <FlipClockCountdown
-              
               showSeparators={false}
               className="flip-clock"
               labels={["Hari", "Jam", "Menit", "Detik"]}
               onComplete={() => {
-                console.log("Refetch");
                 utils.hello.seminar.refetch();
               }}
               to={e.dateInt.mulai}

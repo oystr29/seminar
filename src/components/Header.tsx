@@ -54,7 +54,7 @@ export default function Header() {
   }, []);
   return (
     <nav
-      className={`bg-gray-900 sticky ${
+      className={`bg-gray-900 z-50 sticky ${
         scrollDirection === "down" ? "-top-24" : "top-0"
       } transition-all duration-500`}
     >

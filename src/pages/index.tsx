@@ -1,15 +1,59 @@
 import { trpc } from "~/utils/trpc";
 import Item from "~/components/Item";
+import ErrorPage from "~/components/ErrorPage";
+import { Seminar } from "~/server/routers/hello";
+import { AiOutlineSearch } from "react-icons/ai";
+import { useState } from "react";
 
-export default function Home() {
-  const { data } = trpc.hello.seminar.useQuery();
+type DataSeminar = {
+  currents: Seminar[];
+  notyet: Seminar[];
+  scheduled: Seminar[];
+  passed: Seminar[];
+};
 
-  if (!data) {
-    return <div>Loading...</div>;
-  }
-
+const HomeClient = ({ dataSeminar }: { dataSeminar: DataSeminar }) => {
+  const [data, setData] = useState<DataSeminar>(dataSeminar);
   return (
     <>
+      <div className="w-full mb-5 flex justify-end">
+        <div className="relative">
+          <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+            <AiOutlineSearch className="h-5 w-5 text-gray-400" />
+          </div>
+          <input
+            type="search"
+            id="default-search"
+            className="block w-full p-4 pl-10 outline-none text-sm  border rounded-lg  bg-gray-900 border-gray-600 placeholder-gray-400 text-white focus:ring-purple-500 focus:border-purple-500"
+            placeholder="Cari Judul, Nama, atau NIM"
+            onChange={(e) => {
+              const { value } = e.currentTarget;
+              setData({
+                currents: dataSeminar.currents.filter((entry) =>
+                  Object.values(entry).some(
+                    (val) => typeof val === "string" && val.includes(value)
+                  )
+                ),
+                passed: dataSeminar.passed.filter((entry) =>
+                  Object.values(entry).some(
+                    (val) => typeof val === "string" && val.includes(value)
+                  )
+                ),
+                notyet: dataSeminar.notyet.filter((entry) =>
+                  Object.values(entry).some(
+                    (val) => typeof val === "string" && val.includes(value)
+                  )
+                ),
+                scheduled: dataSeminar.scheduled.filter((entry) =>
+                  Object.values(entry).some(
+                    (val) => typeof val === "string" && val.includes(value)
+                  )
+                ),
+              });
+            }}
+          />
+        </div>
+      </div>
       {data.currents.length !== 0 &&
         data.currents.map((e, i) => {
           return <Item e={e} key={e.nim + i} type="current" />;
@@ -40,24 +84,20 @@ export default function Home() {
           return <Item e={e} key={e.nim + i} type="passed" />;
         })
         .reverse()}
-      <div className="flex justify-center items-center py-5">
-        <a
-          href="https://s.id/JadwalSeminarSkripsi"
-          target="_blank"
-          rel="noreferrer"
-          className="mr-5 text-green-500 hover:underline font-bold cursor-pointer hover:text-green-300"
-        >
-          Source Data
-        </a>
-        <a
-          href="https://github.com/oktoala/seminar"
-          target="_blank"
-          rel="noreferrer"
-          className="text-fuchsia-500 hover:underline font-bold cursor-pointer hover:text-fuchsia-300"
-        >
-          Source Code
-        </a>
-      </div>
     </>
   );
+};
+
+export default function Home() {
+  const { data } = trpc.hello.seminar.useQuery(undefined, {
+    onError(err) {
+      console.log(err);
+    },
+  });
+
+  if (!data) {
+    return <ErrorPage />;
+  }
+
+  return <HomeClient dataSeminar={data} />;
 }

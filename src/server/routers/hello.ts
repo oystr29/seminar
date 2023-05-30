@@ -79,7 +79,6 @@ function splitterr(jam: string) {
   const a = jam.split(":");
   const numberA = parseInt(a[0]);
   if (numberA < 7) {
-    console.log(numberA);
     const num = numberA + 12;
     return `${num}:${a[1]}`;
   }
@@ -119,14 +118,6 @@ function getTime(text: string) {
     jamAkhir: splitterr(`${splitter?.[1]}`),
   };
 }
-
-const getDateTemp = (mulai: number, akhir: number) => {
-  const t = new Date();
-  return {
-    mulai: t.setSeconds(t.getSeconds() + mulai),
-    akhir: t.setSeconds(t.getSeconds() + akhir),
-  };
-};
 
 const getData = async (sheet: string | null) => {
   const arrays: Seminar[] = [];
@@ -212,6 +203,7 @@ const getData = async (sheet: string | null) => {
           akhir: 0,
         },
       };
+
       if (index === 0) {
         property.no = e[0];
         property.nama = e[1];
@@ -330,21 +322,18 @@ const getData = async (sheet: string | null) => {
       sheetName,
     };
   } catch (error) {
-    console.log(error);
-    return {
-      currents,
-      scheduled,
-      notyet,
-      passed,
-      sheetName,
-    };
+    throw error;
   }
 };
 
 const helloRouter = router({
   seminar: procedure.query<DateSem>(async () => {
-    const data = await getData("JAN-MAR 23");
-    return data;
+    try {
+      const data = await getData("JAN-MAR 23");
+      return data;
+    } catch (error) {
+      throw error;
+    }
   }),
 });
 
