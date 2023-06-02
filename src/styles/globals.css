@@ -2,6 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --shadow-color: #FF9E9E;
+  --shadow-color-light: white;
+}
+
 body {
   @apply bg-gray-950 text-zinc-50 scrollbar-thin scrollbar-track-gray-950 scrollbar-thumb-white
 }
@@ -35,3 +40,5 @@ body {
     @apply border-gray-500 text-gray-400
   }
 }
+
+

@@ -2,11 +2,14 @@ import ErrorPage from "~/components/ErrorPage";
 import { trpc } from "~/utils/trpc";
 
 const Page = () => {
-  const { data } = trpc.docs.pkl.useQuery();
+  const { data, isError } = trpc.docs.pkl.useQuery();
 
-  if (!data) {
+  if (isError) {
     return <ErrorPage />;
   }
+
+  if (!data) return null;
+
   return (
     <div>
       <div className="">
@@ -15,7 +18,7 @@ const Page = () => {
           {data.map(({ href, text }) => (
             <a
               key={href}
-              className="rounded-lg hover:scale-105 border transition bg-gray-950 border-purple-600 p-4 text-lg font-semibold"
+              className="rounded-lg hover:scale-105 border transition bg-gray-950 border-pink-600 p-4 text-lg font-semibold"
               href={href}
             >
               {text}

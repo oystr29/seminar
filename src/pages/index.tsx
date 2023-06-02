@@ -17,7 +17,11 @@ const HomeClient = ({ dataSeminar }: { dataSeminar: DataSeminar }) => {
           <input
             type="search"
             id="default-search"
-            className={`block w-full p-4 pl-10 outline-none text-sm  border rounded-lg  bg-gray-900 border-gray-600 placeholder-gray-400 text-white ${data.currents.length > 0 ? 'focus:ring-emerald-500 focus:border-emerald-500' : 'focus:ring-purple-500 focus:border-purple-500'}  `}
+            className={`block w-full p-4 pl-10 outline-none text-sm  border rounded-lg  bg-gray-900 border-gray-600 placeholder-gray-400 text-white ${
+              data.currents.length > 0
+                ? "focus:ring-emerald-500 focus:border-emerald-500"
+                : "focus:ring-purple-500 focus:border-purple-500"
+            }  `}
             placeholder="Cari Judul, Nama, atau NIM"
             onChange={(e) => {
               const { value } = e.currentTarget;
@@ -90,15 +94,16 @@ const HomeClient = ({ dataSeminar }: { dataSeminar: DataSeminar }) => {
 };
 
 export default function Home() {
-  const { data } = trpc.hello.seminar.useQuery(undefined, {
+  const { data, isError } = trpc.hello.seminar.useQuery(undefined, {
     onError(err) {
       console.log(err);
     },
   });
 
-  if (!data) {
+  if (isError) {
     return <ErrorPage />;
   }
+  if (!data) return null;
 
   return <HomeClient dataSeminar={data} />;
 }
