@@ -69,11 +69,12 @@ const Item = (props: { e: Seminar; type: TypeSem }) => {
       <div
         className={`${
           type === "current" ? "gradient rounded-lg bg-zinc-900 p-4" : null
-        }`}
+        }
+        ${type === "passed" && "text-gray-500"}`}
       >
-        <div className={`font-bold text-xl mb-2`}>{e.judul}</div>
+        <div className={`font-bold text-xl mb-2 `}>{e.judul}</div>
         <div className="">
-          <span className="uppercase font-semibold">{e.nama} </span>
+          <span className="font-semibold">{e.nama} </span>
           <span> - </span>
           <span className="font-semibold">{e.nim}</span>
         </div>

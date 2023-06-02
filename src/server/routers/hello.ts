@@ -39,12 +39,12 @@ const dataSemSchema = z.object({
   scheduled: z.array(seminarSchema),
   notyet: z.array(seminarSchema),
   passed: z.array(seminarSchema),
-  sheetName: z.string().nullable(),
+  sheetName: z.string().nullable().optional(),
 });
 
 // Type
 export type Seminar = z.infer<typeof seminarSchema>;
-type DateSem = z.infer<typeof dataSemSchema>;
+export type DataSeminar = z.infer<typeof dataSemSchema>;
 
 // Function
 function getMonth(month: string) {
@@ -327,7 +327,7 @@ const getData = async (sheet: string | null) => {
 };
 
 const helloRouter = router({
-  seminar: procedure.query<DateSem>(async () => {
+  seminar: procedure.query(async () => {
     try {
       const data = await getData("JAN-MAR 23");
       return data;

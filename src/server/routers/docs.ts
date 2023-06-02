@@ -1,5 +1,13 @@
 import { procedure, router } from "~/server/trpc";
 import * as cheerio from "cheerio";
+import { z } from "zod";
+
+const docsSchema = z.object({
+  text: z.string(),
+  href: z.string(),
+});
+
+export type Docs = z.infer<typeof docsSchema>;
 
 const docsRouter = router({
   pkl: procedure.query(async () => {
@@ -12,8 +20,17 @@ const docsRouter = router({
 
     const $ = cheerio.load(data);
 
-    console.log($('.post-item-description > a'))
+    const $aArray = $(".post-item-description a");
 
+    // console.log($aArray.prop("innerHTML"));
+    const docs: Docs[] = $aArray.get().map((el, i) => {
+      return {
+        text: `${$(el).prop("innerHTML")}`,
+        href: `${$(el).attr("href")}`,
+      };
+    });
+
+    return docs;
   }),
 });
 

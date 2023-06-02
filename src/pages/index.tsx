@@ -1,22 +1,15 @@
 import { trpc } from "~/utils/trpc";
 import Item from "~/components/Item";
 import ErrorPage from "~/components/ErrorPage";
-import { Seminar } from "~/server/routers/hello";
+import { Seminar, DataSeminar } from "~/server/routers/hello";
 import { AiOutlineSearch } from "react-icons/ai";
 import { useState } from "react";
-
-type DataSeminar = {
-  currents: Seminar[];
-  notyet: Seminar[];
-  scheduled: Seminar[];
-  passed: Seminar[];
-};
 
 const HomeClient = ({ dataSeminar }: { dataSeminar: DataSeminar }) => {
   const [data, setData] = useState<DataSeminar>(dataSeminar);
   return (
     <>
-      <div className="w-full mb-5 flex justify-end">
+      <div className="w-full mb-5 flex sm:justify-end">
         <div className="relative">
           <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
             <AiOutlineSearch className="h-5 w-5 text-gray-400" />
@@ -24,29 +17,37 @@ const HomeClient = ({ dataSeminar }: { dataSeminar: DataSeminar }) => {
           <input
             type="search"
             id="default-search"
-            className="block w-full p-4 pl-10 outline-none text-sm  border rounded-lg  bg-gray-900 border-gray-600 placeholder-gray-400 text-white focus:ring-purple-500 focus:border-purple-500"
+            className={`block w-full p-4 pl-10 outline-none text-sm  border rounded-lg  bg-gray-900 border-gray-600 placeholder-gray-400 text-white ${data.currents.length > 0 ? 'focus:ring-emerald-500 focus:border-emerald-500' : 'focus:ring-purple-500 focus:border-purple-500'}  `}
             placeholder="Cari Judul, Nama, atau NIM"
             onChange={(e) => {
               const { value } = e.currentTarget;
               setData({
                 currents: dataSeminar.currents.filter((entry) =>
                   Object.values(entry).some(
-                    (val) => typeof val === "string" && val.includes(value)
+                    (val) =>
+                      typeof val === "string" &&
+                      val.toLowerCase().includes(value.toLowerCase())
                   )
                 ),
                 passed: dataSeminar.passed.filter((entry) =>
                   Object.values(entry).some(
-                    (val) => typeof val === "string" && val.includes(value)
+                    (val) =>
+                      typeof val === "string" &&
+                      val.toLowerCase().includes(value.toLowerCase())
                   )
                 ),
                 notyet: dataSeminar.notyet.filter((entry) =>
                   Object.values(entry).some(
-                    (val) => typeof val === "string" && val.includes(value)
+                    (val) =>
+                      typeof val === "string" &&
+                      val.toLowerCase().includes(value.toLowerCase())
                   )
                 ),
                 scheduled: dataSeminar.scheduled.filter((entry) =>
                   Object.values(entry).some(
-                    (val) => typeof val === "string" && val.includes(value)
+                    (val) =>
+                      typeof val === "string" &&
+                      val.toLowerCase().includes(value.toLowerCase())
                   )
                 ),
               });
