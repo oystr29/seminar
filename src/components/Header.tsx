@@ -1,15 +1,10 @@
 import { useEffect, useState } from "react";
-import {
-  InstallDesktopIcon,
-  InstallMobileIcon,
-} from "~/components/InstallIcon";
-import { BiFolder, BiFolderOpen } from "react-icons/bi";
+
 import Logo from "~/components/Logo";
 import { useScrollDirection } from "~/utils/scroll";
 import { Tooltip } from "react-tooltip";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { AiFillFolder, AiFillFolderOpen } from "react-icons/ai";
 import Sheet from "react-modal-sheet";
 import { HiOutlineMenuAlt3 } from "react-icons/hi";
 
@@ -38,13 +33,9 @@ interface BeforeInstallPromptEvent extends Event {
   prompt(): Promise<void>;
 }
 export default function Header() {
-  const details = typeof window !== "undefined" ? navigator.userAgent : "";
-
   const router = useRouter();
 
   const [isOpen, setOpen] = useState(false);
-
-  const isMobileDevice = /android|iphone|kindle|ipad/i.test(details);
 
   const scrollDirection = useScrollDirection();
 
@@ -118,7 +109,6 @@ export default function Header() {
         <Sheet
           isOpen={isOpen}
           onClose={() => setOpen(false)}
-          // detent="content-height"
           snapPoints={[0.5]}
           initialSnap={0}
         >

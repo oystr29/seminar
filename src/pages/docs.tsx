@@ -10,6 +10,7 @@ const Page = () => {
 
   if (!data) return null;
 
+  
   return (
     <div>
       <div className="">

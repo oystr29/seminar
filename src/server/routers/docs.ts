@@ -12,7 +12,7 @@ export type Docs = z.infer<typeof docsSchema>;
 const docsRouter = router({
   pkl: procedure.query(async () => {
     const res = await fetch(
-      "http://informatika.ft.unmul.ac.id/index.php/pages/post/Panduan.PKL#",
+      "http://informatika.ft.unmul.ac.id/index.php/pages/post/Panduan.PKL",
       { method: "GET" }
     );
 
@@ -22,7 +22,6 @@ const docsRouter = router({
 
     const $aArray = $(".post-item-description a");
 
-    // console.log($aArray.prop("innerHTML"));
     const docs: Docs[] = $aArray.get().map((el, i) => {
       return {
         text: `${$(el).prop("innerHTML")}`,

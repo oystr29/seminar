@@ -104,6 +104,7 @@ export default function Home() {
     return <ErrorPage />;
   }
   if (!data) return null;
+  return <>Makan</>
 
-  return <HomeClient dataSeminar={data} />;
+  // return <HomeClient dataSeminar={data} />;
 }
