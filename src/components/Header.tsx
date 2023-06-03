@@ -2,11 +2,10 @@ import { useEffect, useState } from "react";
 
 import Logo from "~/components/Logo";
 import { useScrollDirection } from "~/utils/scroll";
-import { Tooltip } from "react-tooltip";
 import Link from "next/link";
-import { useRouter } from "next/router";
 import Sheet from "react-modal-sheet";
 import { HiOutlineMenuAlt3 } from "react-icons/hi";
+import { useRouter } from "next/router";
 
 interface BeforeInstallPromptEvent extends Event {
   /**
@@ -142,7 +141,6 @@ export default function Header() {
           <Sheet.Backdrop onTap={() => setOpen(false)} />
         </Sheet>
       </div>
-      <Tooltip id="my-tooltip" />
     </nav>
   );
 }

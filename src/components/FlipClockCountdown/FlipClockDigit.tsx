@@ -26,7 +26,7 @@ export default function FlipClockDigit(props: FlipClockDigitProps) {
   React.useEffect(() => {
     if (digit.current !== current) {
       if (digit.current === digit.next) {
-        setDigit({ ...digit, next });
+        setDigit((d) => ({ ...d, next }));
       }
       setFlipped(true);
     } else {
