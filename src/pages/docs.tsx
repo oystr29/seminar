@@ -21,6 +21,7 @@ const Page = () => {
               key={href}
               className="rounded-lg hover:scale-105 border transition bg-gray-950 border-pink-600 p-4 text-lg font-semibold"
               href={href}
+              target="_blank"
             >
               {text}
             </a>

@@ -42,6 +42,11 @@ const dataSemSchema = z.object({
   sheetName: z.string().nullable().optional(),
 });
 
+type GoldNIM = {
+  name: string;
+  nim: string;
+};
+
 // Type
 export type Seminar = z.infer<typeof seminarSchema>;
 export type DataSeminar = z.infer<typeof dataSemSchema>;
@@ -125,6 +130,12 @@ const getData = async (sheet: string | null) => {
   const notyet: Seminar[] = [];
   const passed: Seminar[] = [];
   const scheduled: Seminar[] = [];
+
+  // gold nim
+  const goldNim = JSON.parse(
+    `${process.env.NIM_GOLD ?? []}`
+  ) as GoldNIM[];
+  console.log(goldNim);
 
   // Auth
   const credentials = JSON.parse(
