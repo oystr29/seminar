@@ -1,3 +1,4 @@
+import Link from "next/link";
 import ErrorPage from "~/components/ErrorPage";
 import { trpc } from "~/utils/trpc";
 
@@ -16,15 +17,11 @@ const Page = () => {
         <h1 className="text-white font-bold text-xl mb-5">Dokumen PKL</h1>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
           {data.map(({ href, text }) => (
-            <a
-              key={href}
-              className="rounded-lg hover:scale-105 border transition bg-gray-950 border-pink-600 p-4 text-lg font-semibold"
-              href={href}
-              target="_blank"
-              rel="noreferrer"
-            >
-              {text}
-            </a>
+            <Link href={href} key={href}>
+              <a className="rounded-lg hover:scale-105 border transition bg-gray-950 border-pink-600 p-4 text-lg font-semibold">
+                {text}
+              </a>
+            </Link>
           ))}
         </div>
       </div>
