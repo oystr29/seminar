@@ -31,6 +31,48 @@ const docsRouter = router({
 
     return docs;
   }),
+  skripsi: procedure.query(async () => {
+    const res = await fetch(
+      "http://informatika.ft.unmul.ac.id/index.php/pages/post/Panduan.Skripsi",
+      { method: "GET" }
+    );
+
+    const data = await res.text();
+
+    const $ = cheerio.load(data);
+
+    const $aArray = $(".post-item-description a");
+
+    const docs: Docs[] = $aArray.get().map((el, i) => {
+      return {
+        text: `${$(el).prop("innerHTML")}`,
+        href: `${$(el).attr("href")}`,
+      };
+    });
+
+    return docs;
+  }),
+  keterangan: procedure.query(async () => {
+    const res = await fetch(
+      "http://informatika.ft.unmul.ac.id/index.php/pages/post/Surat.Keterangan",
+      { method: "GET" }
+    );
+
+    const data = await res.text();
+
+    const $ = cheerio.load(data);
+
+    const $aArray = $(".post-item-description a");
+
+    const docs: Docs[] = $aArray.get().map((el, i) => {
+      return {
+        text: `${$(el).prop("innerHTML")}`,
+        href: `${$(el).attr("href")}`,
+      };
+    });
+
+    return docs;
+  }),
 });
 
 export default docsRouter;
