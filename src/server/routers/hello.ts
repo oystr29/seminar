@@ -132,10 +132,10 @@ const getData = async (sheet: string | null) => {
   const scheduled: Seminar[] = [];
 
   // gold nim
-  const goldNim = JSON.parse(
-    `${process.env.NIM_GOLD ?? []}`
-  ) as GoldNIM[];
-  console.log(goldNim);
+  // const goldNim = JSON.parse(
+  //   `${process.env.NIM_GOLD ?? []}`
+  // ) as GoldNIM[];
+  // console.log(goldNim);
 
   // Auth
   const credentials = JSON.parse(
