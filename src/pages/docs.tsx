@@ -10,7 +10,6 @@ const Page = () => {
 
   if (!data) return null;
 
-  
   return (
     <div>
       <div className="">
@@ -22,6 +21,7 @@ const Page = () => {
               className="rounded-lg hover:scale-105 border transition bg-gray-950 border-pink-600 p-4 text-lg font-semibold"
               href={href}
               target="_blank"
+              rel="noreferrer"
             >
               {text}
             </a>
