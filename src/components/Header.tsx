@@ -1,66 +1,20 @@
-import { useEffect, useState } from "react";
-
 import Logo from "~/components/Logo";
 import { useScrollDirection } from "~/utils/scroll";
 import Link from "next/link";
-import Sheet from "react-modal-sheet";
 import { HiOutlineMenuAlt3 } from "react-icons/hi";
 import { useRouter } from "next/router";
 
-interface BeforeInstallPromptEvent extends Event {
-  /**
-   *
-   * Returns an array of DOMString items containing the platforms on which the event was dispatched.
-   * This is provided for user agents that want to present a choice of versions to the user such as,
-   * for example, "web" or "play" which would allow the user to chose between a web version or
-   * an Android version.
-   */
-  readonly platforms: Array<string>;
+type HeaderProps = {
+  isInstall: boolean;
+  listenUserAction: () => void;
+  setOpenSheet: React.Dispatch<React.SetStateAction<boolean>>;
+};
 
-  /**
-   * Returns a Promise that resolves to a DOMString containing either "accepted" or "dismissed".
-   */
-  readonly userChoice: Promise<{
-    outcome: "accepted" | "dismissed";
-    platform: string;
-  }>;
-
-  /**
-   * Allows a developer to show the install prompt at a time of their own choosing.
-   * This method returns a Promise.
-   */
-  prompt(): Promise<void>;
-}
-export default function Header() {
+export default function Header({ isInstall, listenUserAction, setOpenSheet }: HeaderProps) {
   const router = useRouter();
-
-  const [isOpen, setOpen] = useState(false);
 
   const scrollDirection = useScrollDirection();
 
-  const [deferredPrompt, setDeferredPrompt] =
-    useState<BeforeInstallPromptEvent | null>(null);
-  const [isInstall, setIsInstall] = useState(true);
-
-  function listenUserAction() {
-    setIsInstall(true);
-    deferredPrompt?.prompt();
-    // Wait for the user to respond to the prompt
-    deferredPrompt?.userChoice.then((choiceResult) => {
-      setDeferredPrompt(null);
-    });
-  }
-
-  useEffect(() => {
-    window.addEventListener("beforeinstallprompt", (e) => {
-      // Prevent Chrome 67 and earlier from automatically showing the prompt
-      e.preventDefault();
-      // Stash the event so it can be triggered later.
-      setDeferredPrompt(e as BeforeInstallPromptEvent);
-      // Update UI to notify the user they can add to home screen
-      setIsInstall(false);
-    });
-  }, []);
   return (
     <nav
       className={`bg-gray-900 z-50 sticky ${
@@ -78,7 +32,7 @@ export default function Header() {
         </Link>
         <div className="items-center hidden sm:flex">
           <div className={`pr-4 ${!isInstall && "border-r border-r-gray-500"}`}>
-            <Link href="docs">
+            <Link href="docs" >
               <a
                 className={`${
                   router.pathname === "/docs"
@@ -103,43 +57,8 @@ export default function Header() {
         </div>
         <HiOutlineMenuAlt3
           className="h-8 w-8 sm:hidden block"
-          onClick={() => setOpen(true)}
+          onClick={() => setOpenSheet(true)}
         />
-        <Sheet
-          isOpen={isOpen}
-          onClose={() => setOpen(false)}
-          snapPoints={[0.5]}
-          initialSnap={0}
-        >
-          <Sheet.Container>
-            <Sheet.Header className="bg-gray-800" />
-            <Sheet.Content className="bg-gray-800">
-              <div className="w-full py-5 px-3">
-                <div
-                  className={`pb-4 ${
-                    !isInstall && "border-b border-b-gray-400"
-                  }  mb-4`}
-                >
-                  <Link href="docs">
-                    <button className="rounded-lg bg-gray-950 w-full py-1 px-2 text-left ">
-                      Berkas
-                    </button>
-                  </Link>
-                </div>
-                <button
-                  onClick={listenUserAction}
-                  className={`${
-                    isInstall ? "hidden" : "block"
-                  } rounded-lg w-full py-1 px-2 text-left mb-2 bg-gradient-to-r from-indigo-500 via-pink-500 to-yellow-500 hover:from-indigo-600 hover:via-pink-600 hover:to-red-600 text-white focus:outline-none font-semibold`}
-                >
-                  Install
-                </button>
-              </div>
-            </Sheet.Content>
-          </Sheet.Container>
-
-          <Sheet.Backdrop onTap={() => setOpen(false)} />
-        </Sheet>
       </div>
     </nav>
   );

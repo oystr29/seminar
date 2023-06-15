@@ -21,8 +21,8 @@ const Page = () => {
       <section className="mb-10">
         <h1 className="text-white font-bold text-xl mb-5">Dokumen PKL</h1>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
-          {pklData.map(({ href, text }) => (
-            <Link href={href} key={href}>
+          {pklData.map(({ href, text }, i) => (
+            <Link href={href} key={`${href}-${i}`}>
               <a className="rounded-lg hover:scale-105 border transition bg-gray-950 border-pink-600 p-4 text-lg font-semibold">
                 {text}
               </a>
@@ -33,9 +33,9 @@ const Page = () => {
       <section className="mb-10">
         <h1 className="text-white font-bold text-xl mb-5">Dokumen Skripsi</h1>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
-          {skirpsiData.map(({ href, text }) => (
-            <Link href={href} key={href}>
-              <a className="rounded-lg hover:scale-105 border transition bg-gray-950 border-pink-600 p-4 text-lg font-semibold">
+          {skirpsiData.map(({ href, text }, i) => (
+            <Link href={href} key={`${href}-${i}`}>
+              <a className="rounded-lg hover:scale-105 border transition bg-gray-950 border-lime-600 p-4 text-lg font-semibold">
                 {text}
               </a>
             </Link>
@@ -45,9 +45,9 @@ const Page = () => {
       <section className="mb-10">
         <h1 className="text-white font-bold text-xl mb-5">Surat Keterangan</h1>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
-          {suratData.map(({ href, text }) => (
-            <Link href={href} key={href}>
-              <a className="rounded-lg hover:scale-105 border transition bg-gray-950 border-pink-600 p-4 text-lg font-semibold">
+          {suratData.map(({ href, text }, i) => (
+            <Link href={href} key={`${href}-${i}`}>
+              <a className="rounded-lg hover:scale-105 border transition bg-gray-950 border-indigo-600 p-4 text-lg font-semibold">
                 {text}
               </a>
             </Link>
