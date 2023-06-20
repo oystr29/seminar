@@ -25,7 +25,7 @@ const docsRouter = router({
     const docs: Docs[] = $aArray.get().map((el, i) => {
       return {
         text: `${$(el).prop("innerHTML")}`,
-        href: `${$(el).attr("href")}`,
+        href: `${$(el).attr("href")?.replace("\t", "")}`,
       };
     });
 
@@ -46,7 +46,7 @@ const docsRouter = router({
     const docs: Docs[] = $aArray.get().map((el, i) => {
       return {
         text: `${$(el).prop("innerHTML")}`,
-        href: `${$(el).attr("href")}`,
+        href: `${$(el).attr("href")?.replace("\t", "")}`,
       };
     });
 
@@ -67,7 +67,7 @@ const docsRouter = router({
     const docs: Docs[] = $aArray.get().map((el, i) => {
       return {
         text: `${$(el).prop("innerHTML")}`,
-        href: `${$(el).attr("href")}`,
+        href: `${$(el).attr("href")?.replace("\t", "")}`,
       };
     });
 

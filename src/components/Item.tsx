@@ -15,10 +15,10 @@ const Time = ({ count, time }: { count: string; time: string }) => {
   if (count === "00" && time !== "Detik") return null;
 
   return (
-    <div className="flex flex-col items-center justify-center mr-2">
+    <div className="flex flex-col justify-center items-center mr-2">
       <div
         suppressHydrationWarning={true}
-        className="mb-1 rounded-lg p-1 w-7 text-sm text-center bg-black text-zinc-50"
+        className="p-1 mb-1 w-7 text-sm text-center bg-black rounded-lg text-zinc-50"
       >
         {count}
       </div>
@@ -35,13 +35,13 @@ const Item = (props: { e: Seminar; type: TypeSem }) => {
   const getClasess = (t: TypeSem) => {
     let className = "";
     if (t === "current") {
-      className = "border-none bg-gradient-to-tr p-1 from-green-500 to-sky-500";
+      className = "p-1 bg-gradient-to-tr from-green-500 border-none to-sky-500";
     } else if (t === "scheduled") {
       className = "border-yellow-400";
     } else if (t === "notyet") {
-      className = "border-purple-400 ";
+      className = "border-purple-400";
     } else if (t === "passed") {
-      className = "border-gray-500 text-gray-400";
+      className = "text-gray-400 border-gray-500";
     }
     return className;
   };
@@ -50,15 +50,12 @@ const Item = (props: { e: Seminar; type: TypeSem }) => {
 
   return (
     <div
-      className={`mb-5 border-2 rounded-lg ${
-        type !== "current" && "p-5"
-      }  text-white ${getClasess(type)}`}
+      className={`mb-5 border-2 rounded-lg ${type !== "current" && "p-5"
+        }  text-white ${getClasess(type)}`}
     >
       <div
-        className={`${
-          type === "current" ? "gradient rounded-lg bg-zinc-900 p-4" : null
-        }
-        ${type === "passed" && "text-gray-500"}`}
+        className={`${type === "current" ? "gradient rounded-lg bg-zinc-900 p-4" : ""
+          }${type === "passed" ? "text-gray-500" : ""}`}
       >
         <div className={`font-bold text-xl mb-2 `}>{e.judul}</div>
         <div className="">
@@ -68,8 +65,8 @@ const Item = (props: { e: Seminar; type: TypeSem }) => {
         </div>
         <div className="mb-5">
           {e.date.day.hari !== "" && (
-            <div className="flex items-center flex-row my-1">
-              <HiOutlineCalendar className=" mr-2" />
+            <div className="flex flex-row items-center my-1">
+              <HiOutlineCalendar className="mr-2" />
               <span>
                 {e.date.day.hari}, {e.date.day.tanggal} - {e.date.day.bulanAsli}{" "}
                 - {e.date.day.tahun}
@@ -85,7 +82,7 @@ const Item = (props: { e: Seminar; type: TypeSem }) => {
             </div>
           )}
           {e.jadwal.ruang !== "" && (
-            <div className="flex flex-row items-center ">
+            <div className="flex flex-row items-center">
               <HiOutlineLocationMarker className="mr-2" />
               <span>{e.jadwal.ruang}</span>
             </div>
@@ -111,7 +108,7 @@ const Item = (props: { e: Seminar; type: TypeSem }) => {
         </div>
         {Date.now() <= e.dateInt.akhir && type === "current" && (
           <>
-            <div className="font-medium mb-2">Berakhir dalam:</div>
+            <div className="mb-2 font-medium">Berakhir dalam:</div>
             <FlipClockCountdown
               showSeparators={false}
               className="flip-clock"
@@ -125,7 +122,7 @@ const Item = (props: { e: Seminar; type: TypeSem }) => {
         )}
         {Date.now() <= e.dateInt.mulai && type === "notyet" && (
           <div>
-            <div className="font-medium mb-2">Dimulai dalam:</div>
+            <div className="mb-2 font-medium">Dimulai dalam:</div>
             <FlipClockCountdown
               showSeparators={false}
               className="flip-clock"

@@ -59,6 +59,9 @@ dependencies:
   react-icons:
     specifier: ^4.4.0
     version: 4.4.0(react@18.2.0)
+  react-loading-skeleton:
+    specifier: ^3.3.1
+    version: 3.3.1(react@18.2.0)
   react-modal-sheet:
     specifier: ^1.10.2
     version: 1.10.2(framer-motion@10.12.16)(react@18.2.0)
@@ -5171,6 +5174,14 @@ packages:
 
   /react-is@16.13.1:
     resolution: {integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==}
+
+  /react-loading-skeleton@3.3.1(react@18.2.0):
+    resolution: {integrity: sha512-NilqqwMh2v9omN7LteiDloEVpFyMIa0VGqF+ukqp0ncVlYu1sKYbYGX9JEl+GtOT9TKsh04zCHAbavnQ2USldA==}
+    peerDependencies:
+      react: '>=16.8.0'
+    dependencies:
+      react: 18.2.0
+    dev: false
 
   /react-modal-sheet@1.10.2(framer-motion@10.12.16)(react@18.2.0):
     resolution: {integrity: sha512-KHPeLcdCHvKtypoIL++ashm5BnoDdoALu3qEWe/zFUWqITJyE8bKnQYzfCfbwddUT2OWBFCmxhThJD4QREL2fA==}

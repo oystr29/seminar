@@ -1,9 +1,10 @@
 import Head from "next/head";
 import type { AppProps } from "next/app";
-import "../styles/globals.css";
 import Script from "next/script";
 import { trpc } from "~/utils/trpc";
 import Layout from "~/pages/_layout";
+import "../styles/globals.css";
+import "react-loading-skeleton/dist/skeleton.css";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
