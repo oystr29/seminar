@@ -35,8 +35,11 @@ const Page = () => {
               </div>
             ))
             : pklData.map(({ href, text }, i) => (
-              <Link href={href} key={`${href}-${i}`}>
-                <a className="p-4 text-lg font-semibold rounded-lg border border-pink-600 transition hover:scale-105 bg-gray-950">
+              <Link target="_blank" href={href} key={`${href}-${i}`}>
+                <a
+                  target="_blank"
+                  className="p-4 text-lg font-semibold rounded-lg border border-pink-600 transition hover:scale-105 bg-gray-950"
+                >
                   {text}
                 </a>
               </Link>
