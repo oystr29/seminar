@@ -5,10 +5,10 @@
   --fcc-digit-font-size: 12px;
   --fcc-label-font-size: 12px;
   --fcc-label-color: #ffffff;
-  --fcc-background: #000;
+  --fcc-background: #000000;
   --fcc-digit-color: #ffffff;
   --fcc-divider-color: #ffffff00;
-  --fcc-divider-height: .5px;
+  --fcc-divider-height: 0.5px;
   --fcc-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.1);
   --fcc-separator-size: 0px;
   --fcc-separator-color: var(--fcc-digit-color);

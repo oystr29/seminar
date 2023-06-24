@@ -59,8 +59,12 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   }, []);
   return (
     <>
-      <Header isInstall={isInstall} listenUserAction={listenUserAction} setOpenSheet={setOpenSheet} />
-      <main className="container px-4 sm:px-0 sm:mx-auto mt-10 min-h-screen h-full">
+      <Header
+        isInstall={isInstall}
+        listenUserAction={listenUserAction}
+        setOpenSheet={setOpenSheet}
+      />
+      <main className="container px-4 mt-10 h-full min-h-screen sm:px-0 sm:mx-auto">
         {children}
       </main>
       <Sheet
@@ -72,37 +76,40 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <Sheet.Container>
           <Sheet.Header className="bg-gray-800" />
           <Sheet.Content className="bg-gray-800">
-            <div className="w-full py-5 px-3">
+            <div className="py-5 px-3 w-full">
               <div
-                className={`pb-4 ${
-                  !isInstall && "border-b border-b-gray-400"
-                }  mb-4`}
+                className={`pb-4 ${!isInstall && "border-b border-b-gray-400"
+                  }  mb-4`}
               >
-                  <button onClick={() => {
-                    router.push('/');
+                <button
+                  onClick={() => {
+                    router.push("/");
                     setOpenSheet(false);
-                  }} className="rounded-lg bg-gray-950 w-full mb-3 py-1 px-2 text-left ">
-                    Home
-                  </button>
-                  <button onClick={() => {
-                    router.push('docs');
+                  }}
+                  className="py-1 px-2 mb-3 w-full text-left rounded-lg bg-gray-950"
+                >
+                  Home
+                </button>
+                <button
+                  onClick={() => {
+                    router.push("docs");
                     setOpenSheet(false);
-                  }} className="rounded-lg bg-gray-950 w-full py-1 px-2 text-left ">
-                    Berkas
-                  </button>
+                  }}
+                  className="py-1 px-2 w-full text-left rounded-lg bg-gray-950"
+                >
+                  Berkas
+                </button>
               </div>
               <button
                 onClick={listenUserAction}
-                className={`${
-                  isInstall ? "hidden" : "block"
-                } rounded-lg w-full py-1 px-2 text-left mb-2 bg-gradient-to-r from-indigo-500 via-pink-500 to-yellow-500 hover:from-indigo-600 hover:via-pink-600 hover:to-red-600 text-white focus:outline-none font-semibold`}
+                className={`${isInstall ? "hidden" : "block"
+                  } rounded-lg w-full py-1 px-2 text-left mb-2 bg-gradient-to-r from-indigo-500 via-pink-500 to-yellow-500 hover:from-indigo-600 hover:via-pink-600 hover:to-red-600 text-white focus:outline-none font-semibold`}
               >
                 Install
               </button>
             </div>
           </Sheet.Content>
         </Sheet.Container>
-
         <Sheet.Backdrop onTap={() => setOpenSheet(false)} />
       </Sheet>
       <Footer />

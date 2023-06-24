@@ -6,7 +6,10 @@ import { AiOutlineSearch } from "react-icons/ai";
 import { InputHTMLAttributes, useState } from "react";
 import ItemLoading from "~/components/ItemLoading";
 
-const InputSearch = (props: InputHTMLAttributes<HTMLInputElement>) => {
+const InputSearch = (
+  props: InputHTMLAttributes<HTMLInputElement> & { data?: DataSeminar }
+) => {
+  const hasCurrent = props.data ? props.data.currents.length > 0 : false;
   return (
     <div className="relative">
       <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
@@ -16,7 +19,8 @@ const InputSearch = (props: InputHTMLAttributes<HTMLInputElement>) => {
         {...props}
         type="search"
         id="default-search"
-        className={`block w-full p-4 pl-10 outline-none text-sm  border rounded-lg  bg-gray-900 border-gray-600 placeholder-gray-400 text-white`}
+        className={`block w-full p-4 pl-10 ${hasCurrent ? "focus:border-emerald-500" : "focus:border-purple-500"
+          } outline-none text-sm  border rounded-lg  bg-gray-900 border-gray-600 placeholder-gray-400 text-white`}
         placeholder="Cari Judul, Nama, atau NIM"
       />
     </div>
@@ -48,6 +52,7 @@ const HomeClient = ({ dataSeminar }: { dataSeminar: DataSeminar }) => {
     <>
       <div className="flex mb-5 w-full sm:justify-end">
         <InputSearch
+          data={dataSeminar}
           onChange={(e) => {
             const { value } = e.currentTarget;
             setData({
@@ -124,7 +129,6 @@ export default function Home() {
     },
   });
 
-  // if (!data) return null;
   if (!data) return <HomeClientLoading />;
   if (isError) {
     return <ErrorPage />;
