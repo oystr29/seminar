@@ -42,11 +42,6 @@ const dataSemSchema = z.object({
   sheetName: z.string().nullable().optional(),
 });
 
-type GoldNIM = {
-  name: string;
-  nim: string;
-};
-
 // Type
 export type Seminar = z.infer<typeof seminarSchema>;
 export type DataSeminar = z.infer<typeof dataSemSchema>;
