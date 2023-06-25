@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/restrict-template-expressions */
 import { httpBatchLink } from "@trpc/client";
 import { createTRPCNext } from "@trpc/next";
 import type { AppRouter } from "../server/root";
@@ -20,7 +21,7 @@ function getBaseUrl() {
 }
 
 export const trpc = createTRPCNext<AppRouter>({
-  config(opts) {
+  config() {
     return {
       links: [
         httpBatchLink({
@@ -31,11 +32,7 @@ export const trpc = createTRPCNext<AppRouter>({
           url: `${getBaseUrl()}/api/trpc`,
 
           // You can pass any HTTP headers you wish here
-          async headers() {
-            return {
-              // authorization: getAuthCookie(),
-            };
-          },
+          
         }),
       ],
     };

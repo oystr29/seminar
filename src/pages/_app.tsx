@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/restrict-template-expressions */
 import Head from "next/head";
 import type { AppProps } from "next/app";
 import Script from "next/script";
