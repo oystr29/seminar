@@ -26,15 +26,19 @@ const Footer = () => {
       {/* </div> */}
       <div className="flex items-center">
         <p className="mr-3 text-sm text-gray-300">Made with</p>
-        <Link href="https://nextjs.org/">
+        <a target="_blank" rel="noopener noreferrer" href="https://nextjs.org/">
           <NextJSIcon className="mr-3 h-3 fill-white" />
-        </Link>
-        <Link href="https://tailwindcss.com/">
+        </a>
+        <a
+          target="_blank"
+          rel="noopener noreferrer"
+          href="https://tailwindcss.com/"
+        >
           <TailwindCSSIcon className="mr-3 h-6" />
-        </Link>
-        <Link href="https://trpc.io/">
+        </a>
+        <a target="_blank" rel="noopener noreferrer" href="https://trpc.io/">
           <TrpcIcon className="h-6" />
-        </Link>
+        </a>
       </div>
     </footer>
   );

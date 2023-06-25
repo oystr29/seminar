@@ -32,7 +32,9 @@ export default function Header({
           </span>
         </Link>
         <div className="hidden items-center sm:flex">
-          <div className={`pr-4 ${!isInstall && "border-r border-r-gray-500"}`}>
+          <div
+            className={`pr-4 ${!isInstall ? "border-r border-r-gray-500" : ""}`}
+          >
             <Link
               href="docs"
               className={`${router.pathname === "/docs"

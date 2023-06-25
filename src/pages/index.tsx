@@ -1,9 +1,9 @@
 import { trpc } from "~/utils/trpc";
 import Item from "~/components/Item";
 import ErrorPage from "~/components/ErrorPage";
-import { DataSeminar } from "~/server/routers/hello";
+import { type DataSeminar } from "~/server/routers/hello";
 import { AiOutlineSearch } from "react-icons/ai";
-import { InputHTMLAttributes, useState } from "react";
+import { type InputHTMLAttributes, useState } from "react";
 import ItemLoading from "~/components/ItemLoading";
 
 const InputSearch = (
@@ -90,7 +90,7 @@ const HomeClient = ({ dataSeminar }: { dataSeminar: DataSeminar }) => {
       </div>
       {data.currents.length !== 0 &&
         data.currents.map((e, i) => {
-          return <Item e={e} key={e.nim + i} type="current" />;
+          return <Item e={e} key={`${e.nim}${i}`} type="current" />;
         })}
       {data.notyet.length !== 0 && (
         <div className="p-1 px-2 mt-3 mb-2 w-max text-base text-purple-300 rounded-xl border-2 border-purple-800">
@@ -98,7 +98,7 @@ const HomeClient = ({ dataSeminar }: { dataSeminar: DataSeminar }) => {
         </div>
       )}
       {data.notyet.map((e, i) => {
-        return <Item e={e} key={e.nim + i} type="notyet" />;
+        return <Item e={e} key={`${e.nim}${i}`} type="notyet" />;
       })}
       {data.scheduled.length !== 0 && (
         <div className="p-1 px-2 mt-3 mb-2 w-max text-base text-yellow-300 rounded-xl border-2 border-yellow-800">
@@ -106,7 +106,7 @@ const HomeClient = ({ dataSeminar }: { dataSeminar: DataSeminar }) => {
         </div>
       )}
       {data.scheduled.map((e, i) => {
-        return <Item e={e} key={e.nim + i} type="scheduled" />;
+        return <Item e={e} key={`${e.nim}${i}`} type="scheduled" />;
       })}
       {data.passed.length !== 0 && (
         <div className="p-1 px-2 mt-3 mb-2 w-max text-base text-gray-300 rounded-xl border-2 border-gray-500">
@@ -115,7 +115,7 @@ const HomeClient = ({ dataSeminar }: { dataSeminar: DataSeminar }) => {
       )}
       {data.passed
         .map((e, i) => {
-          return <Item e={e} key={e.nim + i} type="passed" />;
+          return <Item e={e} key={`${e.nim}${i}`} type="passed" />;
         })
         .reverse()}
     </>

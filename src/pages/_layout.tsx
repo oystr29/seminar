@@ -1,32 +1,18 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import type React from "react";
 import Footer from "~/components/Footer";
 import Header from "~/components/Header";
 import Sheet from "react-modal-sheet";
-import Link from "next/link";
 import { useRouter } from "next/router";
+import ScrollToBottomBtn from "~/components/ScrollToBottomBtn";
+import ScrollToTopBtn from "~/components/ScrollToTopBtn";
 
 interface BeforeInstallPromptEvent extends Event {
-  /**
-   *
-   * Returns an array of DOMString items containing the platforms on which the event was dispatched.
-   * This is provided for user agents that want to present a choice of versions to the user such as,
-   * for example, "web" or "play" which would allow the user to chose between a web version or
-   * an Android version.
-   */
   readonly platforms: Array<string>;
-
-  /**
-   * Returns a Promise that resolves to a DOMString containing either "accepted" or "dismissed".
-   */
   readonly userChoice: Promise<{
     outcome: "accepted" | "dismissed";
     platform: string;
   }>;
-
-  /**
-   * Allows a developer to show the install prompt at a time of their own choosing.
-   * This method returns a Promise.
-   */
   prompt(): Promise<void>;
 }
 
@@ -38,11 +24,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     useState<BeforeInstallPromptEvent | null>(null);
   const [isInstall, setIsInstall] = useState(true);
 
-  function listenUserAction() {
+  async function listenUserAction() {
     setIsInstall(true);
-    deferredPrompt?.prompt();
+    await deferredPrompt?.prompt();
     // Wait for the user to respond to the prompt
-    deferredPrompt?.userChoice.then((choiceResult) => {
+    await deferredPrompt?.userChoice.then(() => {
       setDeferredPrompt(null);
     });
   }
@@ -57,6 +43,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       setIsInstall(false);
     });
   }, []);
+
   return (
     <>
       <Header
@@ -65,6 +52,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         setOpenSheet={setOpenSheet}
       />
       <main className="container px-4 mt-10 h-full min-h-screen sm:px-0 sm:mx-auto">
+        <div className="flex fixed right-5 bottom-5 flex-col gap-2 justify-center items-center">
+          <ScrollToTopBtn />
+          <ScrollToBottomBtn />
+        </div>
         {children}
       </main>
       <Sheet
@@ -78,12 +69,12 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           <Sheet.Content className="bg-gray-800">
             <div className="py-5 px-3 w-full">
               <div
-                className={`pb-4 ${!isInstall && "border-b border-b-gray-400"
+                className={`pb-4 ${!isInstall ? "border-b border-b-gray-400" : ""
                   }  mb-4`}
               >
                 <button
-                  onClick={() => {
-                    router.push("/");
+                  onClick={async () => {
+                    await router.push("/");
                     setOpenSheet(false);
                   }}
                   className="py-1 px-2 mb-3 w-full text-left rounded-lg bg-gray-950"
@@ -91,8 +82,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                   Home
                 </button>
                 <button
-                  onClick={() => {
-                    router.push("docs");
+                  onClick={async () => {
+                    await router.push("docs");
                     setOpenSheet(false);
                   }}
                   className="py-1 px-2 w-full text-left rounded-lg bg-gray-950"

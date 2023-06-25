@@ -35,13 +35,15 @@ const Page = () => {
               </div>
             ))
             : pklData.map(({ href, text }, i) => (
-              <Link
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
                 href={href}
                 key={`${href}-${i}`}
                 className="p-4 text-lg font-semibold rounded-lg border border-pink-600 transition hover:scale-105 bg-gray-950"
               >
                 {text}
-              </Link>
+              </a>
             ))}
         </div>
       </section>
@@ -58,13 +60,15 @@ const Page = () => {
               </div>
             ))
             : skripsiData.map(({ href, text }, i) => (
-              <Link
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
                 href={href}
                 key={`${href}-${i}`}
                 className="p-4 text-lg font-semibold rounded-lg border border-lime-600 transition hover:scale-105 bg-gray-950"
               >
                 {text}
-              </Link>
+              </a>
             ))}
         </div>
       </section>
@@ -81,13 +85,15 @@ const Page = () => {
               </div>
             ))
             : suratData.map(({ href, text }, i) => (
-              <Link
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
                 href={href}
                 key={`${href}-${i}`}
                 className="p-4 text-lg font-semibold rounded-lg border border-indigo-600 transition hover:scale-105 bg-gray-950"
               >
                 {text}
-              </Link>
+              </a>
             ))}
         </div>
       </section>

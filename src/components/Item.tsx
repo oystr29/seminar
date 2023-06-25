@@ -1,4 +1,3 @@
-import Countdown, { CountdownRenderProps } from "react-countdown";
 import {
   HiDocument,
   HiOutlineCalendar,
@@ -8,24 +7,8 @@ import {
 } from "react-icons/hi";
 import { MdSchool } from "react-icons/md";
 import FlipClockCountdown from "~/components/FlipClockCountdown";
-import { Seminar } from "~/server/routers/hello";
+import type { Seminar } from "~/server/routers/hello";
 import { trpc } from "~/utils/trpc";
-
-const Time = ({ count, time }: { count: string; time: string }) => {
-  if (count === "00" && time !== "Detik") return null;
-
-  return (
-    <div className="flex flex-col justify-center items-center mr-2">
-      <div
-        suppressHydrationWarning={true}
-        className="p-1 mb-1 w-7 text-sm text-center bg-black rounded-lg text-zinc-50"
-      >
-        {count}
-      </div>
-      <div className="text-zinc-100">{time}</div>
-    </div>
-  );
-};
 
 type TypeSem = "current" | "notyet" | "scheduled" | "passed";
 
@@ -50,7 +33,7 @@ const Item = (props: { e: Seminar; type: TypeSem }) => {
 
   return (
     <div
-      className={`mb-5 border-2 rounded-lg ${type !== "current" && "p-5"
+      className={`mb-5 border-2 rounded-lg ${type !== "current" ? "p-5" : ""
         }  text-white ${getClasess(type)}`}
     >
       <div
@@ -113,8 +96,8 @@ const Item = (props: { e: Seminar; type: TypeSem }) => {
               showSeparators={false}
               className="flip-clock"
               labels={["Hari", "Jam", "Menit", "Detik"]}
-              onComplete={() => {
-                utils.hello.seminar.refetch();
+              onComplete={async () => {
+                await utils.hello.seminar.refetch();
               }}
               to={e.dateInt.akhir}
             />
@@ -127,8 +110,8 @@ const Item = (props: { e: Seminar; type: TypeSem }) => {
               showSeparators={false}
               className="flip-clock"
               labels={["Hari", "Jam", "Menit", "Detik"]}
-              onComplete={() => {
-                utils.hello.seminar.refetch();
+              onComplete={async () => {
+                await utils.hello.seminar.refetch();
               }}
               to={e.dateInt.mulai}
             />
