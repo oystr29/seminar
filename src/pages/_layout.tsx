@@ -6,6 +6,7 @@ import Sheet from "react-modal-sheet";
 import { useRouter } from "next/router";
 import ScrollToBottomBtn from "~/components/ScrollToBottomBtn";
 import ScrollToTopBtn from "~/components/ScrollToTopBtn";
+import { FiArrowUpRight } from "react-icons/fi";
 
 interface BeforeInstallPromptEvent extends Event {
   readonly platforms: Array<string>;
@@ -68,7 +69,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <Sheet
         isOpen={openSheet}
         onClose={() => setOpenSheet(false)}
-        snapPoints={[600, 400, 100, 0]}
+        snapPoints={[600, 400, 0]}
         initialSnap={1}
       >
         <Sheet.Container>
@@ -79,30 +80,27 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 className={`pb-4 ${!isInstall ? "border-b border-b-gray-400" : ""
                   }  mb-4`}
               >
-                {links.map((link) =>
-                  link.out ? (
-                    <a
-                      className="py-1 px-2 mb-3 w-full text-left rounded-lg bg-gray-950"
-                      href={link.href}
-                      target="_blank"
-                      key={link.href}
-                      rel="noopener noreferrer"
-                    >
-                      {link.name}
-                    </a>
-                  ) : (
-                    <button
-                      key={link.href}
-                      onClick={async () => {
+                {links.map((link) => (
+                  <button
+                    key={link.href}
+                    onClick={async () => {
+                      setOpenSheet(false);
+                      if (link.out) {
+                        window.open(link.href, "_blank")?.focus();
+                      } else {
                         await router.push(link.href);
-                        setOpenSheet(false);
-                      }}
-                      className="py-1 px-2 mb-3 w-full text-left rounded-lg bg-gray-950"
-                    >
+                      }
+                    }}
+                    className="py-1 px-2 mb-3 w-full text-left rounded-lg bg-gray-950"
+                  >
+                    <div className="relative w-min">
                       {link.name}
-                    </button>
-                  )
-                )}
+                      {link.out && (
+                        <FiArrowUpRight className="absolute top-0 text-xs -right-[11px]" />
+                      )}
+                    </div>
+                  </button>
+                ))}
               </div>
               <button
                 onClick={listenUserAction}
