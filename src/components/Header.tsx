@@ -2,6 +2,7 @@ import Logo from "~/components/Logo";
 import { useScrollDirection } from "~/utils/scroll";
 import Link from "next/link";
 import { HiOutlineMenuAlt3 } from "react-icons/hi";
+import { FiArrowUpRight } from "react-icons/fi";
 import { useRouter } from "next/router";
 
 type HeaderProps = {
@@ -9,6 +10,13 @@ type HeaderProps = {
   listenUserAction: () => void;
   setOpenSheet: React.Dispatch<React.SetStateAction<boolean>>;
 };
+
+const links: { name: string; href: string; out?: boolean }[] = [
+  { name: "Home", href: "/" },
+  { name: "Berkas", href: "/docs" },
+  { name: "Sheet", href: "https://s.id/JadwalSeminarSkripsi", out: true },
+  { name: "Github", href: "https://github.com/oktoala/seminar", out: true },
+];
 
 export default function Header({
   isInstall,
@@ -33,17 +41,34 @@ export default function Header({
         </Link>
         <div className="hidden items-center sm:flex">
           <div
-            className={`pr-4 ${!isInstall ? "border-r border-r-gray-500" : ""}`}
+            className={`pr-4 flex items-center gap-5 ${!isInstall ? "border-r border-r-gray-500" : ""
+              }`}
           >
-            <Link
-              href="docs"
-              className={`${router.pathname === "/docs"
-                  ? "text-white font-bold neon"
-                  : "text-gray-300"
-                } hover:underline`}
-            >
-              Berkas
-            </Link>
+            {links.map((link) =>
+              link.out ? (
+                <a
+                  className="relative text-gray-300 hover:underline"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  key={link.href}
+                  href={link.href}
+                >
+                  {link.name}
+                  <FiArrowUpRight className="absolute top-0 text-xs -right-[11px]" />
+                </a>
+              ) : (
+                <Link
+                  className={`${router.pathname === link.href
+                      ? "text-white font-bold neon"
+                      : "text-gray-300"
+                    } hover:underline`}
+                  key={link.href}
+                  href={link.href}
+                >
+                  {link.name}
+                </Link>
+              )
+            )}
           </div>
           <button
             data-tooltip-id="my-tooltip"
