@@ -16,6 +16,13 @@ interface BeforeInstallPromptEvent extends Event {
   prompt(): Promise<void>;
 }
 
+const links: { name: string; href: string; out?: boolean }[] = [
+  { name: "Home", href: "/" },
+  { name: "Berkas", href: "/docs" },
+  { name: "Sheet", href: "https://s.id/JadwalSeminarSkripsi", out: true },
+  { name: "Github", href: "https://github.com/oktoala/seminar", out: true },
+];
+
 export default function Layout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const [openSheet, setOpenSheet] = useState(false);
@@ -72,24 +79,30 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 className={`pb-4 ${!isInstall ? "border-b border-b-gray-400" : ""
                   }  mb-4`}
               >
-                <button
-                  onClick={async () => {
-                    await router.push("/");
-                    setOpenSheet(false);
-                  }}
-                  className="py-1 px-2 mb-3 w-full text-left rounded-lg bg-gray-950"
-                >
-                  Home
-                </button>
-                <button
-                  onClick={async () => {
-                    await router.push("docs");
-                    setOpenSheet(false);
-                  }}
-                  className="py-1 px-2 w-full text-left rounded-lg bg-gray-950"
-                >
-                  Berkas
-                </button>
+                {links.map((link) =>
+                  link.out ? (
+                    <a
+                      className="py-1 px-2 mb-3 w-full text-left rounded-lg bg-gray-950"
+                      href={link.href}
+                      target="_blank"
+                      key={link.href}
+                      rel="noopener noreferrer"
+                    >
+                      {link.name}
+                    </a>
+                  ) : (
+                    <button
+                      key={link.href}
+                      onClick={async () => {
+                        await router.push(link.href);
+                        setOpenSheet(false);
+                      }}
+                      className="py-1 px-2 mb-3 w-full text-left rounded-lg bg-gray-950"
+                    >
+                      {link.name}
+                    </button>
+                  )
+                )}
               </div>
               <button
                 onClick={listenUserAction}

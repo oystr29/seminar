@@ -47,7 +47,7 @@ export default function Header({
             {links.map((link) =>
               link.out ? (
                 <a
-                  className="relative text-gray-300 hover:underline"
+                  className="relative text-gray-300 hover:text-white hover:underline"
                   target="_blank"
                   rel="noopener noreferrer"
                   key={link.href}
@@ -61,7 +61,7 @@ export default function Header({
                   className={`${router.pathname === link.href
                       ? "text-white font-bold neon"
                       : "text-gray-300"
-                    } hover:underline`}
+                    } hover:underline hover:text-white`}
                   key={link.href}
                   href={link.href}
                 >

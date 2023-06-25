@@ -16,9 +16,9 @@ const ItemLoading = () => {
           <SkeletonLoad width="25%" height={25} />
         </div>
         <div className="flex items-center">
-          <SkeletonLoad className="" width={200} />
+          <SkeletonLoad height={20} width={100} />
           <span className="mx-4"> - </span>
-          <SkeletonLoad width={150} />
+          <SkeletonLoad width={90} height={20} />
         </div>
         <div className="mb-5">
           <div className="flex flex-row items-center my-1">
