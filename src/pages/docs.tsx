@@ -5,9 +5,22 @@ import "react-loading-skeleton/dist/skeleton.css";
 import SkeletonLoad from "~/components/SkeletonLoad";
 import { useEffect, useState } from "react";
 
+type Browser =
+  | "Chrome"
+  | "Firefox"
+  | "MSIE"
+  | "Edge"
+  | "Safari"
+  | "Opera"
+  | "YaBrowser";
+
 const Page = () => {
+  const [isMounted, setIsMounted] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
+
   const [isPWA, setIsPWA] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [browser, setBrowser] = useState<Browser>();
 
   const { data: pklData, isError: errorPKL } = trpc.docs.pkl.useQuery();
   const { data: skripsiData, isError: skripsiError } =
@@ -23,7 +36,15 @@ const Page = () => {
   }
 
   // if (!pklData || !skirpsiData || !suratData) return null;
-  //
+  useEffect(() => {
+    if (!isMounted) {
+      const showAlerta = !!localStorage.getItem("showAlert");
+      setShowAlert(showAlerta);
+      setIsMounted(true);
+    } else {
+      localStorage.setItem("showAlert", JSON.stringify(true));
+    }
+  }, []);
   useEffect(() => {
     setIsPWA(window.matchMedia("(display-mode: standalone)").matches);
     setIsMobile(
@@ -31,12 +52,40 @@ const Page = () => {
         navigator.userAgent
       )
     );
+    // CHROME
+    if (navigator.userAgent.indexOf("Chrome") != -1) {
+      setBrowser("Chrome");
+    }
+    // FIREFOX
+    else if (navigator.userAgent.indexOf("Firefox") != -1) {
+      setBrowser("Firefox");
+    }
+    // INTERNET EXPLORER
+    else if (navigator.userAgent.indexOf("MSIE") != -1) {
+      setBrowser("MSIE");
+    }
+    // EDGE
+    else if (navigator.userAgent.indexOf("Edge") != -1) {
+      setBrowser("Edge");
+    }
+    // SAFARI
+    else if (navigator.userAgent.indexOf("Safari") != -1) {
+      setBrowser("Safari");
+    }
+    // OPERA
+    else if (navigator.userAgent.indexOf("Opera") != -1) {
+      setBrowser("Opera");
+    }
+    // YANDEX BROWSER
+    else if (navigator.userAgent.indexOf("YaBrowser") != -1) {
+      setBrowser("YaBrowser");
+    }
   }, []);
 
   return (
     <>
       <section className="mb-10">
-        {isMobile && isPWA && (
+        {isMobile && showAlert && (
           <div
             className="flex p-4 mb-4 text-sm text-yellow-800 bg-yellow-50 rounded-lg border border-yellow-300"
             role="alert"
@@ -56,27 +105,40 @@ const Page = () => {
             </svg>
             <span className="sr-only">Info</span>
             <div>
-              {isMobile && (
+              {isPWA ? (
                 <>
-                  Untuk mendownload file, tahan salah satu file, lalu buka di
-                  tab baru.
+                  Untuk mendownload file, tahan lama salah satu file, lalu klik{" "}
+                  <b className="font-bold">"Buka di {browser}"</b>
                 </>
-              )}
-              {isPWA && (
+              ) : (
                 <>
-                  Buka halaman ini di{" "}
-                  <a
-                    href="/docs"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="font-bold underline"
-                  >
-                    Browser
-                  </a>{" "}
-                  untuk mendownload file{" "}
+                  Untuk Mendownload file, tahan salah satu file dibawah, lalu
+                  buka di tab baru.
                 </>
               )}
             </div>
+            <button
+              onClick={() => setShowAlert(false)}
+              type="button"
+              className="inline-flex p-1.5 -my-1.5 -mx-1.5 ml-auto w-8 h-8 text-yellow-500 bg-yellow-50 rounded-lg dark:text-yellow-300 dark:bg-gray-800 hover:bg-yellow-200 focus:ring-2 focus:ring-yellow-400 dark:hover:bg-gray-700"
+              data-dismiss-target="#alert-4"
+              aria-label="Close"
+            >
+              <span className="sr-only">Close</span>
+              <svg
+                aria-hidden="true"
+                className="w-5 h-5"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                  clip-rule="evenodd"
+                ></path>
+              </svg>
+            </button>
           </div>
         )}
 
