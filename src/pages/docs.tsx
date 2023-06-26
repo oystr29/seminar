@@ -38,7 +38,7 @@ const Page = () => {
   // if (!pklData || !skirpsiData || !suratData) return null;
   useEffect(() => {
     if (!isMounted) {
-      const showAlerta = !!localStorage.getItem("showAlert");
+      const showAlerta = !localStorage.getItem("showAlert");
       setShowAlert(showAlerta);
       setIsMounted(true);
     } else {
