@@ -45,7 +45,7 @@ const Page = () => {
     } else {
       localStorage.setItem("showAlert", `${false}`);
     }
-  }, []);
+  }, [showAlert]);
   useEffect(() => {
     setIsPWA(window.matchMedia("(display-mode: standalone)").matches);
     setIsMobile(
