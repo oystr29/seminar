@@ -38,11 +38,12 @@ const Page = () => {
   // if (!pklData || !skirpsiData || !suratData) return null;
   useEffect(() => {
     if (!isMounted) {
-      const showAlerta = !localStorage.getItem("showAlert");
+      const showAlerta =
+        localStorage.getItem("showAlert") === "false" ? false : true;
       setShowAlert(showAlerta);
       setIsMounted(true);
     } else {
-      localStorage.setItem("showAlert", JSON.stringify(true));
+      localStorage.setItem("showAlert", `${false}`);
     }
   }, []);
   useEffect(() => {
