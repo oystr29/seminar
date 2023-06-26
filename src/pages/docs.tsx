@@ -35,13 +35,15 @@ const Page = () => {
               </div>
             ))
             : pklData.map(({ href, text }, i) => (
-              <button
-                onClick={() => window.open(href)}
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                href={href}
                 key={`${href}-${i}`}
                 className="p-4 text-lg font-semibold rounded-lg border border-pink-600 transition hover:scale-105 bg-gray-950"
               >
                 {text}
-              </button>
+              </a>
             ))}
         </div>
       </section>
