@@ -335,7 +335,7 @@ const getData = async (sheet: string | null) => {
 const helloRouter = router({
   seminar: procedure.query(async () => {
     try {
-      const data = await getData("JULI-SEP 23");
+      const data = await getData(process.env.SHEET_NAME ?? "JULI-SEP 23");
       return data;
     } catch (error) {
       throw error;
