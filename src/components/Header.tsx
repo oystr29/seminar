@@ -74,7 +74,7 @@ export default function Header({
             data-tooltip-id="my-tooltip"
             data-tooltip-content="Install"
             className={`${isInstall ? "hidden" : "block"
-              } bg-gradient-to-r bg-clip-text text-transparent hover:underline ml-4 from-indigo-500 via-pink-500 to-yellow-500 hover:from-indigo-600 hover:via-pink-600 hover:to-red-600 text-white  font-semibold`}
+              } bg-gradient-to-r bg-clip-text text-transparent hover:underline ml-4 from-indigo-500 via-pink-500 to-yellow-500 hover:from-indigo-600 hover:via-pink-600 hover:to-red-600 font-semibold`}
             onClick={listenUserAction}
           >
             Install
