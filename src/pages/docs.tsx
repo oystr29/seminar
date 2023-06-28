@@ -14,7 +14,7 @@ type Browser =
   | "YaBrowser";
 
 const Page = () => {
-  const [showAlert, setShowAlert] = useState(false);
+  const [showAlert, setShowAlert] = useState(true);
   const [isPWA, setIsPWA] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [browser, setBrowser] = useState<Browser>();
