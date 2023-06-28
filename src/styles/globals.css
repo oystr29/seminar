@@ -1,0 +1,42 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --shadow-color: #ff9e9e;
+  --shadow-color-light: white;
+}
+
+body {
+  @apply bg-gray-900 text-zinc-50 scrollbar-thin scrollbar-track-gray-950 scrollbar-thumb-white scroll-smooth;
+}
+
+@layer components {
+  .items {
+    @apply mb-5 border-2 rounded-lg p-5 text-white;
+  }
+
+  .notyet {
+    @apply border-purple-400;
+  }
+
+  .scheduled {
+    @apply border-yellow-400;
+  }
+
+  .scheduled > p {
+    @apply text-blue-500;
+  }
+
+  .items.current {
+    @apply border-none bg-gradient-to-tr p-1 from-green-500 to-sky-500;
+  }
+
+  .gradient {
+    @apply rounded-lg bg-zinc-900 p-4;
+  }
+
+  .passed {
+    @apply border-gray-500 text-gray-400;
+  }
+}
