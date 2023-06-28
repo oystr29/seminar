@@ -1,4 +1,3 @@
-import Link from "next/link";
 import ErrorPage from "~/components/ErrorPage";
 import { trpc } from "~/utils/trpc";
 import "react-loading-skeleton/dist/skeleton.css";
@@ -15,9 +14,7 @@ type Browser =
   | "YaBrowser";
 
 const Page = () => {
-  const [isMounted, setIsMounted] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
-
   const [isPWA, setIsPWA] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [browser, setBrowser] = useState<Browser>();
@@ -35,17 +32,6 @@ const Page = () => {
     return <ErrorPage />;
   }
 
-  // if (!pklData || !skirpsiData || !suratData) return null;
-  useEffect(() => {
-    if (!isMounted) {
-      const showAlerta =
-        localStorage.getItem("showAlert") === null ? true : false;
-      setShowAlert(showAlerta);
-      setIsMounted(true);
-    } else {
-      localStorage.setItem("showAlert", `${false}`);
-    }
-  }, [showAlert]);
   useEffect(() => {
     setIsPWA(window.matchMedia("(display-mode: standalone)").matches);
     setIsMobile(
@@ -86,7 +72,7 @@ const Page = () => {
   return (
     <>
       <section className="mb-10">
-        {showAlert && (
+        {isMobile && showAlert && (
           <div
             className="flex p-4 mb-4 text-sm text-yellow-800 bg-yellow-50 rounded-lg border border-yellow-300"
             role="alert"
@@ -113,7 +99,7 @@ const Page = () => {
                 </>
               ) : (
                 <>
-                  Untuk Mendownload file, tahan salah satu file dibawah, lalu
+                  Untuk mendownload file, tahan salah satu file dibawah, lalu
                   buka di tab baru.
                 </>
               )}
