@@ -16,6 +16,11 @@ const links: { name: string; href: string; out?: boolean }[] = [
   { name: "Berkas", href: "/docs" },
   { name: "Sheet", href: "https://s.id/JadwalSeminarSkripsi", out: true },
   { name: "Github", href: "https://github.com/oktoala/seminar", out: true },
+  {
+    name: "Donasi",
+    href: "https://trakteer.id/oktavian_yoga/tip?open=true",
+    out: true,
+  },
 ];
 
 export default function Header({
