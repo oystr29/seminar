@@ -27,7 +27,7 @@ module.exports = {
   parserOptions: {
     project: "./tsconfig.json",
   },
-  plugins: ["@typescript-eslint"],
+  plugins: ["@typescript-eslint", "react-hooks"],
   rules: {
     "@typescript-eslint/no-misused-promises": [
       "error",
@@ -46,7 +46,7 @@ module.exports = {
         fixStyle: "inline-type-imports",
       },
     ],
-
+    "react-hooks/rules-of-hooks": "warn", // Checks rules of Hooks
     "@typescript-eslint/no-unused-vars": ["warn", { argsIgnorePattern: "^_" }],
   },
 };

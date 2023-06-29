@@ -28,10 +28,6 @@ const Page = () => {
 
   const arrayLoading = Array.from({ length: 6 }, (_, i) => i);
 
-  if (errorPKL || skripsiError || errorSurat) {
-    return <ErrorPage />;
-  }
-
   useEffect(() => {
     setIsPWA(window.matchMedia("(display-mode: standalone)").matches);
     setIsMobile(
@@ -69,6 +65,10 @@ const Page = () => {
     }
   }, []);
 
+  if (errorPKL || skripsiError || errorSurat) {
+    return <ErrorPage />;
+  }
+
   return (
     <>
       <section className="mb-10">
@@ -95,7 +95,7 @@ const Page = () => {
               {isPWA ? (
                 <>
                   Untuk mendownload file, tahan lama salah satu file, lalu klik{" "}
-                  <b className="font-bold">"Buka di {browser}"</b>
+                  <b className="font-bold">Buka di {browser}</b>
                 </>
               ) : (
                 <>
