@@ -48,5 +48,7 @@ module.exports = {
     ],
     "react-hooks/rules-of-hooks": "warn", // Checks rules of Hooks
     "@typescript-eslint/no-unused-vars": ["warn", { argsIgnorePattern: "^_" }],
+    "@typescript-eslint/ban-ts-comment": "warn",
+    "@typescript-eslint/no-empty-function": "warn",
   },
 };

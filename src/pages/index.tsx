@@ -3,15 +3,10 @@ import Item from "~/components/Item";
 import ErrorPage from "~/components/ErrorPage";
 import { type DataSeminar } from "~/server/routers/hello";
 import { AiOutlineSearch } from "react-icons/ai";
-import {
-  type InputHTMLAttributes,
-  useState,
-  Dispatch,
-  SetStateAction,
-} from "react";
+import { type InputHTMLAttributes, useState } from "react";
 import ItemLoading from "~/components/ItemLoading";
 import Select from "react-tailwindcss-select";
-import { ClassNames } from "react-tailwindcss-select/dist/components/type";
+import { type ClassNames } from "react-tailwindcss-select/dist/components/type";
 
 const InputSearch = (
   props: InputHTMLAttributes<HTMLInputElement> & { data?: DataSeminar }
@@ -107,7 +102,6 @@ export default function Home() {
               value={{ label: "Loading...", value: "Loading..." }}
               placeholder="Loading..."
               classNames={classNames}
-              onChange={(e) => { }}
               primaryColor="purple"
             />
           ) : (
