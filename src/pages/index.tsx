@@ -102,6 +102,7 @@ export default function Home() {
               value={{ label: "Loading...", value: "Loading..." }}
               placeholder="Loading..."
               classNames={classNames}
+              onChange={() => { }}
               primaryColor="purple"
             />
           ) : (
