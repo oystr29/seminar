@@ -119,18 +119,14 @@ function getTime(text: string) {
   };
 }
 
-const getData = async (sheet: string | null) => {
+// Variable to store
+
+const getData = async (sheet: string | null, search: string) => {
   const arrays: Seminar[] = [];
   const currents: Seminar[] = [];
   const notyet: Seminar[] = [];
   const passed: Seminar[] = [];
   const scheduled: Seminar[] = [];
-
-  // gold nim
-  // const goldNim = JSON.parse(
-  //   `${process.env.NIM_GOLD ?? []}`
-  // ) as GoldNIM[];
-  // console.log(goldNim);
 
   // Auth
   const credentials = JSON.parse(
@@ -321,10 +317,34 @@ const getData = async (sheet: string | null) => {
     });
 
     return {
-      currents,
-      scheduled,
-      notyet,
-      passed,
+      currents: currents.filter((entry) =>
+        Object.values(entry).some(
+          (val) =>
+            typeof val === "string" &&
+            val.toLowerCase().includes(search.toLowerCase())
+        )
+      ),
+      scheduled: scheduled.filter((entry) =>
+        Object.values(entry).some(
+          (val) =>
+            typeof val === "string" &&
+            val.toLowerCase().includes(search.toLowerCase())
+        )
+      ),
+      notyet: notyet.filter((entry) =>
+        Object.values(entry).some(
+          (val) =>
+            typeof val === "string" &&
+            val.toLowerCase().includes(search.toLowerCase())
+        )
+      ),
+      passed: passed.filter((entry) =>
+        Object.values(entry).some(
+          (val) =>
+            typeof val === "string" &&
+            val.toLowerCase().includes(search.toLowerCase())
+        )
+      ),
       sheetName,
     };
   } catch (error) {
@@ -333,13 +353,42 @@ const getData = async (sheet: string | null) => {
 };
 
 const helloRouter = router({
-  seminar: procedure.query(async () => {
+  seminar: procedure
+    .input(z.object({ sheet_name: z.string(), search: z.string() }))
+    .query(async ({ input: { sheet_name, search } }) => {
+      try {
+        const data = await getData(sheet_name, search);
+        return data;
+      } catch (error) {
+        throw error;
+      }
+    }),
+  sheets: procedure.query(async () => {
     try {
-      const data = await getData(process.env.SHEET_NAME ?? "JULI-SEP 23");
-      return data;
+      // Auth
+      const credentials = JSON.parse(
+        `${process.env.GOOGLE_APPLICATION_CREDENTIALS}`
+      );
+
+      const auth = await google.auth.getClient({
+        scopes: ["https://www.googleapis.com/auth/spreadsheets.readonly"],
+        credentials,
+      });
+
+      const sheets = google.sheets({ version: "v4", auth });
+
+      const resSheet = await sheets.spreadsheets.get({
+        spreadsheetId: process.env.SHEET_ID,
+        fields: "sheets(properties(title))",
+      });
+
+      return resSheet.data.sheets;
     } catch (error) {
       throw error;
     }
+  }),
+  defaultSheetName: procedure.query(() => {
+    return process.env.SHEET_NAME;
   }),
 });
 

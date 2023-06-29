@@ -1,14 +1,13 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  darkMode: 'class',
+  darkMode: "class",
   content: [
     "./src/pages/**/*.{js,ts,jsx,tsx}",
     "./src/components/**/*.{js,ts,jsx,tsx}",
+    "./node_modules/react-tailwindcss-select/dist/index.esm.js",
   ],
   theme: {
-    extend: {
-      
-    },
+    extend: {},
   },
-  plugins: [require('tailwind-scrollbar'),],
-}
+  plugins: [require("tailwind-scrollbar")],
+};
