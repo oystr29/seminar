@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
 import type React from "react";
+import { useEffect, useState } from "react";
 import Footer from "~/components/Footer";
 import Header from "~/components/Header";
 import Sheet from "react-modal-sheet";
@@ -7,21 +7,55 @@ import { useRouter } from "next/router";
 import ScrollToBottomBtn from "~/components/ScrollToBottomBtn";
 import ScrollToTopBtn from "~/components/ScrollToTopBtn";
 import { FiArrowUpRight } from "react-icons/fi";
+import {
+  HiDownload,
+  HiOutlineDocumentDuplicate,
+  HiOutlineHome,
+} from "react-icons/hi";
+import { BsFileEarmarkSpreadsheet } from "react-icons/bs";
+import { VscGithubAlt } from "react-icons/vsc";
+import { TbCoffee } from "react-icons/tb";
+import { GrInstallOption } from "react-icons/gr";
 
 interface BeforeInstallPromptEvent extends Event {
-  readonly platforms: Array<string>;
+  readonly platforms: string[];
   readonly userChoice: Promise<{
     outcome: "accepted" | "dismissed";
     platform: string;
   }>;
-  prompt(): Promise<void>;
+  prompt: () => Promise<void>;
 }
 
-const links: { name: string; href: string; out?: boolean }[] = [
-  { name: "Home", href: "/" },
-  { name: "Berkas", href: "/docs" },
-  { name: "Sheet", href: "https://s.id/JadwalSeminarSkripsi", out: true },
-  { name: "Github", href: "https://github.com/oktoala/seminar", out: true },
+const links: Array<{
+  icon: JSX.Element;
+  name: string;
+  href: string;
+  out?: boolean;
+}> = [
+  { icon: <HiOutlineHome className="w-5 h-5" />, name: "Home", href: "/" },
+  {
+    icon: <HiOutlineDocumentDuplicate className="w-5 h-5" />,
+    name: "Berkas",
+    href: "/docs",
+  },
+  {
+    icon: <BsFileEarmarkSpreadsheet className="w-5 h-5" />,
+    name: "Sheet",
+    href: "https://s.id/JadwalSeminarSkripsi",
+    out: true,
+  },
+  {
+    icon: <TbCoffee className="w-5 h-5" />,
+    name: "Donasi",
+    href: "https://trakteer.id/oktavian_yoga/tip?open=true",
+    out: true,
+  },
+  {
+    icon: <VscGithubAlt className="w-5 h-5" />,
+    name: "Github",
+    href: "https://github.com/oktoala/seminar",
+    out: true,
+  },
 ];
 
 export default function Layout({ children }: { children: React.ReactNode }) {
@@ -68,17 +102,18 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       </main>
       <Sheet
         isOpen={openSheet}
-        onClose={() => setOpenSheet(false)}
+        onClose={() => {
+          setOpenSheet(false);
+        }}
         snapPoints={[600, 400, 0]}
         initialSnap={1}
       >
         <Sheet.Container>
           <Sheet.Header className="bg-gray-800" />
           <Sheet.Content className="bg-gray-800">
-            <div className="py-5 px-3 w-full">
+            <div className="py-5 w-full">
               <div
-                className={`pb-4 ${!isInstall ? "border-b border-b-gray-400" : ""
-                  }  mb-4`}
+                className={`${!isInstall ? "border-b border-b-gray-400" : ""}`}
               >
                 {links.map((link) => (
                   <button
@@ -91,10 +126,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                         await router.push(link.href);
                       }
                     }}
-                    className="py-1 px-2 mb-3 w-full text-left rounded-lg bg-gray-950"
+                    className="py-3 px-2 w-full text-left border-b border-b-gray-500"
                   >
-                    <div className="relative w-min">
-                      {link.name}
+                    <div className="flex relative items-center w-min">
+                      {link.icon}
+                      <p className="ml-2">{link.name}</p>
                       {link.out && (
                         <FiArrowUpRight className="absolute top-0 text-xs -right-[11px]" />
                       )}
@@ -104,15 +140,21 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               </div>
               <button
                 onClick={listenUserAction}
-                className={`${isInstall ? "hidden" : "block"
-                  } rounded-lg w-full py-1 px-2 text-left mb-2 bg-gradient-to-r from-indigo-500 via-pink-500 to-yellow-500 hover:from-indigo-600 hover:via-pink-600 hover:to-red-600 text-white focus:outline-none font-semibold`}
+                className={`${
+                  isInstall ? "hidden" : "block"
+                } w-full flex items-center py-3 px-2 text-left mb-2 bg-gradient-to-r from-indigo-500 via-pink-500 to-yellow-500 hover:from-indigo-600 hover:via-pink-600 hover:to-red-600 text-white focus:outline-none font-semibold`}
               >
-                Install
+                <HiDownload className="w-5 h-5 text-white fill-white" />
+                <p className="ml-2">Install</p>
               </button>
             </div>
           </Sheet.Content>
         </Sheet.Container>
-        <Sheet.Backdrop onTap={() => setOpenSheet(false)} />
+        <Sheet.Backdrop
+          onTap={() => {
+            setOpenSheet(false);
+          }}
+        />
       </Sheet>
       <Footer />
     </>

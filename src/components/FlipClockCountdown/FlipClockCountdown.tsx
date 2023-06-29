@@ -4,9 +4,9 @@ import clsx from "clsx";
 import React from "react";
 import FlipClockDigit from "./FlipClockDigit";
 import {
-  FlipClockCountdownProps,
-  FlipClockCountdownState,
-  FlipClockCountdownUnitTimeFormatted,
+  type FlipClockCountdownProps,
+  type FlipClockCountdownState,
+  type FlipClockCountdownUnitTimeFormatted,
 } from "./types";
 import { calcTimeDelta, convertToPx, parseTimeDelta } from "./utils";
 
@@ -14,8 +14,8 @@ import { calcTimeDelta, convertToPx, parseTimeDelta } from "./utils";
  * A 3D animated flip clock countdown component for React.
  */
 function FlipClockCountdown({
-  onComplete = () => {},
-  onTick = () => {},
+  onComplete = () => { },
+  onTick = () => { },
   labels = ["Days", "Hours", "Minutes", "Seconds"],
   renderMap = [false, true, true, true],
   showLabels = true,
