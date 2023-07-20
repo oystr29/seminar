@@ -37,7 +37,7 @@ const Item = (props: { e: Seminar; type: TypeSem }) => {
         }  text-white ${getClasess(type)}`}
     >
       <div
-        className={`${type === "current" ? "gradient rounded-lg bg-gray-950 p-4" : ""
+        className={`${type === "current" ? "gradient rounded-lg bg-gray-900 p-4" : ""
           }${type === "passed" ? "text-gray-500" : ""}`}
       >
         <div className={`font-bold text-xl mb-2 `}>{e.judul}</div>
