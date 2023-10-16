@@ -32,34 +32,42 @@ const links: Array<{
   href: string;
   out?: boolean;
 }> = [
-  { icon: <HiOutlineHome className="w-5 h-5" />, name: "Home", href: "/" },
-  {
-    icon: <HiOutlineDocumentDuplicate className="w-5 h-5" />,
-    name: "Berkas",
-    href: "/docs",
-  },
-  {
-    icon: <BsFileEarmarkSpreadsheet className="w-5 h-5" />,
-    name: "Sheet",
-    href: "https://s.id/JadwalSeminarSkripsi",
-    out: true,
-  },
-  {
-    icon: <TbCoffee className="w-5 h-5" />,
-    name: "Donasi",
-    href: "https://trakteer.id/oktavian_yoga/tip?open=true",
-    out: true,
-  },
-  {
-    icon: <VscGithubAlt className="w-5 h-5" />,
-    name: "Github",
-    href: "https://github.com/oktoala/seminar",
-    out: true,
-  },
-];
+    { icon: <HiOutlineHome className="w-5 h-5" />, name: "Home", href: "/" },
+    {
+      icon: <HiOutlineDocumentDuplicate className="w-5 h-5" />,
+      name: "Berkas",
+      href: "/docs",
+    },
+    {
+      icon: <BsFileEarmarkSpreadsheet className="w-5 h-5" />,
+      name: "Sheet",
+      href: "https://s.id/JadwalSeminarSkripsi",
+      out: true,
+    },
+    {
+      icon: <TbCoffee className="w-5 h-5" />,
+      name: "Donasi",
+      href: "https://trakteer.id/oktavian_yoga/tip?open=true",
+      out: true,
+    },
+    {
+      icon: <VscGithubAlt className="w-5 h-5" />,
+      name: "Github",
+      href: "https://github.com/oktoala/seminar",
+      out: true,
+    },
+  ];
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
+  const { isOpenSheet } = router.query;
+  const onChangeOpenSheet = async (isOpenSheet: string | undefined) => {
+    await router.push({
+      pathname: "",
+      query: { ...router.query, isOpenSheet },
+    });
+  };
+
   const [openSheet, setOpenSheet] = useState(false);
 
   const [deferredPrompt, setDeferredPrompt] =
@@ -91,7 +99,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <Header
         isInstall={isInstall}
         listenUserAction={listenUserAction}
-        setOpenSheet={setOpenSheet}
+        setOpenSheet={() => onChangeOpenSheet("1")}
       />
       <main className="container px-4 mt-10 h-full min-h-screen sm:px-0 sm:mx-auto">
         <div className="flex fixed right-5 bottom-5 flex-col gap-2 justify-center items-center">
@@ -101,9 +109,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         {children}
       </main>
       <Sheet
-        isOpen={openSheet}
-        onClose={() => {
-          setOpenSheet(false);
+        isOpen={!!isOpenSheet}
+        onClose={async () => {
+          onChangeOpenSheet(undefined);
         }}
         snapPoints={[600, 400, 0]}
         initialSnap={1}
@@ -140,9 +148,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               </div>
               <button
                 onClick={listenUserAction}
-                className={`${
-                  isInstall ? "hidden" : "block"
-                } w-full flex items-center py-3 px-2 text-left mb-2 bg-gradient-to-r from-indigo-500 via-pink-500 to-yellow-500 hover:from-indigo-600 hover:via-pink-600 hover:to-red-600 text-white focus:outline-none font-semibold`}
+                className={`${isInstall ? "hidden" : "block"
+                  } w-full flex items-center py-3 px-2 text-left mb-2 bg-gradient-to-r from-indigo-500 via-pink-500 to-yellow-500 hover:from-indigo-600 hover:via-pink-600 hover:to-red-600 text-white focus:outline-none font-semibold`}
               >
                 <HiDownload className="w-5 h-5 text-white fill-white" />
                 <p className="ml-2">Install</p>
@@ -152,7 +159,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         </Sheet.Container>
         <Sheet.Backdrop
           onTap={() => {
-            setOpenSheet(false);
+            onChangeOpenSheet(undefined);
           }}
         />
       </Sheet>

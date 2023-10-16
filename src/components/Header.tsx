@@ -8,7 +8,7 @@ import { useRouter } from "next/router";
 type HeaderProps = {
   isInstall: boolean;
   listenUserAction: () => void;
-  setOpenSheet: React.Dispatch<React.SetStateAction<boolean>>;
+  setOpenSheet: () => void;
 };
 
 const links: { name: string; href: string; out?: boolean }[] = [
@@ -87,7 +87,7 @@ export default function Header({
         </div>
         <HiOutlineMenuAlt3
           className="block w-8 h-8 sm:hidden"
-          onClick={() => setOpenSheet(true)}
+          onClick={setOpenSheet}
         />
       </div>
     </nav>

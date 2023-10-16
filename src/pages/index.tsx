@@ -7,6 +7,8 @@ import { type InputHTMLAttributes, useState } from "react";
 import ItemLoading from "~/components/ItemLoading";
 import Select from "react-tailwindcss-select";
 import { type ClassNames } from "react-tailwindcss-select/dist/components/type";
+import { useRouter } from "next/router";
+import { useDebounce } from "@uidotdev/usehooks";
 
 const InputSearch = (
   props: InputHTMLAttributes<HTMLInputElement> & { data?: DataSeminar }
@@ -67,10 +69,30 @@ export default function Home() {
     value: `${process.env.NEXT_PUBLIC_SHEET_NAME}`,
   });
 
-  const [search, setSearch] = useState("");
+  const router = useRouter();
+
+  const { search, sheet, isDrawer } = router.query;
+  const debouncedSearch = useDebounce(search, 600);
+
+  const setParams = async (data: Record<string, string>) => {
+    await router.push(
+      {
+        pathname: "",
+        query: {
+          ...router.query,
+          ...data,
+        },
+      },
+      undefined,
+      { shallow: true }
+    );
+  };
 
   const { data, isError } = trpc.hello.seminar.useQuery(
-    { sheet_name: sheetValue.value, search },
+    {
+      sheet_name: sheet ?? `${process.env.NEXT_PUBLIC_SHEET_NAME}`,
+      search: debouncedSearch,
+    },
     {
       onError(err) {
         console.log(err);
@@ -89,10 +111,11 @@ export default function Home() {
       <div className="flex items-center mb-5 w-full sm:justify-end">
         <InputSearch
           data={data}
-          value={search}
-          onChange={(e) => {
-            const { value } = e.currentTarget;
-            setSearch(value);
+          defaultValue={search as string}
+          onChange={async (e) => {
+            setParams({
+              search: e.currentTarget.value ?? "",
+            });
           }}
         />
         <div className="w-min">
@@ -102,21 +125,27 @@ export default function Home() {
               value={{ label: "Loading...", value: "Loading..." }}
               placeholder="Loading..."
               classNames={classNames}
-              onChange={() => { }}
+              onChange={() => ""}
               primaryColor="purple"
             />
           ) : (
             <Select
-              options={sheets?.map((s) => ({
+              options={sheets.map((s) => ({
                 label: `${s.properties?.title}`,
                 value: `${s.properties?.title}`,
               }))}
-              value={sheetValue}
+              value={{
+                label: `${sheet ?? process.env.NEXT_PUBLIC_SHEET_NAME}`,
+                value: `${sheet ?? process.env.NEXT_PUBLIC_SHEET_NAME}`,
+              }}
+              isMultiple={false}
               placeholder="Loading..."
               classNames={classNames}
               onChange={(e) => {
-                // @ts-ignore
-                setSheetValue(e);
+                setParams({
+                  // @ts-ignore gapapa
+                  sheet: `${e?.value as string}`,
+                });
               }}
               primaryColor="purple"
             />

@@ -2,6 +2,10 @@ import { google } from "googleapis";
 import { z } from "zod";
 import { procedure, router } from "~/server/trpc";
 
+const slugIDSchema = z.union([z.string(), z.string().array(), z.undefined()]);
+
+type SlugID = z.infer<typeof slugIDSchema>;
+
 const seminarSchema = z.object({
   no: z.string(),
   nama: z.string(),
@@ -39,7 +43,7 @@ const dataSemSchema = z.object({
   scheduled: z.array(seminarSchema),
   notyet: z.array(seminarSchema),
   passed: z.array(seminarSchema),
-  sheetName: z.string().nullable().optional(),
+  sheetName: slugIDSchema,
 });
 
 // Type
@@ -121,7 +125,7 @@ function getTime(text: string) {
 
 // Variable to store
 
-const getData = async (sheet: string | null, search: string) => {
+const getData = async (sheet: SlugID, search: SlugID = "") => {
   const arrays: Seminar[] = [];
   const currents: Seminar[] = [];
   const notyet: Seminar[] = [];
@@ -142,7 +146,7 @@ const getData = async (sheet: string | null, search: string) => {
 
   const sheets = google.sheets({ version: "v4", auth });
 
-  if (sheet === null) {
+  if (!sheet) {
     const resSheet = await sheets.spreadsheets.get({
       spreadsheetId: process.env.SHEET_ID,
     });
@@ -205,24 +209,24 @@ const getData = async (sheet: string | null, search: string) => {
       },
     };
 
-    if (index === 0 && e.length !== 0) {
+    if (index === 0 && e && e.length !== 0) {
       property.no = e[0];
       property.nama = e[1];
       property.nim = e[2];
       property.judul = e[3];
       property.sempro =
         resData?.[i].values?.[4].effectiveFormat?.backgroundColor?.blue === 1 &&
-        resData?.[i].values?.[4].effectiveFormat?.backgroundColor?.blue
+          resData?.[i].values?.[4].effectiveFormat?.backgroundColor?.blue
           ? false
           : true;
       property.semhas =
         resData?.[i].values?.[5].effectiveFormat?.backgroundColor?.blue === 1 &&
-        resData?.[i].values?.[4].effectiveFormat?.backgroundColor?.blue
+          resData?.[i].values?.[4].effectiveFormat?.backgroundColor?.blue
           ? false
           : true;
       property.pendadaran =
         resData?.[i].values?.[6].effectiveFormat?.backgroundColor?.blue === 1 &&
-        resData?.[i].values?.[4].effectiveFormat?.backgroundColor?.blue
+          resData?.[i].values?.[4].effectiveFormat?.backgroundColor?.blue
           ? false
           : true;
       property.jadwal.tanggal = e[7];
@@ -250,37 +254,31 @@ const getData = async (sheet: string | null, search: string) => {
       }
     }
 
-    if (index === 2) {
-      try {
-        index = 0;
-        if (arrays[currIndex].dateInt.mulai === 0) {
-          scheduled.push(arrays[currIndex]);
-        }
-        // not yet
-        else if (arrays[currIndex].dateInt.mulai >= Date.now()) {
-          notyet.push(arrays[currIndex]);
-        }
-        // Current
-        else if (
-          Date.now() >= arrays[currIndex].dateInt.mulai &&
-          Date.now() <= arrays[currIndex].dateInt.akhir
-        ) {
-          currents.push(arrays[currIndex]);
-        }
-        // Passed
-        else if (arrays[currIndex].dateInt.akhir <= Date.now()) {
-          passed.push(arrays[currIndex]);
-        }
-        currIndex++;
-      } catch (e) {
-        console.log(e);
+    if (index === 2 && arrays[currIndex]) {
+      index = 0;
+      if (arrays[currIndex].dateInt.mulai === 0) {
+        scheduled.push(arrays[currIndex]);
       }
+      // not yet
+      else if (arrays[currIndex].dateInt.mulai >= Date.now()) {
+        notyet.push(arrays[currIndex]);
+      }
+      // Current
+      else if (
+        Date.now() >= arrays[currIndex].dateInt.mulai &&
+        Date.now() <= arrays[currIndex].dateInt.akhir
+      ) {
+        currents.push(arrays[currIndex]);
+      }
+      // Passed
+      else if (arrays[currIndex].dateInt.akhir <= Date.now()) {
+        passed.push(arrays[currIndex]);
+      }
+      currIndex++;
     } else if (index !== 2) {
       index++;
     }
   });
-
-  console.log("MAKAN");
 
   notyet.sort((a, b) => {
     return a.dateInt.mulai - b.dateInt.mulai;
@@ -294,28 +292,28 @@ const getData = async (sheet: string | null, search: string) => {
       Object.values(entry).some(
         (val) =>
           typeof val === "string" &&
-          val.toLowerCase().includes(search.toLowerCase())
+          val.toLowerCase().includes((search as string).toLowerCase())
       )
     ),
     scheduled: scheduled.filter((entry) =>
       Object.values(entry).some(
         (val) =>
           typeof val === "string" &&
-          val.toLowerCase().includes(search.toLowerCase())
+          val.toLowerCase().includes((search as string).toLowerCase())
       )
     ),
     notyet: notyet.filter((entry) =>
       Object.values(entry).some(
         (val) =>
           typeof val === "string" &&
-          val.toLowerCase().includes(search.toLowerCase())
+          val.toLowerCase().includes((search as string).toLowerCase())
       )
     ),
     passed: passed.filter((entry) =>
       Object.values(entry).some(
         (val) =>
           typeof val === "string" &&
-          val.toLowerCase().includes(search.toLowerCase())
+          val.toLowerCase().includes((search as string).toLowerCase())
       )
     ),
     sheetName,
@@ -324,7 +322,7 @@ const getData = async (sheet: string | null, search: string) => {
 
 const helloRouter = router({
   seminar: procedure
-    .input(z.object({ sheet_name: z.string(), search: z.string() }))
+    .input(z.object({ sheet_name: slugIDSchema, search: slugIDSchema }))
     .query(async ({ input: { sheet_name, search } }) => {
       const data = await getData(sheet_name, search);
       return data;
