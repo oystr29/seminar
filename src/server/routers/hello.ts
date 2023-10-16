@@ -205,30 +205,30 @@ const getData = async (sheet: string | null, search: string) => {
       },
     };
 
-    if (index === 0) {
+    if (index === 0 && e.length !== 0) {
       property.no = e[0];
       property.nama = e[1];
       property.nim = e[2];
       property.judul = e[3];
       property.sempro =
         resData?.[i].values?.[4].effectiveFormat?.backgroundColor?.blue === 1 &&
-          resData?.[i].values?.[4].effectiveFormat?.backgroundColor?.blue
+        resData?.[i].values?.[4].effectiveFormat?.backgroundColor?.blue
           ? false
           : true;
       property.semhas =
         resData?.[i].values?.[5].effectiveFormat?.backgroundColor?.blue === 1 &&
-          resData?.[i].values?.[4].effectiveFormat?.backgroundColor?.blue
+        resData?.[i].values?.[4].effectiveFormat?.backgroundColor?.blue
           ? false
           : true;
       property.pendadaran =
         resData?.[i].values?.[6].effectiveFormat?.backgroundColor?.blue === 1 &&
-          resData?.[i].values?.[4].effectiveFormat?.backgroundColor?.blue
+        resData?.[i].values?.[4].effectiveFormat?.backgroundColor?.blue
           ? false
           : true;
       property.jadwal.tanggal = e[7];
       property.date.day = getDate(e[7]);
       arrays.push(property);
-    } else if (index === 1) {
+    } else if (index === 1 && e.length !== 0) {
       if (e[7] !== undefined) {
         arrays[currIndex].jadwal.jam = e[7];
         arrays[currIndex].date.time = getTime(e[7]);
@@ -244,69 +244,43 @@ const getData = async (sheet: string | null, search: string) => {
           `${ar2.day.tahun}-${ar2.day.bulan}-${ar2.day.tanggal}T${ar2.time.jamAkhir}:00+0800`
         );
       }
-    } else if (index === 2) {
+    } else if (index === 2 && e.length !== 0) {
       if (e[7] !== undefined) {
         arrays[currIndex].jadwal.ruang = e[7];
       }
     }
 
     if (index === 2) {
-      index = 0;
-      if (arrays[currIndex].dateInt.mulai === 0) {
-        scheduled.push(arrays[currIndex]);
+      try {
+        index = 0;
+        if (arrays[currIndex].dateInt.mulai === 0) {
+          scheduled.push(arrays[currIndex]);
+        }
+        // not yet
+        else if (arrays[currIndex].dateInt.mulai >= Date.now()) {
+          notyet.push(arrays[currIndex]);
+        }
+        // Current
+        else if (
+          Date.now() >= arrays[currIndex].dateInt.mulai &&
+          Date.now() <= arrays[currIndex].dateInt.akhir
+        ) {
+          currents.push(arrays[currIndex]);
+        }
+        // Passed
+        else if (arrays[currIndex].dateInt.akhir <= Date.now()) {
+          passed.push(arrays[currIndex]);
+        }
+        currIndex++;
+      } catch (e) {
+        console.log(e);
       }
-      // not yet
-      else if (arrays[currIndex].dateInt.mulai >= Date.now()) {
-        notyet.push(arrays[currIndex]);
-      }
-      // Current
-      else if (
-        Date.now() >= arrays[currIndex].dateInt.mulai &&
-        Date.now() <= arrays[currIndex].dateInt.akhir
-      ) {
-        currents.push(arrays[currIndex]);
-      }
-      // Passed
-      else if (arrays[currIndex].dateInt.akhir <= Date.now()) {
-        passed.push(arrays[currIndex]);
-      }
-      currIndex++;
     } else if (index !== 2) {
       index++;
     }
   });
 
-  // currents.push({
-  //   no: "99",
-  //   nama: "Oktavian",
-  //   nim: "1915016074",
-  //   judul: "Makan",
-  //   sempro: true,
-  //   semhas: false,
-  //   pendadaran: false,
-  //   jadwal: {
-  //     tanggal: "Hari/Tgl : Senin, 27 Februari 2023",
-  //     jam: "Pukul     : 10.00-12.00 wita",
-  //     ruang: "Ruang   : Gedung Lab Lantai 2 D211",
-  //   },
-  //   date: {
-  //     day: {
-  //       hari: "Senin",
-  //       tanggal: "27",
-  //       bulan: "02",
-  //       bulanAsli: "Februari",
-  //       tahun: "2023",
-  //     },
-  //     time: {
-  //       jamMulai: "10:00",
-  //       jamAkhir: "12:00",
-  //     },
-  //   },
-  //   dateInt: {
-  //     mulai: getDateTemp(-1, 15).mulai,
-  //     akhir: getDateTemp(-1, 15).akhir,
-  //   },
-  // });
+  console.log("MAKAN");
 
   notyet.sort((a, b) => {
     return a.dateInt.mulai - b.dateInt.mulai;
