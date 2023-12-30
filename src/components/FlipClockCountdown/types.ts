@@ -1,4 +1,5 @@
-import React from 'react';
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+import type React from "react";
 
 export type Digit = number | string;
 
@@ -37,7 +38,10 @@ export interface FlipClockCountdownProps
    * Props to be passed to div element that is container for all elements.
    * You can use this if you want to style or select the whole container.
    */
-  readonly containerProps?: React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>;
+  readonly containerProps?: React.DetailedHTMLProps<
+    React.HTMLAttributes<HTMLDivElement>,
+    HTMLDivElement
+  >;
   /**
    * A callback will be called when countdown completed.
    */
@@ -87,15 +91,18 @@ export interface FlipClockCountdownProps
    * The style will be applied to separator (colon), includes `size` and `color`.
    */
   separatorStyle?: {
-    color?: React.CSSProperties['color'];
+    // @ts-ignore gamasalah
+    color?: React.CSSProperties["color"];
     size?: number | string;
   };
   /**
    * The style will be applied to divider, includes `color` and `height`.
    */
   dividerStyle?: {
-    color?: React.CSSProperties['color'];
-    height?: React.CSSProperties['borderBottomWidth'];
+    // @ts-ignore gamasalah
+    color?: React.CSSProperties["color"];
+    // @ts-ignore gamasalah
+    height?: React.CSSProperties["borderBottomWidth"];
   };
   /**
    * Duration (in second) when flip card. Valid value in range (0, 1).

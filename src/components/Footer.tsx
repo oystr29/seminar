@@ -1,4 +1,3 @@
-import Link from "next/link";
 import NextJSIcon from "./icon/NextJSIcon";
 import TailwindCSSIcon from "./icon/TailwindIcon";
 import TrpcIcon from "./icon/trpc-icon";
@@ -11,11 +10,7 @@ const Footer = () => {
         <a target="_blank" rel="noopener noreferrer" href="https://nextjs.org/">
           <NextJSIcon className="mr-3 h-3 fill-white" />
         </a>
-        <a
-          target="_blank"
-          rel="noopener noreferrer"
-          href="https://tailwindcss.com/"
-        >
+        <a target="_blank" rel="noopener noreferrer" href="https://tailwindcss.com/">
           <TailwindCSSIcon className="mr-3 h-6" />
         </a>
         <a target="_blank" rel="noopener noreferrer" href="https://trpc.io/">

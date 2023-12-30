@@ -7,15 +7,12 @@ import { useRouter } from "next/router";
 import ScrollToBottomBtn from "~/components/ScrollToBottomBtn";
 import ScrollToTopBtn from "~/components/ScrollToTopBtn";
 import { FiArrowUpRight } from "react-icons/fi";
-import {
-  HiDownload,
-  HiOutlineDocumentDuplicate,
-  HiOutlineHome,
-} from "react-icons/hi";
+import { HiDownload, HiOutlineDocumentDuplicate, HiOutlineHome } from "react-icons/hi";
 import { BsFileEarmarkSpreadsheet } from "react-icons/bs";
 import { VscGithubAlt } from "react-icons/vsc";
 import { TbCoffee } from "react-icons/tb";
-import { GrInstallOption } from "react-icons/gr";
+import { ErrorBoundary } from "react-error-boundary";
+import ErrorPage from "~/components/ErrorPage";
 
 interface BeforeInstallPromptEvent extends Event {
   readonly platforms: string[];
@@ -60,10 +57,17 @@ const links: Array<{
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
-  const [openSheet, setOpenSheet] = useState(false);
+  const { isOpenSheet } = router.query;
+  const onChangeOpenSheet = async (isOpenSheet: string | undefined) => {
+    await router.push({
+      pathname: "",
+      query: { ...router.query, isOpenSheet },
+    });
+  };
 
-  const [deferredPrompt, setDeferredPrompt] =
-    useState<BeforeInstallPromptEvent | null>(null);
+  const [, setOpenSheet] = useState(false);
+
+  const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
   const [isInstall, setIsInstall] = useState(true);
 
   async function listenUserAction() {
@@ -91,19 +95,19 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <Header
         isInstall={isInstall}
         listenUserAction={listenUserAction}
-        setOpenSheet={setOpenSheet}
+        setOpenSheet={() => onChangeOpenSheet("1")}
       />
       <main className="container px-4 mt-10 h-full min-h-screen sm:px-0 sm:mx-auto">
         <div className="flex fixed right-5 bottom-5 flex-col gap-2 justify-center items-center">
           <ScrollToTopBtn />
           <ScrollToBottomBtn />
         </div>
-        {children}
+        <ErrorBoundary fallback={<ErrorPage emoji="😭" />}>{children}</ErrorBoundary>
       </main>
       <Sheet
-        isOpen={openSheet}
-        onClose={() => {
-          setOpenSheet(false);
+        isOpen={!!isOpenSheet}
+        onClose={async () => {
+          onChangeOpenSheet(undefined);
         }}
         snapPoints={[600, 400, 0]}
         initialSnap={1}
@@ -112,9 +116,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           <Sheet.Header className="bg-gray-800" />
           <Sheet.Content className="bg-gray-800">
             <div className="py-5 w-full">
-              <div
-                className={`${!isInstall ? "border-b border-b-gray-400" : ""}`}
-              >
+              <div className={`${!isInstall ? "border-b border-b-gray-400" : ""}`}>
                 {links.map((link) => (
                   <button
                     key={link.href}
@@ -152,7 +154,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         </Sheet.Container>
         <Sheet.Backdrop
           onTap={() => {
-            setOpenSheet(false);
+            onChangeOpenSheet(undefined);
           }}
         />
       </Sheet>
