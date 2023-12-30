@@ -13,7 +13,7 @@ type HeaderProps = {
 
 const links: { name: string; href: string; out?: boolean }[] = [
   { name: "Home", href: "/" },
-  // { name: "Berkas", href: "/docs" },
+  { name: "Berkas", href: "/berkas" },
   { name: "Sheet", href: "https://s.id/JadwalSeminarSkripsi", out: true },
   {
     name: "Donasi",
