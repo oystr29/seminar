@@ -1,1 +1,101 @@
-if(!self.define){let e,s={};const a=(a,i)=>(a=new URL(a+".js",i).href,s[a]||new Promise((s=>{if("document"in self){const e=document.createElement("script");e.src=a,e.onload=s,document.head.appendChild(e)}else e=a,importScripts(a),s()})).then((()=>{let e=s[a];if(!e)throw new Error(`Module ${a} didn’t register its module`);return e})));self.define=(i,n)=>{const o=e||("document"in self?document.currentScript.src:"")||location.href;if(s[o])return;let c={};const r=e=>a(e,o),t={module:{uri:o},exports:c,require:r};s[o]=Promise.all(i.map((e=>t[e]||r(e)))).then((e=>(n(...e),c)))}}define(["./workbox-7028bf80"],(function(e){"use strict";importScripts(),self.skipWaiting(),e.clientsClaim(),e.precacheAndRoute([{url:"/_next/static/FoLc9O8CZYe05KyOsEqrn/_buildManifest.js",revision:"eaab91930f895a16092dbcffe62542ef"},{url:"/_next/static/FoLc9O8CZYe05KyOsEqrn/_ssgManifest.js",revision:"b6652df95db52feb4daf4eca35380933"},{url:"/_next/static/chunks/109-744b924d7637d1c5.js",revision:"744b924d7637d1c5"},{url:"/_next/static/chunks/580e9919-331ea2ba45a47800.js",revision:"331ea2ba45a47800"},{url:"/_next/static/chunks/a06ebf6c-ff580daf439cf827.js",revision:"ff580daf439cf827"},{url:"/_next/static/chunks/framework-6ab2e0a3e5a0915a.js",revision:"6ab2e0a3e5a0915a"},{url:"/_next/static/chunks/main-816a11482504b4d7.js",revision:"816a11482504b4d7"},{url:"/_next/static/chunks/pages/_app-ed744f328ff8f065.js",revision:"ed744f328ff8f065"},{url:"/_next/static/chunks/pages/_error-8eaf738f1d9306a2.js",revision:"8eaf738f1d9306a2"},{url:"/_next/static/chunks/pages/_layout-3948d0d585e65a1c.js",revision:"3948d0d585e65a1c"},{url:"/_next/static/chunks/pages/docs-55a07da57456efbf.js",revision:"55a07da57456efbf"},{url:"/_next/static/chunks/pages/index-a119efef8fab2890.js",revision:"a119efef8fab2890"},{url:"/_next/static/chunks/polyfills-c67a75d1b6f99dc8.js",revision:"837c0df77fd5009c9e46d446188ecfd0"},{url:"/_next/static/chunks/webpack-efdab446b2c4fcf1.js",revision:"efdab446b2c4fcf1"},{url:"/_next/static/css/2647637e1883f763.css",revision:"2647637e1883f763"},{url:"/_next/static/css/f971eb1805b78983.css",revision:"f971eb1805b78983"},{url:"/assets/icons/android/android-launchericon-144-144.png",revision:"bb9aa9983a46b1bdb8b669e98641654d"},{url:"/assets/icons/android/android-launchericon-192-192.png",revision:"242a7ad5368e97d41406f94756b8bf56"},{url:"/assets/icons/android/android-launchericon-48-48.png",revision:"2b72947ad2c5a4a419b553355a7ed96d"},{url:"/assets/icons/android/android-launchericon-512-512.png",revision:"7348d6213510cd637d3467654797f6e8"},{url:"/assets/icons/android/android-launchericon-72-72.png",revision:"d0f8640ba6bd296241727010c05265e2"},{url:"/assets/icons/android/android-launchericon-96-96.png",revision:"5463a1b268a70bd7ec77a012915e44a3"},{url:"/assets/icons/icons.json",revision:"5dbbc3fe59816e65ba28e355a58ea45c"},{url:"/assets/icons/ios/100.png",revision:"4a2156ca4ae8b08444107ec9a06a2aca"},{url:"/assets/icons/ios/1024.png",revision:"595f23d3fc2153685add057af541d072"},{url:"/assets/icons/ios/114.png",revision:"e951bf28d1e8cb06f93a858cda6c5953"},{url:"/assets/icons/ios/120.png",revision:"972c0871883f196b470e3528d15cf44b"},{url:"/assets/icons/ios/128.png",revision:"39176fbac751b448a4186453d16782ec"},{url:"/assets/icons/ios/144.png",revision:"bb9aa9983a46b1bdb8b669e98641654d"},{url:"/assets/icons/ios/152.png",revision:"bbf40a54bdd61199aaf45b1f16da6c30"},{url:"/assets/icons/ios/16.png",revision:"df3b6a2ca0098089ef6dcbde5f6c5161"},{url:"/assets/icons/ios/167.png",revision:"51e2cd00996cc9b3d9ff3f592fb25cbe"},{url:"/assets/icons/ios/180.png",revision:"d26dee247ad1c227803cf2f93f1a99e3"},{url:"/assets/icons/ios/192.png",revision:"242a7ad5368e97d41406f94756b8bf56"},{url:"/assets/icons/ios/20.png",revision:"e926e7e7929d50db32eae314d4e4fdce"},{url:"/assets/icons/ios/256.png",revision:"8c99c5fb16114950d66a82d7fb3322f1"},{url:"/assets/icons/ios/29.png",revision:"9137bbae9cbfabc9fdd660cad814c0c2"},{url:"/assets/icons/ios/32.png",revision:"225a57a406bdbe5d70cf02db4af4e496"},{url:"/assets/icons/ios/40.png",revision:"c19f3933a784df9e0adb2c37d0375fd4"},{url:"/assets/icons/ios/50.png",revision:"b9402b814b12ec0922251e7502fb903a"},{url:"/assets/icons/ios/512.png",revision:"7348d6213510cd637d3467654797f6e8"},{url:"/assets/icons/ios/57.png",revision:"86e22c9a7a60063c4596e0e053635b4c"},{url:"/assets/icons/ios/58.png",revision:"df3c1bf1c9394b79644f383759d25fd7"},{url:"/assets/icons/ios/60.png",revision:"52a9cd022ae78f2201125e1388dd5014"},{url:"/assets/icons/ios/64.png",revision:"342c3704541bddd8fff54f71f960992c"},{url:"/assets/icons/ios/72.png",revision:"d0f8640ba6bd296241727010c05265e2"},{url:"/assets/icons/ios/76.png",revision:"2f46384d76212d0bcb07719d8b1fe6bc"},{url:"/assets/icons/ios/80.png",revision:"4c8ace43e8f2b8bacf622f3608b0e667"},{url:"/assets/icons/ios/87.png",revision:"d876678edc191fbd5f75b362e483c8a5"},{url:"/assets/icons/logo.png",revision:"e9e7ba28711715f857e12e6f818ce44b"},{url:"/assets/icons/windows11/LargeTile.scale-100.png",revision:"c90d29c8c775248c4445ce81d8816072"},{url:"/assets/icons/windows11/LargeTile.scale-125.png",revision:"d4acefdb77e18b812320ecaac42b4aee"},{url:"/assets/icons/windows11/LargeTile.scale-150.png",revision:"f88ce80e13f7932b93eeb9a0dc70c46f"},{url:"/assets/icons/windows11/LargeTile.scale-200.png",revision:"65c5e579f9e28e9037353ac224698da3"},{url:"/assets/icons/windows11/LargeTile.scale-400.png",revision:"8c61bf3866493fd501156f5c4818dd66"},{url:"/assets/icons/windows11/SmallTile.scale-100.png",revision:"be7e51476d10ad73335e3cb1a4aa58ad"},{url:"/assets/icons/windows11/SmallTile.scale-125.png",revision:"38d27473c88262c318279a5c2e6d3426"},{url:"/assets/icons/windows11/SmallTile.scale-150.png",revision:"e0bd349ffa3c43e36e516ec020633350"},{url:"/assets/icons/windows11/SmallTile.scale-200.png",revision:"96e5bc64de7f2ca12a01465767656f97"},{url:"/assets/icons/windows11/SmallTile.scale-400.png",revision:"b0a7d096f81b4e54ba4f1a573f2f3d87"},{url:"/assets/icons/windows11/SplashScreen.scale-100.png",revision:"f493f61779deb7ba061a73710dbf44da"},{url:"/assets/icons/windows11/SplashScreen.scale-125.png",revision:"3dc3ed79136a23234a192929c64c2f61"},{url:"/assets/icons/windows11/SplashScreen.scale-150.png",revision:"8299ca0725af7a6d398466a1f7c45c18"},{url:"/assets/icons/windows11/SplashScreen.scale-200.png",revision:"a190fea4d00abfec837e24cffba4115e"},{url:"/assets/icons/windows11/SplashScreen.scale-400.png",revision:"ffa2b3e2e86ec98e9bfbd7e8426e92f9"},{url:"/assets/icons/windows11/Square150x150Logo.scale-100.png",revision:"f32ef28a8c3a6b141ccf63b0d77982d5"},{url:"/assets/icons/windows11/Square150x150Logo.scale-125.png",revision:"d078de81664ff8bacff78eb07bfa7028"},{url:"/assets/icons/windows11/Square150x150Logo.scale-150.png",revision:"be0da811dd989427c924990ee6a4ddc3"},{url:"/assets/icons/windows11/Square150x150Logo.scale-200.png",revision:"93db5af43b42165c80722d294ecbb71d"},{url:"/assets/icons/windows11/Square150x150Logo.scale-400.png",revision:"d3a193175ff22f0ada425bc465baa68f"},{url:"/assets/icons/windows11/Square44x44Logo.altform-lightunplated_targetsize-16.png",revision:"df3b6a2ca0098089ef6dcbde5f6c5161"},{url:"/assets/icons/windows11/Square44x44Logo.altform-lightunplated_targetsize-20.png",revision:"e926e7e7929d50db32eae314d4e4fdce"},{url:"/assets/icons/windows11/Square44x44Logo.altform-lightunplated_targetsize-24.png",revision:"d415ceae32ce40170f04e47fa29e4620"},{url:"/assets/icons/windows11/Square44x44Logo.altform-lightunplated_targetsize-256.png",revision:"8c99c5fb16114950d66a82d7fb3322f1"},{url:"/assets/icons/windows11/Square44x44Logo.altform-lightunplated_targetsize-30.png",revision:"46e1ea44b3da34e20e8d90cf231e0472"},{url:"/assets/icons/windows11/Square44x44Logo.altform-lightunplated_targetsize-32.png",revision:"225a57a406bdbe5d70cf02db4af4e496"},{url:"/assets/icons/windows11/Square44x44Logo.altform-lightunplated_targetsize-36.png",revision:"30daa696ccfe82096f6664e7caf65b8c"},{url:"/assets/icons/windows11/Square44x44Logo.altform-lightunplated_targetsize-40.png",revision:"c19f3933a784df9e0adb2c37d0375fd4"},{url:"/assets/icons/windows11/Square44x44Logo.altform-lightunplated_targetsize-44.png",revision:"ce3fe94f3e3229b9450861fa7be6393a"},{url:"/assets/icons/windows11/Square44x44Logo.altform-lightunplated_targetsize-48.png",revision:"2b72947ad2c5a4a419b553355a7ed96d"},{url:"/assets/icons/windows11/Square44x44Logo.altform-lightunplated_targetsize-60.png",revision:"52a9cd022ae78f2201125e1388dd5014"},{url:"/assets/icons/windows11/Square44x44Logo.altform-lightunplated_targetsize-64.png",revision:"342c3704541bddd8fff54f71f960992c"},{url:"/assets/icons/windows11/Square44x44Logo.altform-lightunplated_targetsize-72.png",revision:"d0f8640ba6bd296241727010c05265e2"},{url:"/assets/icons/windows11/Square44x44Logo.altform-lightunplated_targetsize-80.png",revision:"4c8ace43e8f2b8bacf622f3608b0e667"},{url:"/assets/icons/windows11/Square44x44Logo.altform-lightunplated_targetsize-96.png",revision:"5463a1b268a70bd7ec77a012915e44a3"},{url:"/assets/icons/windows11/Square44x44Logo.altform-unplated_targetsize-16.png",revision:"df3b6a2ca0098089ef6dcbde5f6c5161"},{url:"/assets/icons/windows11/Square44x44Logo.altform-unplated_targetsize-20.png",revision:"e926e7e7929d50db32eae314d4e4fdce"},{url:"/assets/icons/windows11/Square44x44Logo.altform-unplated_targetsize-24.png",revision:"d415ceae32ce40170f04e47fa29e4620"},{url:"/assets/icons/windows11/Square44x44Logo.altform-unplated_targetsize-256.png",revision:"8c99c5fb16114950d66a82d7fb3322f1"},{url:"/assets/icons/windows11/Square44x44Logo.altform-unplated_targetsize-30.png",revision:"46e1ea44b3da34e20e8d90cf231e0472"},{url:"/assets/icons/windows11/Square44x44Logo.altform-unplated_targetsize-32.png",revision:"225a57a406bdbe5d70cf02db4af4e496"},{url:"/assets/icons/windows11/Square44x44Logo.altform-unplated_targetsize-36.png",revision:"30daa696ccfe82096f6664e7caf65b8c"},{url:"/assets/icons/windows11/Square44x44Logo.altform-unplated_targetsize-40.png",revision:"c19f3933a784df9e0adb2c37d0375fd4"},{url:"/assets/icons/windows11/Square44x44Logo.altform-unplated_targetsize-44.png",revision:"ce3fe94f3e3229b9450861fa7be6393a"},{url:"/assets/icons/windows11/Square44x44Logo.altform-unplated_targetsize-48.png",revision:"2b72947ad2c5a4a419b553355a7ed96d"},{url:"/assets/icons/windows11/Square44x44Logo.altform-unplated_targetsize-60.png",revision:"52a9cd022ae78f2201125e1388dd5014"},{url:"/assets/icons/windows11/Square44x44Logo.altform-unplated_targetsize-64.png",revision:"342c3704541bddd8fff54f71f960992c"},{url:"/assets/icons/windows11/Square44x44Logo.altform-unplated_targetsize-72.png",revision:"d0f8640ba6bd296241727010c05265e2"},{url:"/assets/icons/windows11/Square44x44Logo.altform-unplated_targetsize-80.png",revision:"4c8ace43e8f2b8bacf622f3608b0e667"},{url:"/assets/icons/windows11/Square44x44Logo.altform-unplated_targetsize-96.png",revision:"5463a1b268a70bd7ec77a012915e44a3"},{url:"/assets/icons/windows11/Square44x44Logo.scale-100.png",revision:"ce3fe94f3e3229b9450861fa7be6393a"},{url:"/assets/icons/windows11/Square44x44Logo.scale-125.png",revision:"51039dddbcdcc092f54d1fc6c891a9bb"},{url:"/assets/icons/windows11/Square44x44Logo.scale-150.png",revision:"660d7db3c5c896b606c76fae3d873283"},{url:"/assets/icons/windows11/Square44x44Logo.scale-200.png",revision:"6b7ab6bc0e4d2bf0fcf6404db0255afb"},{url:"/assets/icons/windows11/Square44x44Logo.scale-400.png",revision:"7bfbf3720bbf2fbcec629c835b476afc"},{url:"/assets/icons/windows11/Square44x44Logo.targetsize-16.png",revision:"df3b6a2ca0098089ef6dcbde5f6c5161"},{url:"/assets/icons/windows11/Square44x44Logo.targetsize-20.png",revision:"e926e7e7929d50db32eae314d4e4fdce"},{url:"/assets/icons/windows11/Square44x44Logo.targetsize-24.png",revision:"d415ceae32ce40170f04e47fa29e4620"},{url:"/assets/icons/windows11/Square44x44Logo.targetsize-256.png",revision:"8c99c5fb16114950d66a82d7fb3322f1"},{url:"/assets/icons/windows11/Square44x44Logo.targetsize-30.png",revision:"46e1ea44b3da34e20e8d90cf231e0472"},{url:"/assets/icons/windows11/Square44x44Logo.targetsize-32.png",revision:"225a57a406bdbe5d70cf02db4af4e496"},{url:"/assets/icons/windows11/Square44x44Logo.targetsize-36.png",revision:"30daa696ccfe82096f6664e7caf65b8c"},{url:"/assets/icons/windows11/Square44x44Logo.targetsize-40.png",revision:"c19f3933a784df9e0adb2c37d0375fd4"},{url:"/assets/icons/windows11/Square44x44Logo.targetsize-44.png",revision:"ce3fe94f3e3229b9450861fa7be6393a"},{url:"/assets/icons/windows11/Square44x44Logo.targetsize-48.png",revision:"2b72947ad2c5a4a419b553355a7ed96d"},{url:"/assets/icons/windows11/Square44x44Logo.targetsize-60.png",revision:"52a9cd022ae78f2201125e1388dd5014"},{url:"/assets/icons/windows11/Square44x44Logo.targetsize-64.png",revision:"342c3704541bddd8fff54f71f960992c"},{url:"/assets/icons/windows11/Square44x44Logo.targetsize-72.png",revision:"d0f8640ba6bd296241727010c05265e2"},{url:"/assets/icons/windows11/Square44x44Logo.targetsize-80.png",revision:"4c8ace43e8f2b8bacf622f3608b0e667"},{url:"/assets/icons/windows11/Square44x44Logo.targetsize-96.png",revision:"5463a1b268a70bd7ec77a012915e44a3"},{url:"/assets/icons/windows11/StoreLogo.scale-100.png",revision:"92c43ee918d6900cac8becd891ad294d"},{url:"/assets/icons/windows11/StoreLogo.scale-125.png",revision:"6e335dbcbfdb8a0d0c7a021f10e12616"},{url:"/assets/icons/windows11/StoreLogo.scale-150.png",revision:"47bc309d1f20a66f5b91b8550c2112d2"},{url:"/assets/icons/windows11/StoreLogo.scale-200.png",revision:"ed70b966c686669caacb11246dfc8e3e"},{url:"/assets/icons/windows11/StoreLogo.scale-400.png",revision:"b1c6999f86d01044cacade9060fb4277"},{url:"/assets/icons/windows11/Wide310x150Logo.scale-100.png",revision:"79cfedecca030f334e916bf79434a65d"},{url:"/assets/icons/windows11/Wide310x150Logo.scale-125.png",revision:"8d216e160e43a91550befd80e184dcec"},{url:"/assets/icons/windows11/Wide310x150Logo.scale-150.png",revision:"e7b41889e0a45cfcad80f06e9f576f87"},{url:"/assets/icons/windows11/Wide310x150Logo.scale-200.png",revision:"f493f61779deb7ba061a73710dbf44da"},{url:"/assets/icons/windows11/Wide310x150Logo.scale-400.png",revision:"a190fea4d00abfec837e24cffba4115e"},{url:"/favicon.ico",revision:"c30c7d42707a47a3f4591831641e50dc"},{url:"/manifest.webmanifest",revision:"0ad112c2c83238d10c9fe7a395e309e1"},{url:"/vercel.svg",revision:"4b4f1876502eb6721764637fe5c41702"}],{ignoreURLParametersMatching:[]}),e.cleanupOutdatedCaches(),e.registerRoute("/",new e.NetworkFirst({cacheName:"start-url",plugins:[{cacheWillUpdate:async({request:e,response:s,event:a,state:i})=>s&&"opaqueredirect"===s.type?new Response(s.body,{status:200,statusText:"OK",headers:s.headers}):s}]}),"GET"),e.registerRoute(/^https:\/\/fonts\.(?:gstatic)\.com\/.*/i,new e.CacheFirst({cacheName:"google-fonts-webfonts",plugins:[new e.ExpirationPlugin({maxEntries:4,maxAgeSeconds:31536e3})]}),"GET"),e.registerRoute(/^https:\/\/fonts\.(?:googleapis)\.com\/.*/i,new e.StaleWhileRevalidate({cacheName:"google-fonts-stylesheets",plugins:[new e.ExpirationPlugin({maxEntries:4,maxAgeSeconds:604800})]}),"GET"),e.registerRoute(/\.(?:eot|otf|ttc|ttf|woff|woff2|font.css)$/i,new e.StaleWhileRevalidate({cacheName:"static-font-assets",plugins:[new e.ExpirationPlugin({maxEntries:4,maxAgeSeconds:604800})]}),"GET"),e.registerRoute(/\.(?:jpg|jpeg|gif|png|svg|ico|webp)$/i,new e.StaleWhileRevalidate({cacheName:"static-image-assets",plugins:[new e.ExpirationPlugin({maxEntries:64,maxAgeSeconds:86400})]}),"GET"),e.registerRoute(/\/_next\/image\?url=.+$/i,new e.StaleWhileRevalidate({cacheName:"next-image",plugins:[new e.ExpirationPlugin({maxEntries:64,maxAgeSeconds:86400})]}),"GET"),e.registerRoute(/\.(?:mp3|wav|ogg)$/i,new e.CacheFirst({cacheName:"static-audio-assets",plugins:[new e.RangeRequestsPlugin,new e.ExpirationPlugin({maxEntries:32,maxAgeSeconds:86400})]}),"GET"),e.registerRoute(/\.(?:mp4)$/i,new e.CacheFirst({cacheName:"static-video-assets",plugins:[new e.RangeRequestsPlugin,new e.ExpirationPlugin({maxEntries:32,maxAgeSeconds:86400})]}),"GET"),e.registerRoute(/\.(?:js)$/i,new e.StaleWhileRevalidate({cacheName:"static-js-assets",plugins:[new e.ExpirationPlugin({maxEntries:32,maxAgeSeconds:86400})]}),"GET"),e.registerRoute(/\.(?:css|less)$/i,new e.StaleWhileRevalidate({cacheName:"static-style-assets",plugins:[new e.ExpirationPlugin({maxEntries:32,maxAgeSeconds:86400})]}),"GET"),e.registerRoute(/\/_next\/data\/.+\/.+\.json$/i,new e.StaleWhileRevalidate({cacheName:"next-data",plugins:[new e.ExpirationPlugin({maxEntries:32,maxAgeSeconds:86400})]}),"GET"),e.registerRoute(/\.(?:json|xml|csv)$/i,new e.NetworkFirst({cacheName:"static-data-assets",plugins:[new e.ExpirationPlugin({maxEntries:32,maxAgeSeconds:86400})]}),"GET"),e.registerRoute((({url:e})=>{if(!(self.origin===e.origin))return!1;const s=e.pathname;return!s.startsWith("/api/auth/")&&!!s.startsWith("/api/")}),new e.NetworkFirst({cacheName:"apis",networkTimeoutSeconds:10,plugins:[new e.ExpirationPlugin({maxEntries:16,maxAgeSeconds:86400})]}),"GET"),e.registerRoute((({url:e})=>{if(!(self.origin===e.origin))return!1;return!e.pathname.startsWith("/api/")}),new e.NetworkFirst({cacheName:"others",networkTimeoutSeconds:10,plugins:[new e.ExpirationPlugin({maxEntries:32,maxAgeSeconds:86400})]}),"GET"),e.registerRoute((({url:e})=>!(self.origin===e.origin)),new e.NetworkFirst({cacheName:"cross-origin",networkTimeoutSeconds:10,plugins:[new e.ExpirationPlugin({maxEntries:32,maxAgeSeconds:3600})]}),"GET")}));
+/**
+ * Copyright 2018 Google Inc. All Rights Reserved.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+// If the loader is already loaded, just stop.
+if (!self.define) {
+  let registry = {};
+
+  // Used for `eval` and `importScripts` where we can't get script URL by other means.
+  // In both cases, it's safe to use a global var because those functions are synchronous.
+  let nextDefineUri;
+
+  const singleRequire = (uri, parentUri) => {
+    uri = new URL(uri + ".js", parentUri).href;
+    return registry[uri] || (
+      
+        new Promise(resolve => {
+          if ("document" in self) {
+            const script = document.createElement("script");
+            script.src = uri;
+            script.onload = resolve;
+            document.head.appendChild(script);
+          } else {
+            nextDefineUri = uri;
+            importScripts(uri);
+            resolve();
+          }
+        })
+      
+      .then(() => {
+        let promise = registry[uri];
+        if (!promise) {
+          throw new Error(`Module ${uri} didn’t register its module`);
+        }
+        return promise;
+      })
+    );
+  };
+
+  self.define = (depsNames, factory) => {
+    const uri = nextDefineUri || ("document" in self ? document.currentScript.src : "") || location.href;
+    if (registry[uri]) {
+      // Module is already loading or loaded.
+      return;
+    }
+    let exports = {};
+    const require = depUri => singleRequire(depUri, uri);
+    const specialDeps = {
+      module: { uri },
+      exports,
+      require
+    };
+    registry[uri] = Promise.all(depsNames.map(
+      depName => specialDeps[depName] || require(depName)
+    )).then(deps => {
+      factory(...deps);
+      return exports;
+    });
+  };
+}
+define(['./workbox-212689ce'], (function (workbox) { 'use strict';
+
+  importScripts();
+  self.skipWaiting();
+  workbox.clientsClaim();
+  workbox.registerRoute("/", new workbox.NetworkFirst({
+    "cacheName": "start-url",
+    plugins: [{
+      cacheWillUpdate: async ({
+        request,
+        response,
+        event,
+        state
+      }) => {
+        if (response && response.type === 'opaqueredirect') {
+          return new Response(response.body, {
+            status: 200,
+            statusText: 'OK',
+            headers: response.headers
+          });
+        }
+        return response;
+      }
+    }]
+  }), 'GET');
+  workbox.registerRoute(/.*/i, new workbox.NetworkOnly({
+    "cacheName": "dev",
+    plugins: []
+  }), 'GET');
+
+}));
+//# sourceMappingURL=sw.js.map
