@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import type React from "react";
+import type * as CSS from "csstype";
 
 export type Digit = number | string;
 
@@ -86,7 +87,7 @@ export interface FlipClockCountdownProps
   /**
    * The style will be applied to digit blocks like `font-size`, `color`, `width`, `height`, etc.
    */
-  digitBlockStyle?: React.CSSProperties;
+  digitBlockStyle?: CSS.Properties;
   /**
    * The style will be applied to separator (colon), includes `size` and `color`.
    */

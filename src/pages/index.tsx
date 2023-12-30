@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { trpc } from "~/utils/trpc";
 import Item from "~/components/Item";
 import ErrorPage from "~/components/ErrorPage";
@@ -52,9 +53,9 @@ const classNames: ClassNames = {
   searchBox:
     "w-full py-2 pl-8 text-sm text-gray-500 bg-slate-950 border border-gray-500 rounded focus:border-purple-300 focus:ring-0 focus:outline-none",
 
-  listItem: ({ isSelected }) =>
+  listItem: (value) =>
     `block transition w-full duration-200 px-2 py-2 mb-1 cursor-pointer select-none truncate rounded ${
-      isSelected
+      value?.isSelected
         ? `text-white bg-purple-500`
         : `text-gray-400 hover:bg-purple-200 hover:text-purple-600`
     }`,
@@ -128,7 +129,8 @@ export default function Home() {
               classNames={classNames}
               onChange={(e) => {
                 setParams({
-                  sheet: `${e?.value as string}`,
+                  // @ts-ignore
+                  sheet: `${e.value as string}`,
                 });
               }}
               primaryColor="purple"
