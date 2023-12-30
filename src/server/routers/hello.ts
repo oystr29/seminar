@@ -348,7 +348,7 @@ const helloRouter = router({
     return resSheet.data.sheets;
   }),
   defaultSheetName: procedure.query(() => {
-    return process.env.SHEET_NAME;
+    return process.env.NEXT_PUBLIC_SHEET_NAME;
   }),
 });
 

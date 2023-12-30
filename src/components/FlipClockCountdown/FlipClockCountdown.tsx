@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
+/* eslint-disable react-hooks/exhaustive-deps */
 import styles from "./styles.module.css";
 //
 import clsx from "clsx";
@@ -14,8 +16,8 @@ import { calcTimeDelta, convertToPx, parseTimeDelta } from "./utils";
  * A 3D animated flip clock countdown component for React.
  */
 function FlipClockCountdown({
-  onComplete = () => { },
-  onTick = () => { },
+  onComplete = () => {},
+  onTick = () => {},
   labels = ["Days", "Hours", "Minutes", "Seconds"],
   renderMap = [false, true, true, true],
   showLabels = true,
@@ -68,9 +70,7 @@ function FlipClockCountdown({
   const containerStyles = React.useMemo<React.CSSProperties>(() => {
     const s = {
       "--fcc-flip-duration":
-        duration === undefined || duration < 0 || duration > 1
-          ? undefined
-          : `${duration}s`,
+        duration === undefined || duration < 0 || duration > 1 ? undefined : `${duration}s`,
       "--fcc-digit-block-width": convertToPx(digitBlockStyle?.width),
       "--fcc-digit-block-height": convertToPx(digitBlockStyle?.height),
       "--fcc-shadow": digitBlockStyle?.boxShadow,
@@ -80,25 +80,14 @@ function FlipClockCountdown({
       "--fcc-label-color": labelStyle?.color,
       "--fcc-divider-color": dividerStyle?.color,
       "--fcc-divider-height": convertToPx(dividerStyle?.height),
-      "--fcc-background":
-        digitBlockStyle?.background || digitBlockStyle?.backgroundColor,
+      "--fcc-background": digitBlockStyle?.background || digitBlockStyle?.backgroundColor,
       "--fcc-separator-size": convertToPx(separatorStyle?.size),
-      "--fcc-separator-color": showSeparators
-        ? separatorStyle?.color
-        : "transparent",
+      "--fcc-separator-color": showSeparators ? separatorStyle?.color : "transparent",
       ...style,
     };
 
     return s;
-  }, [
-    style,
-    digitBlockStyle,
-    labelStyle,
-    duration,
-    dividerStyle,
-    separatorStyle,
-    showSeparators,
-  ]);
+  }, [style, digitBlockStyle, labelStyle, duration, dividerStyle, separatorStyle, showSeparators]);
 
   const _digitBlockStyle = React.useMemo(() => {
     if (digitBlockStyle) {
@@ -133,12 +122,8 @@ function FlipClockCountdown({
     ];
     // renderMap.length >= 4 ? renderMap.slice(0, 4) : [true, true, true, true];
     const _labels =
-      labels.length >= 4
-        ? labels.slice(0, 4)
-        : ["Days", "Hours", "Minutes", "Seconds"];
-    const times = Object.values(
-      formatted
-    ) as FlipClockCountdownUnitTimeFormatted[];
+      labels.length >= 4 ? labels.slice(0, 4) : ["Days", "Hours", "Minutes", "Seconds"];
+    const times = Object.values(formatted) as FlipClockCountdownUnitTimeFormatted[];
     const r: [FlipClockCountdownUnitTimeFormatted, string][] = [];
     _renderMap.forEach((show, i) => {
       if (show) {
@@ -148,8 +133,7 @@ function FlipClockCountdown({
     return r;
   }, [renderMap, state]);
 
-  if (state === undefined || sections === undefined)
-    return <React.Fragment></React.Fragment>;
+  if (state === undefined || sections === undefined) return <React.Fragment></React.Fragment>;
 
   if (state?.completed) {
     return <React.Fragment>{children}</React.Fragment>;
@@ -173,10 +157,7 @@ function FlipClockCountdown({
           <React.Fragment key={`digit-block-${idx}`}>
             <div className={styles.fcc__digit_block_container}>
               {showLabels && (
-                <div
-                  className={styles.fcc__digit_block_label}
-                  style={labelStyle}
-                >
+                <div className={styles.fcc__digit_block_label} style={labelStyle}>
                   {label}
                 </div>
               )}
@@ -189,9 +170,7 @@ function FlipClockCountdown({
                 />
               ))}
             </div>
-            {idx < sections.length - 1 && (
-              <div className={styles.fcc__colon}></div>
-            )}
+            {idx < sections.length - 1 && <div className={styles.fcc__colon}></div>}
           </React.Fragment>
         );
       })}

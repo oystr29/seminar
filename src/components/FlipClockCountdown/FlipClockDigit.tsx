@@ -1,7 +1,8 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import clsx from "clsx";
 import React from "react";
 import styles from "./styles.module.css";
-import { Digit, FlipClockCountdownProps } from "./types";
+import { type Digit, type FlipClockCountdownProps } from "./types";
 
 export interface FlipClockDigitProps {
   current: Digit;
@@ -47,16 +48,10 @@ export default function FlipClockDigit(props: FlipClockDigitProps) {
         className={clsx(styles.fcc__card, { [styles.fcc__flipped]: flipped })}
         onTransitionEnd={handleTransitionEnd}
       >
-        <div
-          className={clsx(styles.fcc__card_face, styles.fcc__card_face_front)}
-        >
+        <div className={clsx(styles.fcc__card_face, styles.fcc__card_face_front)}>
           {digit.current}
         </div>
-        <div
-          className={clsx(styles.fcc__card_face, styles.fcc__card_face_back)}
-        >
-          {digit.next}
-        </div>
+        <div className={clsx(styles.fcc__card_face, styles.fcc__card_face_back)}>{digit.next}</div>
       </div>
     </div>
   );

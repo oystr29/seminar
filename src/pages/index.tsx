@@ -3,16 +3,14 @@ import Item from "~/components/Item";
 import ErrorPage from "~/components/ErrorPage";
 import { type DataSeminar } from "~/server/routers/hello";
 import { AiOutlineSearch } from "react-icons/ai";
-import { type InputHTMLAttributes, useState } from "react";
+import { type InputHTMLAttributes } from "react";
 import ItemLoading from "~/components/ItemLoading";
 import Select from "react-tailwindcss-select";
 import { type ClassNames } from "react-tailwindcss-select/dist/components/type";
 import { useRouter } from "next/router";
 import { useDebounce } from "@uidotdev/usehooks";
 
-const InputSearch = (
-  props: InputHTMLAttributes<HTMLInputElement> & { data?: DataSeminar }
-) => {
+const InputSearch = (props: InputHTMLAttributes<HTMLInputElement> & { data?: DataSeminar }) => {
   const hasCurrent = props.data ? props.data.currents.length > 0 : false;
   return (
     <div className="relative mr-4">
@@ -23,8 +21,9 @@ const InputSearch = (
         {...props}
         type="search"
         id="default-search"
-        className={`block w-full p-2 pl-10 ${hasCurrent ? "focus:border-emerald-500" : "focus:border-purple-500"
-          } outline-none text-sm  border rounded-lg  bg-gray-900 border-gray-600 placeholder-gray-400 text-white`}
+        className={`block w-full p-2 pl-10 ${
+          hasCurrent ? "focus:border-emerald-500" : "focus:border-purple-500"
+        } outline-none text-sm  border rounded-lg  bg-gray-900 border-gray-600 placeholder-gray-400 text-white`}
         placeholder="Cari Judul, Nama, atau NIM"
       />
     </div>
@@ -53,25 +52,18 @@ const classNames: ClassNames = {
   searchBox:
     "w-full py-2 pl-8 text-sm text-gray-500 bg-slate-950 border border-gray-500 rounded focus:border-purple-300 focus:ring-0 focus:outline-none",
 
-  listItem: ({
-    // @ts-ignore
-    isSelected,
-  }) =>
-    `block transition w-full duration-200 px-2 py-2 mb-1 cursor-pointer select-none truncate rounded ${isSelected
-      ? `text-white bg-purple-500`
-      : `text-gray-400 hover:bg-purple-200 hover:text-purple-600`
+  listItem: ({ isSelected }) =>
+    `block transition w-full duration-200 px-2 py-2 mb-1 cursor-pointer select-none truncate rounded ${
+      isSelected
+        ? `text-white bg-purple-500`
+        : `text-gray-400 hover:bg-purple-200 hover:text-purple-600`
     }`,
 };
 
 export default function Home() {
-  const [sheetValue, setSheetValue] = useState({
-    label: `${process.env.NEXT_PUBLIC_SHEET_NAME}`,
-    value: `${process.env.NEXT_PUBLIC_SHEET_NAME}`,
-  });
-
   const router = useRouter();
 
-  const { search, sheet, isDrawer } = router.query;
+  const { search, sheet } = router.query;
   const debouncedSearch = useDebounce(search, 600);
 
   const setParams = async (data: Record<string, string>) => {
@@ -88,17 +80,10 @@ export default function Home() {
     );
   };
 
-  const { data, isError } = trpc.hello.seminar.useQuery(
-    {
-      sheet_name: sheet ?? `${process.env.NEXT_PUBLIC_SHEET_NAME}`,
-      search: debouncedSearch,
-    },
-    {
-      onError(err) {
-        console.log(err);
-      },
-    }
-  );
+  const { data, isError } = trpc.hello.seminar.useQuery({
+    sheet_name: sheet ?? `${process.env.NEXT_PUBLIC_SHEET_NAME}`,
+    search: debouncedSearch,
+  });
 
   const { data: sheets } = trpc.hello.sheets.useQuery(undefined);
 
@@ -143,7 +128,6 @@ export default function Home() {
               classNames={classNames}
               onChange={(e) => {
                 setParams({
-                  // @ts-ignore gapapa
                   sheet: `${e?.value as string}`,
                 });
               }}

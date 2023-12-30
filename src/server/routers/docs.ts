@@ -11,10 +11,9 @@ export type Docs = z.infer<typeof docsSchema>;
 
 const docsRouter = router({
   pkl: procedure.query(async () => {
-    const res = await fetch(
-      "http://informatika.ft.unmul.ac.id/index.php/pages/post/Panduan.PKL",
-      { method: "GET" }
-    );
+    const res = await fetch("http://informatika.ft.unmul.ac.id/index.php/pages/post/Panduan.PKL", {
+      method: "GET",
+    });
 
     const data = await res.text();
 
@@ -22,7 +21,7 @@ const docsRouter = router({
 
     const $aArray = $(".post-item-description a");
 
-    const docs: Docs[] = $aArray.get().map((el, i) => {
+    const docs: Docs[] = $aArray.get().map((el) => {
       return {
         text: `${$(el).prop("innerHTML")}`,
         href: `${$(el).attr("href")?.replace(" \t", "").replace(/\s+/g, "")}`,
@@ -43,7 +42,7 @@ const docsRouter = router({
 
     const $aArray = $(".post-item-description a");
 
-    const docs: Docs[] = $aArray.get().map((el, i) => {
+    const docs: Docs[] = $aArray.get().map((el) => {
       return {
         text: `${$(el).prop("innerHTML")}`,
         href: `${$(el).attr("href")?.replace(" \t", "").replace(/\s+/g, "")}`,
@@ -64,7 +63,7 @@ const docsRouter = router({
 
     const $aArray = $(".post-item-description a");
 
-    const docs: Docs[] = $aArray.get().map((el, i) => {
+    const docs: Docs[] = $aArray.get().map((el) => {
       return {
         text: `${$(el).prop("innerHTML")}`,
         href: `${$(el).attr("href")?.replace(" \t", "").replace(/\s+/g, "")}`,

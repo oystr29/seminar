@@ -1,4 +1,4 @@
-import { SVGProps } from "react";
+import { type SVGProps } from "react";
 
 export default function TrpcIcon(props: SVGProps<SVGSVGElement>) {
   return (
@@ -26,20 +26,8 @@ export default function TrpcIcon(props: SVGProps<SVGSVGElement>) {
           points="70.98 28.01 34.5 49.07 34.5 86.12 42.5 81.5 42.5 53.69 70.98 37.24"
           strokeWidth="1.9614"
         />
-        <line
-          x1="27.134"
-          x2="23.055"
-          y1="67.756"
-          y2="70.111"
-          strokeWidth=".99999"
-        />
-        <line
-          x1="9.4783"
-          x2="5.3996"
-          y1="41.713"
-          y2="44.069"
-          strokeWidth=".99999"
-        />
+        <line x1="27.134" x2="23.055" y1="67.756" y2="70.111" strokeWidth=".99999" />
+        <line x1="9.4783" x2="5.3996" y1="41.713" y2="44.069" strokeWidth=".99999" />
       </g>
     </svg>
   );
