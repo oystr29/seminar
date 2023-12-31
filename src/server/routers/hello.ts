@@ -2,7 +2,7 @@ import { google } from "googleapis";
 import { z } from "zod";
 import { procedure, router } from "~/server/trpc";
 
-const slugIDSchema = z.union([z.string(), z.string().array(), z.undefined()]);
+const slugIDSchema = z.union([z.string(), z.string().array(), z.undefined(), z.null()]);
 
 type SlugID = z.infer<typeof slugIDSchema>;
 
