@@ -48,7 +48,7 @@ export default function Berkas() {
                     "py-1 px-2 rounded-lg hover:underline",
                     (dir === folder.id ||
                       ((!dir || !folders.some((e) => e.id === dir)) && i === 0)) &&
-                      "bg-purple-950 text-purple-500 border border-purple-500"
+                      "bg-purple-950 text-purple-400 border border-purple-400"
                   )}
                   key={folder.id}
                 >
@@ -57,10 +57,10 @@ export default function Berkas() {
               ))}
             </Flashlist>
           </div>
-
           <Search
+            disabled={loadFolders}
             defaultValue={q as string}
-            placeholder="Cari Berkas"
+            placeholder={loadFolders ? "Loading..." : "Cari Berkas"}
             onChange={(e) =>
               router.push(
                 { pathname: "", query: { ...router.query, q: e.target.value } },

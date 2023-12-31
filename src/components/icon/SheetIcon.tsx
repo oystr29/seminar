@@ -11,8 +11,7 @@ const SheetIcon = (props: SVGProps<SVGSVGElement>) => {
       viewBox="0 0 49 67"
       version="1.1"
     >
-      <title>Sheets-icon</title>
-      <desc>Created with Sketch.</desc>
+      <title>Source Sheet</title>
       <defs>
         <path
           d="M29.5833333,0 L4.4375,0 C1.996875,0 0,1.996875 0,4.4375 L0,60.6458333 C0,63.0864583 1.996875,65.0833333 4.4375,65.0833333 L42.8958333,65.0833333 C45.3364583,65.0833333 47.3333333,63.0864583 47.3333333,60.6458333 L47.3333333,17.75 L29.5833333,0 Z"

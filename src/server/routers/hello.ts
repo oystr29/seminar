@@ -133,9 +133,7 @@ const getData = async (sheet: SlugID, search: SlugID = "") => {
   const scheduled: Seminar[] = [];
 
   // Auth
-  const credentials = JSON.parse(
-    `${process.env.GOOGLE_APPLICATION_CREDENTIALS}`
-  );
+  const credentials = JSON.parse(`${process.env.GOOGLE_APPLICATION_CREDENTIALS}`);
   const cells = "!A6:I";
   let sheetName = sheet;
   const auth = await google.auth.getClient({
@@ -216,17 +214,17 @@ const getData = async (sheet: SlugID, search: SlugID = "") => {
       property.judul = e[3];
       property.sempro =
         resData?.[i].values?.[4].effectiveFormat?.backgroundColor?.blue === 1 &&
-          resData?.[i].values?.[4].effectiveFormat?.backgroundColor?.blue
+        resData?.[i].values?.[4].effectiveFormat?.backgroundColor?.blue
           ? false
           : true;
       property.semhas =
         resData?.[i].values?.[5].effectiveFormat?.backgroundColor?.blue === 1 &&
-          resData?.[i].values?.[4].effectiveFormat?.backgroundColor?.blue
+        resData?.[i].values?.[4].effectiveFormat?.backgroundColor?.blue
           ? false
           : true;
       property.pendadaran =
         resData?.[i].values?.[6].effectiveFormat?.backgroundColor?.blue === 1 &&
-          resData?.[i].values?.[4].effectiveFormat?.backgroundColor?.blue
+        resData?.[i].values?.[4].effectiveFormat?.backgroundColor?.blue
           ? false
           : true;
       property.jadwal.tanggal = e[7];
@@ -291,29 +289,25 @@ const getData = async (sheet: SlugID, search: SlugID = "") => {
     currents: currents.filter((entry) =>
       Object.values(entry).some(
         (val) =>
-          typeof val === "string" &&
-          val.toLowerCase().includes((search as string).toLowerCase())
+          typeof val === "string" && val.toLowerCase().includes((search as string).toLowerCase())
       )
     ),
     scheduled: scheduled.filter((entry) =>
       Object.values(entry).some(
         (val) =>
-          typeof val === "string" &&
-          val.toLowerCase().includes((search as string).toLowerCase())
+          typeof val === "string" && val.toLowerCase().includes((search as string).toLowerCase())
       )
     ),
     notyet: notyet.filter((entry) =>
       Object.values(entry).some(
         (val) =>
-          typeof val === "string" &&
-          val.toLowerCase().includes((search as string).toLowerCase())
+          typeof val === "string" && val.toLowerCase().includes((search as string).toLowerCase())
       )
     ),
     passed: passed.filter((entry) =>
       Object.values(entry).some(
         (val) =>
-          typeof val === "string" &&
-          val.toLowerCase().includes((search as string).toLowerCase())
+          typeof val === "string" && val.toLowerCase().includes((search as string).toLowerCase())
       )
     ),
     sheetName,
@@ -329,9 +323,7 @@ const helloRouter = router({
     }),
   sheets: procedure.query(async () => {
     // Auth
-    const credentials = JSON.parse(
-      `${process.env.GOOGLE_APPLICATION_CREDENTIALS}`
-    );
+    const credentials = JSON.parse(`${process.env.GOOGLE_APPLICATION_CREDENTIALS}`);
 
     const auth = await google.auth.getClient({
       scopes: ["https://www.googleapis.com/auth/spreadsheets.readonly"],
@@ -345,10 +337,7 @@ const helloRouter = router({
       fields: "sheets(properties(title))",
     });
 
-    return resSheet.data.sheets;
-  }),
-  defaultSheetName: procedure.query(() => {
-    return process.env.NEXT_PUBLIC_SHEET_NAME;
+    return resSheet.data.sheets?.reverse();
   }),
 });
 
