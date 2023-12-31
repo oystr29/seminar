@@ -11,8 +11,13 @@ export type Docs = z.infer<typeof docsSchema>;
 
 const docsRouter = router({
   berkas: procedure
-    .input(z.union([z.string(), z.string().array(), z.undefined(), z.null()]))
-    .query(async ({ input: id }) => {
+    .input(
+      z.object({
+        dir_id: z.union([z.string(), z.string().array(), z.undefined(), z.null()]),
+        search: z.union([z.string(), z.string().array(), z.undefined(), z.null()]),
+      })
+    )
+    .query(async ({ input: { dir_id, search } }) => {
       // Auth
       const credentials = JSON.parse(`${process.env.GOOGLE_APPLICATION_CREDENTIALS}`);
       const auth = await google.auth.getClient({
@@ -28,7 +33,9 @@ const docsRouter = router({
         throw Error("Drive tidak ditemukan");
       }
       const res = await drive.files.list({
-        q: `'${id as string}' in parents and mimeType!='application/vnd.google-apps.folder'`,
+        q: `'${
+          dir_id as string
+        }' in parents and mimeType!='application/vnd.google-apps.folder' and name contains '${search}'`,
         fields:
           "nextPageToken, files(id, name, imageMediaMetadata, webViewLink, mimeType, thumbnailLink, iconLink)",
       });

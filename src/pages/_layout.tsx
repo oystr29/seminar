@@ -33,7 +33,7 @@ const links: Array<{
   {
     icon: <HiOutlineDocumentDuplicate className="w-5 h-5" />,
     name: "Berkas",
-    href: "/docs",
+    href: "/berkas",
   },
   {
     icon: <BsFileEarmarkSpreadsheet className="w-5 h-5" />,
