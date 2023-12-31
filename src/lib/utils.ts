@@ -6,6 +6,6 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 // List skeleton
-export function listSkel(element: JSX.Element, count?: number) {
-  return Array.from({ length: count ?? 4 }, (_, i) => i).map(() => element);
+export function listSkel(element: (key: number) => JSX.Element, count?: number) {
+  return Array.from({ length: count ?? 4 }, (_, i) => i).map((i) => element(i));
 }

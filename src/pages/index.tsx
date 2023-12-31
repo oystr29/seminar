@@ -50,13 +50,19 @@ export default function Home() {
   return (
     <>
       <div className="flex flex-col-reverse md:flex-row items-center gap-4 mb-4">
-        <div className="flex items-center gap-4 overflow-x-auto w-full scrollbar-thin scrollbar-track-gray-900 scrollbar-thumb-black p-1 md:p-0">
+        <div className="flex items-center gap-4 overflow-x-auto w-full scrollbar-thin scrollbar-track-gray-900 scrollbar-thumb-gray-900 p-1 md:p-0">
           <Flashlist
             isLoading={loadSheets}
-            loadingRender={listSkel(<SkeletonLoad width={97} height={23} />, 3)}
+            loadingRender={listSkel(
+              (k) => (
+                <SkeletonLoad key={`sheet-${k}`} width={97} height={23} />
+              ),
+              3
+            )}
           >
             {sheets?.map((sh, i) => (
               <button
+                id={sh.properties?.title ?? ""}
                 onClick={async () => {
                   await router.push(
                     { pathname: "", query: { ...router.query, sheet: sh.properties?.title } },
@@ -67,12 +73,12 @@ export default function Home() {
                   );
                 }}
                 className={cn(
-                  "py-1 px-2 rounded-lg hover:underline whitespace-nowrap",
+                  "py-1 px-2 rounded-lg whitespace-nowrap bg-gray-950/50 hover:bg-gray-950/90 text-white/80",
                   (sheet === sh.properties?.title ||
                     ((!sheet || !sheets.some((e) => e.properties?.title === sheet)) && i === 0)) &&
-                    "bg-purple-950 text-purple-400 border border-purple-400"
+                    "bg-violet-950 text-violet-400  hover:bg-violet-950/90 font-semibold"
                 )}
-                key={sh.properties?.sheetId}
+                key={sh.properties?.title}
               >
                 {sh.properties?.title}
               </button>
@@ -92,7 +98,20 @@ export default function Home() {
           }
         />
       </div>
-      <Flashlist isLoading={!data || isLoading} loadingRender={<HomeClientLoading />}>
+      <Flashlist
+        isFallback={
+          data?.currents.length === 0 && data?.passed.length === 0 && data.notyet.length === 0
+        }
+        fallbackRender={
+          <div className="text-xl w-full text-clip">
+            {search
+              ? `Pencarian jadwal '${search as string}' tidak ditemukan 🤔`
+              : "Sepertinya tidak ada jadwal yang muncul 🤨"}
+          </div>
+        }
+        isLoading={!data || isLoading}
+        loadingRender={<HomeClientLoading />}
+      >
         {data?.currents.length !== 0 &&
           data?.currents.map((e, i) => {
             return <Item e={e} key={`${e.nim}${i}`} type="current" />;

@@ -248,7 +248,9 @@ const getData = async (sheet: SlugID, search: SlugID = "") => {
       }
     } else if (index === 2 && e.length !== 0) {
       if (e[7] !== undefined) {
-        arrays[currIndex].jadwal.ruang = e[7];
+        const ruang = e[7] as string;
+        const ruangArr = ruang.split(":");
+        arrays[currIndex].jadwal.ruang = ruangArr[ruangArr.length - 1].normalize();
       }
     }
 
