@@ -1,5 +1,7 @@
 import Logo from "./Logo";
 import DriveIcon from "./icon/DriveIcon";
+import GithubIcon from "./icon/GithubIcon";
+import InstagramIcon from "./icon/InstagramIcon";
 import NextJSIcon from "./icon/NextJSIcon";
 import SheetIcon from "./icon/SheetIcon";
 import TailwindCSSIcon from "./icon/TailwindIcon";
@@ -8,7 +10,7 @@ import TrpcIcon from "./icon/trpc-icon";
 const Footer = () => {
   return (
     <footer className=" py-5 bg-gray-800 ">
-      <div className="flex justify-between items-center container mx-auto">
+      <div className="flex flex-col md:flex-row justify-between items-center container mx-auto gap-5">
         <div className="flex gap-1 items-center">
           <Logo />
           <p className="text-xl">🤝</p>
@@ -35,7 +37,24 @@ const Footer = () => {
             <TrpcIcon className="h-6" />
           </a>
         </div>
-        <div></div>
+        <div className="flex items-center">
+          <a
+            title="Source Code"
+            target="_blank"
+            rel="noopener noreferrer"
+            href="https://github.com/oktoala/seminar"
+          >
+            <GithubIcon className="h-6 w-6 mr-3" />
+          </a>
+          <a
+            title="Instagram ku"
+            target="_blank"
+            rel="noopener noreferrer"
+            href="https://www.instagram.com/oystr_29"
+          >
+            <InstagramIcon className="h-6 w-6 " />
+          </a>
+        </div>
       </div>
     </footer>
   );

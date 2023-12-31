@@ -1,12 +1,11 @@
-import { HiOutlineChevronDown } from "react-icons/hi";
+import { ChevronDownCircle } from "lucide-react";
 
 const ScrollToBottomBtn = () => {
   return (
-    <HiOutlineChevronDown
-      onClick={() =>
-        window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" })
-      }
-      className="p-1 text-3xl rounded-full hover:bg-black bg-black/60"
+    <ChevronDownCircle
+      size={32}
+      onClick={() => window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" })}
+      className="p-1 rounded-full hover:text-white text-white/60"
     />
   );
 };

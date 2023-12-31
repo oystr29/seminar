@@ -1,11 +1,4 @@
-import {
-  HiDocument,
-  HiOutlineCalendar,
-  HiOutlineClock,
-  HiOutlineLocationMarker,
-  HiPresentationChartLine,
-} from "react-icons/hi";
-import { MdSchool } from "react-icons/md";
+import { CalendarDays, Clock, FileText, GraduationCap, MapPin, Presentation } from "lucide-react";
 import FlipClockCountdown from "~/components/FlipClockCountdown";
 import type { Seminar } from "~/server/routers/hello";
 import { trpc } from "~/utils/trpc";
@@ -33,12 +26,14 @@ const Item = (props: { e: Seminar; type: TypeSem }) => {
 
   return (
     <div
-      className={`mb-5 border-2 rounded-lg ${type !== "current" ? "p-5" : ""
-        }  text-white ${getClasess(type)}`}
+      className={`mb-5 border-2 rounded-lg ${
+        type !== "current" ? "p-5" : ""
+      }  text-white ${getClasess(type)}`}
     >
       <div
-        className={`${type === "current" ? "gradient rounded-lg bg-gray-900 p-4" : ""
-          }${type === "passed" ? "text-gray-500" : ""}`}
+        className={`${type === "current" ? "gradient rounded-lg bg-gray-900 p-4" : ""}${
+          type === "passed" ? "text-gray-500" : ""
+        }`}
       >
         <div className={`font-bold text-xl mb-2 `}>{e.judul}</div>
         <div className="">
@@ -49,16 +44,16 @@ const Item = (props: { e: Seminar; type: TypeSem }) => {
         <div className="mb-5">
           {e.date.day.hari !== "" && (
             <div className="flex flex-row items-center my-1">
-              <HiOutlineCalendar className="mr-2" />
+              <CalendarDays size={16} className="mr-2" />
               <span>
-                {e.date.day.hari}, {e.date.day.tanggal} - {e.date.day.bulanAsli}{" "}
-                - {e.date.day.tahun}
+                {e.date.day.hari}, {e.date.day.tanggal} - {e.date.day.bulanAsli} -{" "}
+                {e.date.day.tahun}
               </span>
             </div>
           )}
           {e.date.time && (
             <div className="flex flex-row items-center mb-1">
-              <HiOutlineClock className="mr-2" />
+              <Clock className="mr-2" size={16} />
               <span>
                 {e.date.time.jamMulai} - {e.date.time.jamAkhir} WITA
               </span>
@@ -66,25 +61,27 @@ const Item = (props: { e: Seminar; type: TypeSem }) => {
           )}
           {e.jadwal.ruang !== "" && (
             <div className="flex flex-row items-center">
-              <HiOutlineLocationMarker className="mr-2" />
+              <MapPin className="mr-2" size={16} />
               <span>{e.jadwal.ruang}</span>
             </div>
           )}
           {e.sempro && (
             <div className="flex flex-row items-center mt-4">
-              <HiDocument className="mr-2" />
+              <FileText className="mr-2" size={16} />
               <span>Seminar Proposal</span>
             </div>
           )}
           {e.semhas && (
             <div className="flex flex-row items-center mt-4">
-              <HiPresentationChartLine className="mr-2" />
+              <Presentation size={16} className="mr-2" />
+              {/* <HiPresentationChartLine className="mr-2" /> */}
               <span>Seminar Hasil</span>
             </div>
           )}
           {e.pendadaran && (
             <div className="flex flex-row items-center mt-4">
-              <MdSchool className="mr-2" />
+              <GraduationCap size={16} className="mr-2" />
+              {/* <MdSchool className="mr-2" /> */}
               <span>Sidang Akhir</span>
             </div>
           )}

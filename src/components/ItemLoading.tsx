@@ -1,9 +1,9 @@
 import {
-  HiOutlineCalendar,
-  HiOutlineClock,
-  HiOutlineLocationMarker,
-  HiOutlineQuestionMarkCircle,
-} from "react-icons/hi";
+  CalendarDays,
+  Clock,
+  HelpCircle,
+  MapPin,
+} from "lucide-react";
 import SkeletonLoad from "./SkeletonLoad";
 
 const ItemLoading = () => {
@@ -22,25 +22,25 @@ const ItemLoading = () => {
         </div>
         <div className="mb-5">
           <div className="flex flex-row items-center my-1">
-            <HiOutlineCalendar className="mr-2" />
+            <CalendarDays size={16} className="mr-2" />
             <span>
               <SkeletonLoad width={150} />{" "}
             </span>
           </div>
           <div className="flex flex-row items-center mb-1">
-            <HiOutlineClock className="mr-2" />
+            <Clock className="mr-2" size={16} />
             <span>
               <SkeletonLoad width={150} />{" "}
             </span>
           </div>
           <div className="flex flex-row items-center">
-            <HiOutlineLocationMarker className="mr-2" />
+            <MapPin className="mr-2" size={16} />
             <span>
               <SkeletonLoad width={150} />{" "}
             </span>
           </div>
           <div className="flex flex-row items-center mt-4">
-            <HiOutlineQuestionMarkCircle className="mr-2" />
+            <HelpCircle className="mr-2" size={16} />
             <span>
               <SkeletonLoad width={150} />{" "}
             </span>

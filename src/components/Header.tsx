@@ -1,29 +1,28 @@
 import Logo from "~/components/Logo";
 import { useScrollDirection } from "~/utils/scroll";
 import Link from "next/link";
-import { HiOutlineMenuAlt3 } from "react-icons/hi";
-import { FiArrowUpRight } from "react-icons/fi";
 import { useRouter } from "next/router";
+import { Download, Files, Home } from "lucide-react";
+import { cn } from "~/lib/utils";
 
 type HeaderProps = {
   isInstall: boolean;
   listenUserAction: () => void;
-  setOpenSheet: () => void;
 };
 
-const links: { name: string; href: string; out?: boolean }[] = [
-  { name: "Home", href: "/" },
-  { name: "Berkas", href: "/berkas" },
-  { name: "Sheet", href: "https://s.id/JadwalSeminarSkripsi", out: true },
-  {
-    name: "Donasi",
-    href: "https://trakteer.id/oktavian_yoga/tip?open=true",
-    out: true,
-  },
-  { name: "Github", href: "https://github.com/oktoala/seminar", out: true },
+const links: { name: string; href: string; out?: boolean; icon: JSX.Element }[] = [
+  { name: "Home", href: "/", icon: <Home className="block md:hidden" /> },
+  { name: "Berkas", href: "/berkas", icon: <Files className="block md:hidden" /> },
+  // { name: "Sheet", href: "https://s.id/JadwalSeminarSkripsi", out: true },
+  // {
+  //   name: "Donasi",
+  //   href: "https://trakteer.id/oktavian_yoga/tip?open=true",
+  //   out: true,
+  // },
+  // { name: "Github", href: "https://github.com/oktoala/seminar", out: true },
 ];
 
-export default function Header({ isInstall, listenUserAction, setOpenSheet }: HeaderProps) {
+export default function Header({ isInstall, listenUserAction }: HeaderProps) {
   const router = useRouter();
 
   const scrollDirection = useScrollDirection();
@@ -37,11 +36,11 @@ export default function Header({ isInstall, listenUserAction, setOpenSheet }: He
       <div className="container flex flex-wrap justify-between items-center p-4 mx-auto">
         <Link href="/" className="flex items-center">
           <Logo />
-          <span className="self-center ml-4 text-2xl font-semibold whitespace-nowrap dark:text-white">
+          <span className="self-center ml-4 text-xl md:text-2xl font-semibold whitespace-nowrap dark:text-white">
             Seminar IF
           </span>
         </Link>
-        <div className="hidden items-center sm:flex">
+        <div className="items-center flex">
           <div
             className={`pr-4 flex items-center gap-5 ${
               !isInstall ? "border-r border-r-gray-500" : ""
@@ -56,8 +55,8 @@ export default function Header({ isInstall, listenUserAction, setOpenSheet }: He
                   key={link.href}
                   href={link.href}
                 >
-                  {link.name}
-                  <FiArrowUpRight className="absolute top-0 text-xs -right-[11px]" />
+                  {link.icon}
+                  <p className="hidden md:block">{link.name}</p>
                 </a>
               ) : (
                 <Link
@@ -67,7 +66,8 @@ export default function Header({ isInstall, listenUserAction, setOpenSheet }: He
                   key={link.href}
                   href={link.href}
                 >
-                  {link.name}
+                  {link.icon}
+                  <p className="hidden md:block">{link.name}</p>
                 </Link>
               )
             )}
@@ -75,15 +75,17 @@ export default function Header({ isInstall, listenUserAction, setOpenSheet }: He
           <button
             data-tooltip-id="my-tooltip"
             data-tooltip-content="Install"
-            className={`${
+            className={cn(
+              "bg-gradient-to-r md:p-0 md:bg-clip-text md:text-transparent hover:underline ml-4 from-indigo-500 via-pink-500 to-yellow-500 hover:from-indigo-600 hover:via-pink-600 hover:to-red-600 font-semibold",
+              "text-white p-1 rounded-lg",
               isInstall ? "hidden" : "block"
-            } bg-gradient-to-r bg-clip-text text-transparent hover:underline ml-4 from-indigo-500 via-pink-500 to-yellow-500 hover:from-indigo-600 hover:via-pink-600 hover:to-red-600  font-semibold`}
+            )}
             onClick={listenUserAction}
           >
-            Install
+            <Download className="block md:hidden" />
+            <p className="md:block hidden">Install</p>
           </button>
         </div>
-        <HiOutlineMenuAlt3 className="block w-8 h-8 sm:hidden" onClick={setOpenSheet} />
       </div>
     </nav>
   );
