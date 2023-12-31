@@ -28,10 +28,15 @@ export default function Berkas() {
       </Head>
       <div className="pb-10 flex items-center flex-col justify-center sm:block">
         <div className="flex flex-col-reverse md:flex-row items-center gap-4 mb-4">
-          <div className="flex items-center gap-4 overflow-x-auto w-full scrollbar-thin scrollbar-track-gray-900 scrollbar-thumb-black p-1 md:p-0">
+          <div className="flex items-center gap-4 overflow-x-auto w-full scrollbar-thin scrollbar-track-gray-900 scrollbar-thumb-gray-900 p-1 md:p-0">
             <Flashlist
               isLoading={loadFolders}
-              loadingRender={listSkel(<SkeletonLoad width={50} height={20} />, 3)}
+              loadingRender={listSkel(
+                (k) => (
+                  <SkeletonLoad key={`folder-${k}`} width={97} height={23} />
+                ),
+                3
+              )}
             >
               {folders?.map((folder, i) => (
                 <button
@@ -45,10 +50,10 @@ export default function Berkas() {
                     );
                   }}
                   className={cn(
-                    "py-1 px-2 rounded-lg hover:underline whitespace-nowrap",
+                    "py-1 px-2 rounded-lg whitespace-nowrap bg-gray-950/50 hover:bg-gray-950/90 text-white/80",
                     (dir === folder.id ||
                       ((!dir || !folders.some((e) => e.id === dir)) && i === 0)) &&
-                      "bg-purple-950 text-purple-400 border border-purple-400"
+                      "bg-violet-950 text-violet-400 border-violet-400 hover:bg-violet-950/90 font-semibold"
                   )}
                   key={folder.id}
                 >
@@ -87,16 +92,21 @@ export default function Berkas() {
             }
             isLoading={loadFiles}
             loadingRender={listSkel(
-              <div className="rounded-lg flex flex-col h-72 w-72 bg-gray-950 pt-3 px-2 pb-2">
-                <div className="flex items-center gap-2">
-                  <SkeletonLoad width={20} height={20} />
-                  <SkeletonLoad width={150} height={20} />
+              (k) => (
+                <div
+                  key={`files-${k}`}
+                  className="rounded-lg flex flex-col h-72 w-72 bg-gray-950 pt-3 px-2 pb-2"
+                >
+                  <div className="flex items-center gap-2">
+                    <SkeletonLoad width={20} height={20} />
+                    <SkeletonLoad width={150} height={20} />
+                  </div>
+                  <SkeletonLoad
+                    containerClassName="flex-1 w-full mt-1 rounded-lg"
+                    className="h-full"
+                  />
                 </div>
-                <SkeletonLoad
-                  containerClassName="flex-1 w-full mt-1 rounded-lg"
-                  className="h-full"
-                />
-              </div>,
+              ),
               6
             )}
           >
