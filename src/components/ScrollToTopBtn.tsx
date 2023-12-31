@@ -1,10 +1,10 @@
-import { HiOutlineChevronUp } from "react-icons/hi";
-
+import { ChevronUpCircle } from "lucide-react";
 const ScrollToTopBtn = () => {
   return (
-    <HiOutlineChevronUp
+    <ChevronUpCircle
+      size={32}
       onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-      className="p-1 text-3xl rounded-full hover:bg-black bg-black/60"
+      className="p-1 rounded-full hover:text-white text-white/60"
     />
   );
 };
