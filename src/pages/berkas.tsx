@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { useDebounce } from "@uidotdev/usehooks";
 import Head from "next/head";
 import Image from "next/image";
@@ -119,14 +120,21 @@ export default function Berkas() {
                 key={file.id}
               >
                 <div className="flex items-center gap-2">
-                  <Image src={file.iconLink ?? ""} alt={"icon"} width={20} height={20} />
+                  <img
+                    loading="lazy"
+                    src={file.iconLink ?? ""}
+                    alt={"icon"}
+                    width={20}
+                    height={20}
+                  />
                   <div className="truncate">{file.name}</div>
                 </div>
-                <Image
+                <img
+                  loading="lazy"
                   width={200}
                   height={0}
                   placeholder="blur"
-                  blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mN0dnc+AwADPQGbOTvFkgAAAABJRU5ErkJggg=="
+                  // blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mN0dnc+AwADPQGbOTvFkgAAAABJRU5ErkJggg=="
                   alt={file.name ?? ""}
                   src={file.thumbnailLink ?? ""}
                   className="flex-1 w-full h-9 mt-1 rounded-lg object-cover object-top"
