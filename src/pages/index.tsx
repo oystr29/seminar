@@ -89,7 +89,7 @@ export default function Home() {
                     isComing &&
                       "bg-violet-950 text-violet-400  hover:bg-violet-950/90 font-semibold",
                     isPresent && "bg-gradient-to-tr from-green-500 to-sky-500",
-                    isDone && "bg-gray-300 text-black hover:bg-gray-400"
+                    (isDone || isActive)  && "bg-gray-300 text-black hover:bg-gray-400"
                   )}
                   key={sh.properties?.title}
                 >
