@@ -90,7 +90,7 @@ function splitterr(jam: string) {
 }
 
 function getDate(text: string) {
-  const daysExp = /Senin|Selasa|Rabu|Kamis|Jum'at/gi;
+  const daysExp = /Senin|Selasa|Rabu|Kamis|Jum'at|Jumat/gi;
   const monthsExp =
     /Januari|Februari|Maret|April|Mei|Juni|Juli|Agustus|September|Oktober|November|Desember/gi;
   const yearsExp = /\b(20)\d{2}\b/gi;

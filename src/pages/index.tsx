@@ -50,7 +50,7 @@ export default function Home() {
   return (
     <>
       <div className="flex flex-col-reverse md:flex-row items-center gap-4 mb-4">
-        <div className="flex items-center gap-4 overflow-x-auto w-full scrollbar-thin scrollbar-track-gray-900 scrollbar-thumb-gray-900 p-1 md:p-0">
+        <div className="flex items-center gap-2 overflow-x-auto w-full scrollbar-thin scrollbar-track-gray-900 scrollbar-thumb-gray-900 p-1 md:p-0">
           <Flashlist
             isLoading={loadSheets}
             loadingRender={listSkel(
@@ -60,29 +60,43 @@ export default function Home() {
               3
             )}
           >
-            {sheets?.map((sh, i) => (
-              <button
-                id={sh.properties?.title ?? ""}
-                onClick={async () => {
-                  await router.push(
-                    { pathname: "", query: { ...router.query, sheet: sh.properties?.title } },
-                    undefined,
-                    {
-                      shallow: true,
-                    }
-                  );
-                }}
-                className={cn(
-                  "py-1 px-2 rounded-lg whitespace-nowrap bg-gray-950/50 hover:bg-gray-950/90 text-white/80",
-                  (sheet === sh.properties?.title ||
-                    ((!sheet || !sheets.some((e) => e.properties?.title === sheet)) && i === 0)) &&
-                    "bg-violet-950 text-violet-400  hover:bg-violet-950/90 font-semibold"
-                )}
-                key={sh.properties?.title}
-              >
-                {sh.properties?.title}
-              </button>
-            ))}
+            {sheets?.map((sh, i) => {
+              const isActive =
+                sheet === sh.properties?.title ||
+                ((!sheet || !sheets.some((e) => e.properties?.title === sheet)) && i === 0);
+
+              const isLoad = isActive && isLoading;
+
+              const isComing = isActive && !!data?.notyet && data?.notyet?.length > 1;
+              const isPresent = isActive && !!data?.currents && data?.currents?.length > 1;
+              const isDone = isActive && !!data?.passed && data?.passed?.length > 1;
+
+              return (
+                <button
+                  id={sh.properties?.title ?? ""}
+                  onClick={async () => {
+                    await router.push(
+                      { pathname: "", query: { ...router.query, sheet: sh.properties?.title } },
+                      undefined,
+                      {
+                        shallow: true,
+                      }
+                    );
+                  }}
+                  className={cn(
+                    "py-1 px-2 rounded-lg whitespace-nowrap bg-gray-950/50 hover:bg-gray-950/90 text-white/80",
+                    isLoad && "bg-white text-black hover:bg-white/90",
+                    isComing &&
+                      "bg-violet-950 text-violet-400  hover:bg-violet-950/90 font-semibold",
+                    isPresent && "bg-gradient-to-tr from-green-500 to-sky-500",
+                    isDone && "bg-gray-300 text-black hover:bg-gray-400"
+                  )}
+                  key={sh.properties?.title}
+                >
+                  {sh.properties?.title}
+                </button>
+              );
+            })}
           </Flashlist>
         </div>
         <Search
