@@ -86,10 +86,9 @@ export default function Home() {
                   className={cn(
                     "py-1 px-2 rounded-lg whitespace-nowrap bg-gray-950/50 hover:bg-gray-950/90 text-white/80",
                     isLoad && "bg-white text-black hover:bg-white/90",
-                    isComing &&
-                      "bg-violet-950 text-violet-400  hover:bg-violet-950/90 font-semibold",
-                    isPresent && "bg-gradient-to-tr from-green-500 to-sky-500",
-                    (isDone || isActive)  && "bg-gray-300 text-black hover:bg-gray-400"
+                    (isDone || isActive) && "bg-gray-300 text-black hover:bg-gray-400",
+                    isComing && "bg-violet-950 text-violet-400  hover:bg-violet-950/90",
+                    isPresent && "bg-gradient-to-tr from-green-500 to-sky-500 text-white"
                   )}
                   key={sh.properties?.title}
                 >
