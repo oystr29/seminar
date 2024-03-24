@@ -9,6 +9,7 @@ import Flashlist from "~/components/Flashlist";
 import SkeletonLoad from "~/components/SkeletonLoad";
 import Search from "~/components/Search";
 import { cn, listSkel } from "~/lib/utils";
+import { useEffect, useState } from "react";
 
 const HomeClientLoading = () => {
   const arrayLoading = Array.from({ length: 6 }, (_, i) => i);
@@ -27,8 +28,10 @@ const HomeClientLoading = () => {
 
 export default function Home() {
   const router = useRouter();
+  const { s, sh } = router.query;
+  const [search, setSearch] = useState<string | undefined | string[]>(s ?? undefined);
+  const [sheet, setSheet] = useState<string | undefined | string[]>(sh ?? undefined);
 
-  const { search, sheet } = router.query;
   const debouncedSearch = useDebounce(search, 600);
 
   const { data: sheets, isLoading: loadSheets } = trpc.hello.sheets.useQuery();
@@ -38,10 +41,26 @@ export default function Home() {
       sheet_name: sheets?.some((e) => e.properties?.title === sheet)
         ? sheet
         : sheets?.[0].properties?.title,
-      search: debouncedSearch,
+      search: s,
     },
     { enabled: !!sheets }
   );
+
+  useEffect(() => {
+    if (debouncedSearch !== undefined) {
+      router.replace({ pathname: "", query: { ...router.query, s: debouncedSearch } }, undefined, {
+        shallow: true,
+      });
+    }
+  }, [debouncedSearch]);
+
+  useEffect(() => {
+    if (sheet !== undefined) {
+      router.replace({ pathname: "", query: { ...router.query, sh: sheet } }, undefined, {
+        shallow: true,
+      });
+    }
+  }, [sheet]);
 
   if (isError) {
     return <ErrorPage />;
@@ -67,21 +86,15 @@ export default function Home() {
 
               const isLoad = isActive && isLoading;
 
-              const isComing = isActive && !!data?.notyet && data?.notyet?.length > 1;
-              const isPresent = isActive && !!data?.currents && data?.currents?.length > 1;
-              const isDone = isActive && !!data?.passed && data?.passed?.length > 1;
+              const isComing = isActive && !!data?.notyet && data?.notyet?.length > 0;
+              const isPresent = isActive && !!data?.currents && data?.currents?.length > 0;
+              const isDone = isActive && !!data?.passed && data?.passed?.length > 0;
 
               return (
                 <button
                   id={sh.properties?.title ?? ""}
                   onClick={async () => {
-                    await router.push(
-                      { pathname: "", query: { ...router.query, sheet: sh.properties?.title } },
-                      undefined,
-                      {
-                        shallow: true,
-                      }
-                    );
+                    setSheet(sh.properties?.title ?? undefined);
                   }}
                   className={cn(
                     "py-1 px-2 rounded-lg whitespace-nowrap bg-gray-950/50 hover:bg-gray-950/90 text-white/80",
@@ -102,13 +115,7 @@ export default function Home() {
           disabled={loadSheets}
           defaultValue={search as string}
           placeholder={loadSheets ? "Loading..." : "Cari Judul, Nama, atau NIM"}
-          onChange={(e) =>
-            router.push(
-              { pathname: "", query: { ...router.query, search: e.target.value } },
-              undefined,
-              { shallow: true }
-            )
-          }
+          onChange={(e) => setSearch(e.target.value ?? "")}
         />
       </div>
       <Flashlist

@@ -2,6 +2,7 @@
 import { useDebounce } from "@uidotdev/usehooks";
 import Head from "next/head";
 import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 import Flashlist from "~/components/Flashlist";
 import Search from "~/components/Search";
 import SkeletonLoad from "~/components/SkeletonLoad";
@@ -11,15 +12,36 @@ import { trpc } from "~/utils/trpc";
 export default function Berkas() {
   const router = useRouter();
   const { dir, q } = router.query;
+
+  const [search, setSearch] = useState(q ?? undefined);
+  const debouncedSearch = useDebounce(search, 600);
+
+  const [directory, setDirectory] = useState(dir ?? undefined);
+
   const { data: folders, isLoading: loadFolders } = trpc.docs.folder.useQuery();
-  const search = useDebounce(q, 600);
 
   const { data: files, isLoading: loadFiles } = trpc.docs.berkas.useQuery(
-    { dir_id: folders?.some((e) => e.id === dir) ? dir : folders?.[0].id, search: search ?? "" },
+    { dir_id: folders?.some((e) => e.id === dir) ? dir : folders?.[0].id, search: q ?? "" },
     {
       enabled: !!folders,
     }
   );
+
+  useEffect(() => {
+    if (debouncedSearch !== undefined) {
+      router.replace({ pathname: "", query: { ...router.query, q: debouncedSearch } }, undefined, {
+        shallow: true,
+      });
+    }
+  }, [debouncedSearch]);
+
+  useEffect(() => {
+    if (directory !== undefined) {
+      router.replace({ pathname: "", query: { ...router.query, dir: directory } }, undefined, {
+        shallow: true,
+      });
+    }
+  }, [directory]);
 
   return (
     <>
@@ -41,13 +63,7 @@ export default function Berkas() {
               {folders?.map((folder, i) => (
                 <button
                   onClick={async () => {
-                    await router.push(
-                      { pathname: "", query: { ...router.query, dir: folder.id } },
-                      undefined,
-                      {
-                        shallow: true,
-                      }
-                    );
+                    setDirectory(folder.id ?? undefined);
                   }}
                   className={cn(
                     "py-1 px-2 rounded-lg whitespace-nowrap bg-gray-950/50 hover:bg-gray-950/90 text-white/80",
@@ -66,13 +82,7 @@ export default function Berkas() {
             disabled={loadFolders}
             defaultValue={q as string}
             placeholder={loadFolders ? "Loading..." : "Cari Berkas"}
-            onChange={(e) =>
-              router.push(
-                { pathname: "", query: { ...router.query, q: e.target.value } },
-                undefined,
-                { shallow: true }
-              )
-            }
+            onChange={(e) => setSearch(e.target.value)}
           />
         </div>
         <div
