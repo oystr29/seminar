@@ -2,7 +2,12 @@ import { google } from "googleapis";
 import { z } from "zod";
 import { procedure, router } from "~/server/trpc";
 
-const slugIDSchema = z.union([z.string(), z.string().array(), z.undefined(), z.null()]);
+const slugIDSchema = z.union([
+  z.string(),
+  z.string().array(),
+  z.undefined(),
+  z.null(),
+]);
 
 type SlugID = z.infer<typeof slugIDSchema>;
 
@@ -90,7 +95,7 @@ function splitterr(jam: string) {
 }
 
 function getDate(text: string) {
-  const daysExp = /Senin|Selasa|Rabu|Kamis|Jum'at|Jumat/gi;
+  const daysExp = /Senin|Selasa|Rabu|Kamis|Jum'at|Jumat|Sabtu|Minggu/gi;
   const monthsExp =
     /Januari|Februari|Maret|April|Mei|Juni|Juli|Agustus|September|Oktober|November|Desember/gi;
   const yearsExp = /\b(20)\d{2}\b/gi;
@@ -133,7 +138,9 @@ const getData = async (sheet: SlugID, search: SlugID = "") => {
   const scheduled: Seminar[] = [];
 
   // Auth
-  const credentials = JSON.parse(`${process.env.GOOGLE_APPLICATION_CREDENTIALS}`);
+  const credentials = JSON.parse(
+    `${process.env.GOOGLE_APPLICATION_CREDENTIALS}`
+  );
   const cells = "!A6:I";
   let sheetName = sheet;
   const auth = await google.auth.getClient({
@@ -211,7 +218,8 @@ const getData = async (sheet: SlugID, search: SlugID = "") => {
       property.no = e[0];
       property.nama = e[1];
       property.nim = e[2];
-      property.judul = e[3];
+      property.judul =
+        `${process.env.NEXT_PUBLIC_NIMBLE}` === `${e[2]}` ? `${e[3]} 😆` : e[3];
       property.sempro =
         resData?.[i].values?.[4].effectiveFormat?.backgroundColor?.blue === 1 &&
         resData?.[i].values?.[4].effectiveFormat?.backgroundColor?.blue
@@ -250,7 +258,8 @@ const getData = async (sheet: SlugID, search: SlugID = "") => {
       if (e[7] !== undefined) {
         const ruang = e[7] as string;
         const ruangArr = ruang.split(":");
-        arrays[currIndex].jadwal.ruang = ruangArr[ruangArr.length - 1].normalize();
+        arrays[currIndex].jadwal.ruang =
+          ruangArr[ruangArr.length - 1].normalize();
       }
     }
 
@@ -291,25 +300,29 @@ const getData = async (sheet: SlugID, search: SlugID = "") => {
     currents: currents.filter((entry) =>
       Object.values(entry).some(
         (val) =>
-          typeof val === "string" && val.toLowerCase().includes((search as string).toLowerCase())
+          typeof val === "string" &&
+          val.toLowerCase().includes((search as string).toLowerCase())
       )
     ),
     scheduled: scheduled.filter((entry) =>
       Object.values(entry).some(
         (val) =>
-          typeof val === "string" && val.toLowerCase().includes((search as string).toLowerCase())
+          typeof val === "string" &&
+          val.toLowerCase().includes((search as string).toLowerCase())
       )
     ),
     notyet: notyet.filter((entry) =>
       Object.values(entry).some(
         (val) =>
-          typeof val === "string" && val.toLowerCase().includes((search as string).toLowerCase())
+          typeof val === "string" &&
+          val.toLowerCase().includes((search as string).toLowerCase())
       )
     ),
     passed: passed.filter((entry) =>
       Object.values(entry).some(
         (val) =>
-          typeof val === "string" && val.toLowerCase().includes((search as string).toLowerCase())
+          typeof val === "string" &&
+          val.toLowerCase().includes((search as string).toLowerCase())
       )
     ),
     sheetName,
@@ -325,7 +338,9 @@ const helloRouter = router({
     }),
   sheets: procedure.query(async () => {
     // Auth
-    const credentials = JSON.parse(`${process.env.GOOGLE_APPLICATION_CREDENTIALS}`);
+    const credentials = JSON.parse(
+      `${process.env.GOOGLE_APPLICATION_CREDENTIALS}`
+    );
 
     const auth = await google.auth.getClient({
       scopes: ["https://www.googleapis.com/auth/spreadsheets.readonly"],

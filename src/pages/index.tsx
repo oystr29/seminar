@@ -69,7 +69,7 @@ export default function Home() {
   return (
     <>
       <div className="flex flex-col-reverse md:flex-row items-center gap-4 mb-4">
-        <div className="flex items-center gap-2 overflow-x-auto w-full scrollbar-thin scrollbar-track-gray-900 scrollbar-thumb-gray-900 p-1 md:p-0">
+        <div className="flex items-center gap-2 overflow-x-auto w-full p-1 md:p-0">
           <Flashlist
             isLoading={loadSheets}
             loadingRender={listSkel(

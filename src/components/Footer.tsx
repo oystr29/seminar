@@ -1,4 +1,4 @@
-import Logo from "./Logo";
+import DalamkotakLogo from "./DalamkotakLogo";
 import DriveIcon from "./icon/DriveIcon";
 import GithubIcon from "./icon/GithubIcon";
 import InstagramIcon from "./icon/InstagramIcon";
@@ -12,9 +12,21 @@ const Footer = () => {
     <footer className=" py-5 bg-gray-800 ">
       <div className="flex flex-col md:flex-row justify-between items-center container mx-auto gap-5">
         <div className="flex gap-1 items-center">
-          <Logo />
+          {/* <Logo /> */}
+          <a
+            target="_blank"
+            rel="noopener noreferrer"
+            href="https://dalamkotak.com"
+          >
+            <DalamkotakLogo />
+          </a>
+
           <p className="text-xl">🤝</p>
-          <a target="_blank" rel="noopener noreferrer" href="https://s.id/JadwalSeminarSkripsi">
+          <a
+            target="_blank"
+            rel="noopener noreferrer"
+            href="https://s.id/JadwalSeminarSkripsi"
+          >
             <SheetIcon className="h-6 w-6" />
           </a>
           <a
@@ -27,10 +39,18 @@ const Footer = () => {
         </div>
         <div className="flex items-center">
           <p className="mr-3 text-sm text-gray-300">Made with</p>
-          <a target="_blank" rel="noopener noreferrer" href="https://nextjs.org/">
+          <a
+            target="_blank"
+            rel="noopener noreferrer"
+            href="https://nextjs.org/"
+          >
             <NextJSIcon className="mr-3 h-3 fill-white" />
           </a>
-          <a target="_blank" rel="noopener noreferrer" href="https://tailwindcss.com/">
+          <a
+            target="_blank"
+            rel="noopener noreferrer"
+            href="https://tailwindcss.com/"
+          >
             <TailwindCSSIcon className="mr-3 h-6" />
           </a>
           <a target="_blank" rel="noopener noreferrer" href="https://trpc.io/">
@@ -42,7 +62,7 @@ const Footer = () => {
             title="Source Code"
             target="_blank"
             rel="noopener noreferrer"
-            href="https://github.com/oktoala/seminar"
+            href="https://github.com/oystr29/seminar"
           >
             <GithubIcon className="h-6 w-6 mr-3" />
           </a>
