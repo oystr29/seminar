@@ -1,11 +1,11 @@
 export default function DalamkotakLogo() {
   return (
     <svg
-      width={36}
-      height={36}
+      width={28}
+      height={28}
       viewBox="0 0 538 456"
       xmlns="http://www.w3.org/2000/svg"
-      className={"fill-white"}
+      className={"fill-sky-400"}
     >
       <path
         id="Vector"
