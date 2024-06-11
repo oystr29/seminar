@@ -139,7 +139,7 @@ const getData = async (sheet: SlugID, search: SlugID = "") => {
 
   // Auth
   const credentials = JSON.parse(
-    `${process.env.GOOGLE_APPLICATION_CREDENTIALS}`
+    `${process.env.GOOGLE_APPLICATION_CREDENTIALS}`,
   );
   const cells = "!A6:I";
   let sheetName = sheet;
@@ -214,12 +214,13 @@ const getData = async (sheet: SlugID, search: SlugID = "") => {
       },
     };
 
+    const isNimble = `${process.env.NEXT_PUBLIC_NIMBLE}` === `${e[2]}`;
+
     if (index === 0 && e && e.length !== 0) {
       property.no = e[0];
-      property.nama = e[1];
+      property.nama = isNimble ? e[1].split(" ")[0] : e[1];
       property.nim = e[2];
-      property.judul =
-        `${process.env.NEXT_PUBLIC_NIMBLE}` === `${e[2]}` ? `${e[3]} 😆` : e[3];
+      property.judul = isNimble ? `${e[3]} 😄` : e[3];
       property.sempro =
         resData?.[i].values?.[4].effectiveFormat?.backgroundColor?.blue === 1 &&
         resData?.[i].values?.[4].effectiveFormat?.backgroundColor?.blue
@@ -248,10 +249,10 @@ const getData = async (sheet: SlugID, search: SlugID = "") => {
         const ar2 = arrays[currIndex].date;
 
         ar.dateInt.mulai = Date.parse(
-          `${ar2.day.tahun}-${ar2.day.bulan}-${ar2.day.tanggal}T${ar2.time.jamMulai}:00+0800`
+          `${ar2.day.tahun}-${ar2.day.bulan}-${ar2.day.tanggal}T${ar2.time.jamMulai}:00+0800`,
         );
         ar.dateInt.akhir = Date.parse(
-          `${ar2.day.tahun}-${ar2.day.bulan}-${ar2.day.tanggal}T${ar2.time.jamAkhir}:00+0800`
+          `${ar2.day.tahun}-${ar2.day.bulan}-${ar2.day.tanggal}T${ar2.time.jamAkhir}:00+0800`,
         );
       }
     } else if (index === 2 && e.length !== 0) {
@@ -301,29 +302,29 @@ const getData = async (sheet: SlugID, search: SlugID = "") => {
       Object.values(entry).some(
         (val) =>
           typeof val === "string" &&
-          val.toLowerCase().includes((search as string).toLowerCase())
-      )
+          val.toLowerCase().includes((search as string).toLowerCase()),
+      ),
     ),
     scheduled: scheduled.filter((entry) =>
       Object.values(entry).some(
         (val) =>
           typeof val === "string" &&
-          val.toLowerCase().includes((search as string).toLowerCase())
-      )
+          val.toLowerCase().includes((search as string).toLowerCase()),
+      ),
     ),
     notyet: notyet.filter((entry) =>
       Object.values(entry).some(
         (val) =>
           typeof val === "string" &&
-          val.toLowerCase().includes((search as string).toLowerCase())
-      )
+          val.toLowerCase().includes((search as string).toLowerCase()),
+      ),
     ),
     passed: passed.filter((entry) =>
       Object.values(entry).some(
         (val) =>
           typeof val === "string" &&
-          val.toLowerCase().includes((search as string).toLowerCase())
-      )
+          val.toLowerCase().includes((search as string).toLowerCase()),
+      ),
     ),
     sheetName,
   };
@@ -339,7 +340,7 @@ const helloRouter = router({
   sheets: procedure.query(async () => {
     // Auth
     const credentials = JSON.parse(
-      `${process.env.GOOGLE_APPLICATION_CREDENTIALS}`
+      `${process.env.GOOGLE_APPLICATION_CREDENTIALS}`,
     );
 
     const auth = await google.auth.getClient({

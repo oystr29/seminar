@@ -13,10 +13,13 @@ import { trpc } from "~/utils/trpc";
 
 type TypeSem = "current" | "notyet" | "scheduled" | "passed";
 
+const nimble = `${process.env.NEXT_PUBLIC_NIMBLE}`;
 const Item = (props: { e: Seminar; type: TypeSem }) => {
   const utils = trpc.useContext();
 
   const { e, type } = props;
+
+  const isNimble = nimble === `${e.nim}`;
 
   return (
     <div
@@ -28,8 +31,8 @@ const Item = (props: { e: Seminar; type: TypeSem }) => {
         type === "passed" && "text-gray-400, border-gray-500",
         type === "current" &&
           "p-0.5 bg-gradient-to-tr from-green-500 border-none to-sky-500",
-        `${process.env.NEXT_PUBLIC_NIMBLE}` === `${e.nim}` &&
-          "animate-border bg-[length:300%_300%] backdrop-blur-sm"
+        nimble === `${e.nim}` &&
+          "animate-border bg-[length:300%_300%] backdrop-blur-sm",
       )}
       /* className={`mb-5 border-2 rounded-lg ${
         type !== "current" ? "p-5" : ""
@@ -49,7 +52,11 @@ const Item = (props: { e: Seminar; type: TypeSem }) => {
         <div className="mb-5">
           {e.date.day.hari !== "" && (
             <div className="flex flex-row items-center my-1">
-              <CalendarDays size={16} className="mr-2" />
+              {isNimble ? (
+                <div className="mr-2">📅</div>
+              ) : (
+                <CalendarDays size={16} className="mr-2" />
+              )}
               <span>
                 {e.date.day.hari}, {e.date.day.tanggal} - {e.date.day.bulanAsli}{" "}
                 - {e.date.day.tahun}
@@ -58,7 +65,11 @@ const Item = (props: { e: Seminar; type: TypeSem }) => {
           )}
           {e.date.time && (
             <div className="flex flex-row items-center mb-1">
-              <Clock className="mr-2" size={16} />
+              {isNimble ? (
+                <div className="mr-2">🕙</div>
+              ) : (
+                <Clock className="mr-2" size={16} />
+              )}
               <span>
                 {e.date.time.jamMulai} - {e.date.time.jamAkhir} WITA
               </span>
@@ -66,26 +77,43 @@ const Item = (props: { e: Seminar; type: TypeSem }) => {
           )}
           {e.jadwal.ruang !== "" && (
             <div className="flex flex-row items-center">
-              <MapPin className="mr-2" size={16} />
+              {isNimble ? (
+                <div className="mr-2">📍</div>
+              ) : (
+                <MapPin className="mr-2" size={16} />
+              )}
               <span>{e.jadwal.ruang}</span>
             </div>
           )}
           {e.sempro && (
             <div className="flex flex-row items-center mt-4">
-              <FileText className="mr-2" size={16} />
+              {isNimble ? (
+                <div className="mr-2">📄</div>
+              ) : (
+                <FileText className="mr-2" size={16} />
+              )}
               <span>Seminar Proposal</span>
             </div>
           )}
           {e.semhas && (
             <div className="flex flex-row items-center mt-4">
-              <Presentation size={16} className="mr-2" />
+              {isNimble ? (
+                <div className="mr-2">📈</div>
+              ) : (
+                <Presentation size={16} className="mr-2" />
+              )}
               {/* <HiPresentationChartLine className="mr-2" /> */}
               <span>Seminar Hasil</span>
             </div>
           )}
           {e.pendadaran && (
             <div className="flex flex-row items-center mt-4">
-              <GraduationCap size={16} className="mr-2" />
+              {isNimble ? (
+                <div className="mr-2">🎓</div>
+              ) : (
+                <GraduationCap size={16} className="mr-2" />
+              )}
+
               {/* <MdSchool className="mr-2" /> */}
               <span>Sidang Akhir</span>
             </div>
