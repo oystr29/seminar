@@ -330,6 +330,57 @@ const getData = async (sheet: SlugID, search: SlugID = "") => {
   };
 };
 
+const monthsSheet = [
+  {
+    names: ["jan", "januari", "january"],
+    number: 1,
+  },
+  {
+    names: ["feb", "februari", "february"],
+    number: 2,
+  },
+  {
+    names: ["mar", "maret", "march"],
+    number: 3,
+  },
+  {
+    names: ["apr", "april"],
+    number: 4,
+  },
+  {
+    names: ["mei", "may"],
+    number: 5,
+  },
+  {
+    names: ["jun", "juni", "june"],
+    number: 6,
+  },
+  {
+    names: ["jul", "juli", "july"],
+    number: 7,
+  },
+  {
+    names: ["agt", "agu", "agustus", "august"],
+    number: 8,
+  },
+  {
+    names: ["sep", "september"],
+    number: 9,
+  },
+  {
+    names: ["okt", "oktober", "october"],
+    number: 10,
+  },
+  {
+    names: ["nov", "november"],
+    number: 11,
+  },
+  {
+    names: ["des", "desember"],
+    number: 12,
+  },
+];
+
 const helloRouter = router({
   seminar: procedure
     .input(z.object({ sheet_name: slugIDSchema, search: slugIDSchema }))
@@ -352,8 +403,38 @@ const helloRouter = router({
 
     const resSheet = await sheets.spreadsheets.get({
       spreadsheetId: process.env.SHEET_ID,
-      fields: "sheets(properties(title))",
+      fields: "sheets(properties(title,index))",
     });
+
+    const newSheets = resSheet.data.sheets?.sort((a, b) => {
+      const firstMonth = (a.properties?.title?.match(/([A-Z])\w+/g) ?? [""])[0];
+      const secondMonth = (b.properties?.title?.match(/([A-Z])\w+/g) ?? [
+        "",
+      ])[0];
+
+      const firstYear = (a.properties?.title?.match(/([0-9])\d+/g) ?? ["0"])[0];
+      const secondYear = (b.properties?.title?.match(/([0-9])\d+/g) ?? [
+        "0",
+      ])[0];
+
+      const firstIndex = monthsSheet.findIndex((e) =>
+        e.names.includes(firstMonth.toLowerCase()),
+      );
+      const secondIndex = monthsSheet.findIndex((e) =>
+        e.names.includes(secondMonth.toLowerCase()),
+      );
+
+      if (Number(firstYear) > Number(secondYear)) {
+        return firstIndex + Number(firstYear) - secondIndex;
+      }
+
+      if (Number(firstYear) < Number(secondYear)) {
+        return firstIndex - (secondIndex + Number(secondYear));
+      }
+
+      return firstIndex - secondIndex;
+    });
+    return newSheets?.reverse();
 
     return resSheet.data.sheets?.reverse();
   }),
