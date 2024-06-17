@@ -29,8 +29,12 @@ const HomeClientLoading = () => {
 export default function Home() {
   const router = useRouter();
   const { s, sh } = router.query;
-  const [search, setSearch] = useState<string | undefined | string[]>(s ?? undefined);
-  const [sheet, setSheet] = useState<string | undefined | string[]>(sh ?? undefined);
+  const [search, setSearch] = useState<string | undefined | string[]>(
+    s ?? undefined,
+  );
+  const [sheet, setSheet] = useState<string | undefined | string[]>(
+    sh ?? undefined,
+  );
 
   const debouncedSearch = useDebounce(search, 600);
 
@@ -43,22 +47,30 @@ export default function Home() {
         : sheets?.[0].properties?.title,
       search: s,
     },
-    { enabled: !!sheets }
+    { enabled: !!sheets },
   );
 
   useEffect(() => {
     if (debouncedSearch !== undefined) {
-      router.replace({ pathname: "", query: { ...router.query, s: debouncedSearch } }, undefined, {
-        shallow: true,
-      });
+      router.replace(
+        { pathname: "", query: { ...router.query, s: debouncedSearch } },
+        undefined,
+        {
+          shallow: true,
+        },
+      );
     }
   }, [debouncedSearch]);
 
   useEffect(() => {
     if (sheet !== undefined) {
-      router.replace({ pathname: "", query: { ...router.query, sh: sheet } }, undefined, {
-        shallow: true,
-      });
+      router.replace(
+        { pathname: "", query: { ...router.query, sh: sheet } },
+        undefined,
+        {
+          shallow: true,
+        },
+      );
     }
   }, [sheet]);
 
@@ -76,19 +88,24 @@ export default function Home() {
               (k) => (
                 <SkeletonLoad key={`sheet-${k}`} width={97} height={23} />
               ),
-              3
+              3,
             )}
           >
             {sheets?.map((sh, i) => {
               const isActive =
                 sheet === sh.properties?.title ||
-                ((!sheet || !sheets.some((e) => e.properties?.title === sheet)) && i === 0);
+                ((!sheet ||
+                  !sheets.some((e) => e.properties?.title === sheet)) &&
+                  i === 0);
 
               const isLoad = isActive && isLoading;
 
-              const isComing = isActive && !!data?.notyet && data?.notyet?.length > 0;
-              const isPresent = isActive && !!data?.currents && data?.currents?.length > 0;
-              const isDone = isActive && !!data?.passed && data?.passed?.length > 0;
+              const isComing =
+                isActive && !!data?.notyet && data?.notyet?.length > 0;
+              const isPresent =
+                isActive && !!data?.currents && data?.currents?.length > 0;
+              const isDone =
+                isActive && !!data?.passed && data?.passed?.length > 0;
 
               return (
                 <button
@@ -99,9 +116,12 @@ export default function Home() {
                   className={cn(
                     "py-1 px-2 rounded-lg whitespace-nowrap bg-gray-950/50 hover:bg-gray-950/90 text-white/80",
                     isLoad && "bg-white text-black hover:bg-white/90",
-                    (isDone || isActive) && "bg-gray-300 text-black hover:bg-gray-400",
-                    isComing && "bg-violet-950 text-violet-400  hover:bg-violet-950/90",
-                    isPresent && "bg-gradient-to-tr from-green-500 to-sky-500 text-white"
+                    (isDone || isActive) &&
+                      "bg-gray-300 text-black hover:bg-gray-400",
+                    isComing &&
+                      "bg-violet-950 text-violet-400  hover:bg-violet-950/90",
+                    isPresent &&
+                      "bg-gradient-to-tr from-green-500 to-sky-500 text-white",
                   )}
                   key={sh.properties?.title}
                 >
@@ -120,7 +140,9 @@ export default function Home() {
       </div>
       <Flashlist
         isFallback={
-          data?.currents.length === 0 && data?.passed.length === 0 && data.notyet.length === 0
+          data?.currents.length === 0 &&
+          data?.passed.length === 0 &&
+          data.notyet.length === 0
         }
         fallbackRender={
           <div className="text-xl w-full text-clip">
@@ -137,8 +159,11 @@ export default function Home() {
             return <Item e={e} key={`${e.nim}${i}`} type="current" />;
           })}
         {data?.notyet.length !== 0 && (
-          <div className="p-1 px-2 mt-3 mb-2 w-max text-base text-purple-300 rounded-xl border-2 border-purple-800">
-            Coming Soon!
+          <div className="p-1 px-2 mt-3 mb-2 w-max text-base text-purple-300 rounded-xl border-2 border-purple-800 flex items-center gap-2">
+            Coming Soon!{" "}
+            <span className="text-xs px-1 py-0.5 rounded-full bg-violet-950 text-violet-400">
+              {data?.notyet.length}
+            </span>
           </div>
         )}
         {data?.notyet.map((e, i) => {
@@ -153,8 +178,11 @@ export default function Home() {
           return <Item e={e} key={`${e.nim}${i}`} type="scheduled" />;
         })}
         {data?.passed.length !== 0 && (
-          <div className="p-1 px-2 mt-3 mb-2 w-max text-base text-gray-300 rounded-xl border-2 border-gray-500">
+          <div className="p-1 px-2 mt-3 mb-2 w-max text-base text-gray-300 rounded-xl border-2 border-gray-500 flex items-center gap-2">
             Udah Lewat
+            <span className="text-xs px-1 py-0.5 rounded-full bg-gray-950 text-gray-400">
+              {data?.passed.length}
+            </span>
           </div>
         )}
         {data?.passed

@@ -10,6 +10,7 @@ import FlipClockCountdown from "~/components/FlipClockCountdown";
 import { cn } from "~/lib/utils";
 import type { Seminar } from "~/server/routers/hello";
 import { trpc } from "~/utils/trpc";
+import { Meteors } from "~/components/Meteors";
 
 type TypeSem = "current" | "notyet" | "scheduled" | "passed";
 
@@ -24,20 +25,22 @@ const Item = (props: { e: Seminar; type: TypeSem }) => {
   return (
     <div
       className={cn(
-        "mb-5 border-2 rounded-lg text-white",
+        "mb-5 border-2 rounded-lg text-white ",
         type !== "current" && "p-5",
         type === "scheduled" && "border-yellow-400",
         type === "notyet" && "border-purple-400",
         type === "passed" && "text-gray-400, border-gray-500",
         type === "current" &&
           "p-0.5 bg-gradient-to-tr from-green-500 border-none to-sky-500",
-        nimble === `${e.nim}` &&
-          "animate-border bg-[length:300%_300%] backdrop-blur-sm",
+        isNimble &&
+          type === "current" &&
+          "animate-border bg-[length:300%_300%] relative overflow-hidden",
       )}
       /* className={`mb-5 border-2 rounded-lg ${
         type !== "current" ? "p-5" : ""
       }  text-white ${getClasess(type)}`} */
     >
+      {isNimble && type === "current" && <Meteors number={20} />}
       <div
         className={`${
           type === "current" ? "gradient rounded-lg bg-gray-900 p-4" : ""
