@@ -170,8 +170,11 @@ export default function Home() {
           return <Item e={e} key={`${e.nim}${i}`} type="notyet" />;
         })}
         {data?.scheduled.length !== 0 && (
-          <div className="p-1 px-2 mt-3 mb-2 w-max text-base text-yellow-300 rounded-xl border-2 border-yellow-800">
+          <div className="p-1 px-2 mt-3 mb-2 w-max text-base text-yellow-300 rounded-xl border-2 border-yellow-800 flex items-center gap-2">
             Belum Ada Jadwalnya
+            <span className="text-xs px-1 py-0.5 rounded-full bg-yellow-950 text-yellow-400">
+              {data?.scheduled.length}
+            </span>
           </div>
         )}
         {data?.scheduled.map((e, i) => {

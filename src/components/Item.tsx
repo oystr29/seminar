@@ -61,12 +61,12 @@ const Item = (props: { e: Seminar; type: TypeSem }) => {
                 <CalendarDays size={16} className="mr-2" />
               )}
               <span>
-                {e.date.day.hari}, {e.date.day.tanggal} - {e.date.day.bulanAsli}{" "}
-                - {e.date.day.tahun}
+                {e.date.day.hari}, {e.date.day.tanggal} {e.date.day.bulanAsli}{" "}
+                {e.date.day.tahun}
               </span>
             </div>
           )}
-          {e.date.time && (
+          {e.date.time.jamMulai && (
             <div className="flex flex-row items-center mb-1">
               {isNimble ? (
                 <div className="mr-2">🕙</div>
