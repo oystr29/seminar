@@ -151,11 +151,11 @@ const Item = (props: { e: Seminar; type: TypeSem }) => {
             />
           </div>
         )}
-        {type !== "passed" && (
+        {/* {type !== "passed" && (
           <div className="w-full flex justify-end">
             <ShareLink e={e} />
           </div>
-        )}
+        )} */}
       </div>
     </div>
   );
