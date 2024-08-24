@@ -16,6 +16,7 @@
     "@trpc/react-query": "^10.32.0",
     "@trpc/server": "^10.32.0",
     "@uidotdev/usehooks": "^2.4.0",
+    "@vercel/og": "^0.6.2",
     "clsx": "^1.2.1",
     "dayjs": "^1.11.7",
     "googleapis": "^107.0.0",

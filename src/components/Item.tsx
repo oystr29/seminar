@@ -11,6 +11,7 @@ import { cn } from "~/lib/utils";
 import type { Seminar } from "~/server/routers/hello";
 import { trpc } from "~/utils/trpc";
 import { Meteors } from "~/components/Meteors";
+import ShareLink from "./ShareLink";
 
 type TypeSem = "current" | "notyet" | "scheduled" | "passed";
 
@@ -150,6 +151,9 @@ const Item = (props: { e: Seminar; type: TypeSem }) => {
             />
           </div>
         )}
+        <div className="w-full flex justify-end">
+          <ShareLink e={e} />
+        </div>
       </div>
     </div>
   );

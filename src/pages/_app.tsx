@@ -4,11 +4,18 @@ import type { AppProps } from "next/app";
 import Script from "next/script";
 import { trpc } from "~/utils/trpc";
 import Layout from "~/pages/_layout";
+import { useRouter } from "next/router";
 import NextNProgress from "nextjs-progressbar";
 import "../styles/globals.css";
 import "react-loading-skeleton/dist/skeleton.css";
 
+const baseURL = process.env.NEXT_PUBLIC_BASE_URL;
 function MyApp({ Component, pageProps }: AppProps) {
+  const router = useRouter();
+  const queryString = new URLSearchParams(
+    router.query as Record<string, string>,
+  ).toString();
+
   return (
     <>
       <Script
@@ -133,7 +140,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         <meta property="og:url" content="https://seminar.dalamkotak.com" />
         <meta
           property="og:image"
-          content="https://cc-og-image.vercel.app/**Seminar%20IF**.png?theme=dark&md=1&fontFamily=roboto-condensed&fontSize=100px&images=https%3A%2F%2Fcc-vocabulary.netlify.app%2Flogos%2Fcc%2Flettermark.svg%23lettermark&images=https%3A%2F%2Fpic.onlinewebfonts.com%2Fsvg%2Fimg_452496.png&widths=auto&heights=auto"
+          content={`${baseURL}/api/og?${queryString}`}
         />
 
         <title>Seminar IF</title>
