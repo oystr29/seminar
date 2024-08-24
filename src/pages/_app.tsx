@@ -16,6 +16,12 @@ function MyApp({ Component, pageProps }: AppProps) {
     router.query as Record<string, string>,
   ).toString();
 
+  const title = router.query["type"] ? `${router.query["type"]}` : "Seminar IF";
+  const desc =
+    router.query["name"] && router.query["nim"]
+      ? `${router.query["nim"]} - ${router.query["name"]}`
+      : "Seminar Informatika Unmul";
+
   return (
     <>
       <Script
@@ -131,8 +137,8 @@ function MyApp({ Component, pageProps }: AppProps) {
         />
         <meta name="twitter:creator" content="@oktoala" />
         <meta property="og:type" content="website" />
-        <meta property="og:title" content="Seminar IF" />
-        <meta property="og:description" content="Seminar Informatika Unmul" />
+        <meta property="og:title" content={title} />
+        <meta property="og:description" content={desc} />
         <meta
           property="og:site_name"
           content="Untuk kalian yang mau nonton Seminar"
