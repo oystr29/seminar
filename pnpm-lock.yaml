@@ -68,6 +68,9 @@ importers:
       react-loading-skeleton:
         specifier: ^3.3.1
         version: 3.3.1(react@18.2.0)
+      react-share:
+        specifier: ^5.1.0
+        version: 5.1.0(react@18.2.0)
       tailwind-merge:
         specifier: ^2.2.0
         version: 2.2.0
@@ -1553,6 +1556,9 @@ packages:
     resolution: {integrity: sha512-rNjApaLzuwaOTjCiT8lSDdGN1APCiqkChLMJxJPWLunPAt5fy8xgU9/jNOchV84wfIxrA0lRQB7oCT8jrn/wrQ==}
     engines: {node: '>=6.0'}
 
+  classnames@2.5.1:
+    resolution: {integrity: sha512-saHYOzhIQs6wy2sVxTM6bUDsQO4F50V9RQ22qBpEdCW+I+/Wmke2HOl6lS6dTpdxVhb88/I6+Hs+438c3lfUow==}
+
   clean-webpack-plugin@4.0.0:
     resolution: {integrity: sha512-WuWE1nyTNAyW5T7oNyys2EN0cfP2fdRxhxnIQWiAp0bMabPdHhoGxM8A6YL2GhqwgrPnnaemVE7nv5XJ2Fhh2w==}
     engines: {node: '>=10.0.0'}
@@ -1663,6 +1669,14 @@ packages:
 
   dayjs@1.11.7:
     resolution: {integrity: sha512-+Yw9U6YO5TQohxLcIkrXBeY73WP3ejHWVvx8XCk3gxvQDCTEmS48ZrSZCKciI7Bhl/uCMyxYtE9UqRILmFphkQ==}
+
+  debug@2.6.9:
+    resolution: {integrity: sha512-bC7ElrdJaJnPbAP+1EotYvqZsb3ecl5wi6Bfi6BJTUcNowp6cvspg0jXznRTKDjm/E7AdgFBVeAPVMNcKGsHMA==}
+    peerDependencies:
+      supports-color: '*'
+    peerDependenciesMeta:
+      supports-color:
+        optional: true
 
   debug@3.2.7:
     resolution: {integrity: sha512-CFjzYYAi4ThfiQvizrFQevTTXHtnCqWfe7x1AhgEscTz6ZbLbfoLRLPugTQyBth6f8ZERVUSyWHFD/7Wu4t1XQ==}
@@ -2602,6 +2616,9 @@ packages:
   jsonfile@6.1.0:
     resolution: {integrity: sha512-5dgndWOriYSm5cnYaJNhalLNDKOqFwyDB/rr1E9ZsGciGvKPs8R2xYGCacuf3z6K1YKDz182fd+fY3cn3pMqXQ==}
 
+  jsonp@0.2.1:
+    resolution: {integrity: sha512-pfog5gdDxPdV4eP7Kg87M8/bHgshlZ5pybl+yKxAnCZ5O7lCIn7Ixydj03wOlnDQesky2BPyA91SQ+5Y/mNwzw==}
+
   jsonpointer@5.0.1:
     resolution: {integrity: sha512-p/nXbhSEcu3pZRdkW1OfJhpsVtW1gd4Wa1fnQc9YLiTfAjn0312eMKimbdIQzuZl9aa9xUGaRlP9T/CJE/ditQ==}
     engines: {node: '>=0.10.0'}
@@ -2765,6 +2782,9 @@ packages:
   mri@1.2.0:
     resolution: {integrity: sha512-tzzskb3bG8LvYGFF/mDTpq3jpI6Q9wc3LEmBaghu+DdCssd1FakN7Bc0hVNmEyGq1bq3RgfkCb3cmQLpNPOroA==}
     engines: {node: '>=4'}
+
+  ms@2.0.0:
+    resolution: {integrity: sha512-Tpp60P6IUJDTuOq/5Z8cdskzJujfwqfOTkrwIwj7IRISpnkJnT6SyJ4PCPnGMoFjC9ddhal5KVIYtAt97ix05A==}
 
   ms@2.1.2:
     resolution: {integrity: sha512-sGkPx+VjMtmA6MX27oA4FBFELFCZZ4S4XqeGOXCv68tT+jb3vk/RyaKWP0PTKyWtmLSM0b+adUTEvbs1PEaH2w==}
@@ -3211,6 +3231,11 @@ packages:
     resolution: {integrity: sha512-NilqqwMh2v9omN7LteiDloEVpFyMIa0VGqF+ukqp0ncVlYu1sKYbYGX9JEl+GtOT9TKsh04zCHAbavnQ2USldA==}
     peerDependencies:
       react: '>=16.8.0'
+
+  react-share@5.1.0:
+    resolution: {integrity: sha512-OvyfMtj/0UzH1wi90OdHhZVJ6WUC/+IeWvBwppeZozwIGyAjQgyR0QXlHOrxVHVECqnGvcpBaFTXVrqouTieaw==}
+    peerDependencies:
+      react: ^17 || ^18
 
   react-ssr-prepass@1.5.0:
     resolution: {integrity: sha512-yFNHrlVEReVYKsLI5lF05tZoHveA5pGzjFbFJY/3pOqqjGOmMmqx83N4hIjN2n6E1AOa+eQEUxs3CgRnPmT0RQ==}
@@ -5570,6 +5595,8 @@ snapshots:
 
   chrome-trace-event@1.0.4: {}
 
+  classnames@2.5.1: {}
+
   clean-webpack-plugin@4.0.0(webpack@5.91.0):
     dependencies:
       del: 4.1.1
@@ -5660,6 +5687,10 @@ snapshots:
   damerau-levenshtein@1.0.8: {}
 
   dayjs@1.11.7: {}
+
+  debug@2.6.9:
+    dependencies:
+      ms: 2.0.0
 
   debug@3.2.7:
     dependencies:
@@ -6754,6 +6785,12 @@ snapshots:
     optionalDependencies:
       graceful-fs: 4.2.11
 
+  jsonp@0.2.1:
+    dependencies:
+      debug: 2.6.9
+    transitivePeerDependencies:
+      - supports-color
+
   jsonpointer@5.0.1: {}
 
   jsx-ast-utils@3.3.3:
@@ -6912,6 +6949,8 @@ snapshots:
       micro-memoize: 4.0.14
 
   mri@1.2.0: {}
+
+  ms@2.0.0: {}
 
   ms@2.1.2: {}
 
@@ -7305,6 +7344,14 @@ snapshots:
   react-loading-skeleton@3.3.1(react@18.2.0):
     dependencies:
       react: 18.2.0
+
+  react-share@5.1.0(react@18.2.0):
+    dependencies:
+      classnames: 2.5.1
+      jsonp: 0.2.1
+      react: 18.2.0
+    transitivePeerDependencies:
+      - supports-color
 
   react-ssr-prepass@1.5.0(react@18.2.0):
     dependencies:
