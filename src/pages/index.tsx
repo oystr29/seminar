@@ -106,6 +106,8 @@ export default function Home() {
                 isActive && !!data?.currents && data?.currents?.length > 0;
               const isDone =
                 isActive && !!data?.passed && data?.passed?.length > 0;
+              const isScheduled =
+                isActive && !!data?.scheduled && data.scheduled.length > 0;
 
               return (
                 <button
@@ -122,6 +124,8 @@ export default function Home() {
                       "bg-violet-950 text-violet-400  hover:bg-violet-950/90",
                     isPresent &&
                       "bg-gradient-to-tr from-green-500 to-sky-500 text-white",
+                    isScheduled &&
+                      "bg-yellow-950 text-yellow-400  hover:bg-yellow-950/90",
                   )}
                   key={sh.properties?.title}
                 >

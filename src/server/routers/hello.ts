@@ -179,9 +179,10 @@ const getData = async (sheet: SlugID, search: SlugID = "") => {
 
   let index = 0;
   let currIndex = 0;
-  const array = response.data.values;
+  const array = response.data.values as string[][] | null | undefined;
 
   array?.forEach((e, i) => {
+    const [no, nama, nim, judul, , , , jadwalLokasi] = e;
     const property: Seminar = {
       no: "",
       nama: "",
@@ -214,13 +215,13 @@ const getData = async (sheet: SlugID, search: SlugID = "") => {
       },
     };
 
-    const isNimble = `${process.env.NEXT_PUBLIC_NIMBLE}` === `${e[2]}`;
+    const isNimble = `${process.env.NEXT_PUBLIC_NIMBLE}` === `${nim}`;
 
     if (index === 0 && e && e.length !== 0) {
-      property.no = e[0];
-      property.nama = isNimble ? e[1].split(" ")[0] : e[1];
-      property.nim = e[2];
-      property.judul = isNimble ? `${e[3]} 😄` : e[3];
+      property.no = no;
+      property.nama = isNimble ? nama.split(" ")[0] : nama;
+      property.nim = nim;
+      property.judul = isNimble ? `${judul} 😄` : judul;
       property.sempro =
         resData?.[i].values?.[4].effectiveFormat?.backgroundColor?.blue === 1 &&
         resData?.[i].values?.[4].effectiveFormat?.backgroundColor?.blue
@@ -236,13 +237,15 @@ const getData = async (sheet: SlugID, search: SlugID = "") => {
         resData?.[i].values?.[4].effectiveFormat?.backgroundColor?.blue
           ? false
           : true;
-      property.jadwal.tanggal = e[7];
-      property.date.day = getDate(e[7]);
+      property.jadwal.tanggal = jadwalLokasi;
+      property.date.day = jadwalLokasi
+        ? getDate(jadwalLokasi)
+        : { hari: "", tanggal: "", bulan: "", tahun: "", bulanAsli: "" };
       arrays.push(property);
     } else if (index === 1 && e.length !== 0) {
-      if (e[7] !== undefined) {
-        arrays[currIndex].jadwal.jam = e[7];
-        arrays[currIndex].date.time = getTime(e[7]);
+      if (jadwalLokasi !== undefined) {
+        arrays[currIndex].jadwal.jam = jadwalLokasi;
+        arrays[currIndex].date.time = getTime(jadwalLokasi);
 
         // Masukkan Date
         const ar = arrays[currIndex];
@@ -256,8 +259,8 @@ const getData = async (sheet: SlugID, search: SlugID = "") => {
         );
       }
     } else if (index === 2 && e.length !== 0) {
-      if (e[7] !== undefined) {
-        const ruang = e[7] as string;
+      if (jadwalLokasi !== undefined) {
+        const ruang = jadwalLokasi as string;
         const ruangArr = ruang.split(":");
         arrays[currIndex].jadwal.ruang =
           ruangArr[ruangArr.length - 1].normalize();
@@ -435,8 +438,6 @@ const helloRouter = router({
       return firstIndex - secondIndex;
     });
     return newSheets?.reverse();
-
-    return resSheet.data.sheets?.reverse();
   }),
 });
 
