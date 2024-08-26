@@ -120,12 +120,12 @@ export default function Home() {
                     isLoad && "bg-white text-black hover:bg-white/90",
                     (isDone || isActive) &&
                       "bg-gray-300 text-black hover:bg-gray-400",
+                    isScheduled &&
+                      "bg-yellow-950 text-yellow-400  hover:bg-yellow-950/90",
                     isComing &&
                       "bg-violet-950 text-violet-400  hover:bg-violet-950/90",
                     isPresent &&
                       "bg-gradient-to-tr from-green-500 to-sky-500 text-white",
-                    isScheduled &&
-                      "bg-yellow-950 text-yellow-400  hover:bg-yellow-950/90",
                   )}
                   key={sh.properties?.title}
                 >
