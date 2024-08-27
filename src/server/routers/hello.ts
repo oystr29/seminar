@@ -259,12 +259,38 @@ const getData = async (sheet: SlugID, search: SlugID = "") => {
         );
       }
     } else if (index === 2 && e.length !== 0) {
-      if (jadwalLokasi !== undefined) {
+      if (!jadwalLokasi) {
         const ruang = jadwalLokasi as string;
         const ruangArr = ruang.split(":");
         arrays[currIndex].jadwal.ruang =
           ruangArr[ruangArr.length - 1].normalize();
       }
+    }
+
+    // Kalau List Terakhir
+    if (array.length - 1 === i) {
+      index = 0;
+      if (arrays[currIndex].dateInt.mulai === 0) {
+        scheduled.push(arrays[currIndex]);
+      }
+      // not yet
+      else if (arrays[currIndex].dateInt.mulai >= Date.now()) {
+        notyet.push(arrays[currIndex]);
+      }
+      // Current
+      else if (
+        Date.now() >= arrays[currIndex].dateInt.mulai &&
+        Date.now() <= arrays[currIndex].dateInt.akhir
+      ) {
+        currents.push(arrays[currIndex]);
+      }
+      // Passed
+      else if (arrays[currIndex].dateInt.akhir <= Date.now()) {
+        passed.push(arrays[currIndex]);
+      }
+      currIndex++;
+
+      return;
     }
 
     if (index === 2 && arrays[currIndex]) {

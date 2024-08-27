@@ -15,6 +15,7 @@ import ShareLink from "./ShareLink";
 
 type TypeSem = "current" | "notyet" | "scheduled" | "passed";
 
+const iconSize = 18;
 const nimble = `${process.env.NEXT_PUBLIC_NIMBLE}`;
 const Item = (props: { e: Seminar; type: TypeSem }) => {
   const utils = trpc.useContext();
@@ -57,9 +58,9 @@ const Item = (props: { e: Seminar; type: TypeSem }) => {
           {e.date.day.hari !== "" && (
             <div className="flex flex-row items-center my-1">
               {isNimble ? (
-                <div className="mr-2">📅</div>
+                <div className="mr-2 text-xl">📅</div>
               ) : (
-                <CalendarDays size={16} className="mr-2" />
+                <CalendarDays size={iconSize} className="mr-2" />
               )}
               <span>
                 {e.date.day.hari}, {e.date.day.tanggal} {e.date.day.bulanAsli}{" "}
@@ -72,19 +73,19 @@ const Item = (props: { e: Seminar; type: TypeSem }) => {
               {isNimble ? (
                 <div className="mr-2">🕙</div>
               ) : (
-                <Clock className="mr-2" size={16} />
+                <Clock className="mr-2" size={iconSize} />
               )}
               <span>
                 {e.date.time.jamMulai} - {e.date.time.jamAkhir} WITA
               </span>
             </div>
           )}
-          {e.jadwal.ruang !== "" && (
+          {e.jadwal.ruang && (
             <div className="flex flex-row items-center">
               {isNimble ? (
                 <div className="mr-2">📍</div>
               ) : (
-                <MapPin className="mr-2" size={16} />
+                <MapPin className="mr-2" size={iconSize} />
               )}
               <span>{e.jadwal.ruang}</span>
             </div>
@@ -94,7 +95,7 @@ const Item = (props: { e: Seminar; type: TypeSem }) => {
               {isNimble ? (
                 <div className="mr-2">📄</div>
               ) : (
-                <FileText className="mr-2" size={16} />
+                <FileText className="mr-2" size={iconSize} />
               )}
               <span>Seminar Proposal</span>
             </div>
@@ -104,7 +105,7 @@ const Item = (props: { e: Seminar; type: TypeSem }) => {
               {isNimble ? (
                 <div className="mr-2">📈</div>
               ) : (
-                <Presentation size={16} className="mr-2" />
+                <Presentation size={iconSize} className="mr-2" />
               )}
               {/* <HiPresentationChartLine className="mr-2" /> */}
               <span>Seminar Hasil</span>
@@ -115,7 +116,7 @@ const Item = (props: { e: Seminar; type: TypeSem }) => {
               {isNimble ? (
                 <div className="mr-2">🎓</div>
               ) : (
-                <GraduationCap size={16} className="mr-2" />
+                <GraduationCap size={iconSize} className="mr-2" />
               )}
 
               {/* <MdSchool className="mr-2" /> */}
