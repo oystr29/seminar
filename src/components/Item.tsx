@@ -11,7 +11,6 @@ import { cn } from "~/lib/utils";
 import type { Seminar } from "~/server/routers/hello";
 import { trpc } from "~/utils/trpc";
 import { Meteors } from "~/components/Meteors";
-import ShareLink from "./ShareLink";
 
 type TypeSem = "current" | "notyet" | "scheduled" | "passed";
 
@@ -116,7 +115,7 @@ const Item = (props: { e: Seminar; type: TypeSem }) => {
               {isNimble ? (
                 <div className="mr-2">🎓</div>
               ) : (
-                <GraduationCap size={iconSize} className="mr-2" />
+                <GraduationCap size={iconSize + 2} className="mr-2" />
               )}
 
               {/* <MdSchool className="mr-2" /> */}

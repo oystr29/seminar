@@ -259,7 +259,7 @@ const getData = async (sheet: SlugID, search: SlugID = "") => {
         );
       }
     } else if (index === 2 && e.length !== 0) {
-      if (!jadwalLokasi) {
+      if (jadwalLokasi !== "") {
         const ruang = jadwalLokasi as string;
         const ruangArr = ruang.split(":");
         arrays[currIndex].jadwal.ruang =
@@ -267,7 +267,7 @@ const getData = async (sheet: SlugID, search: SlugID = "") => {
       }
     }
 
-    // Kalau List Terakhir
+    // Kalau List Terakhir gak punya jadwal
     if (array.length - 1 === i) {
       index = 0;
       if (arrays[currIndex].dateInt.mulai === 0) {
