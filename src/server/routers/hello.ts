@@ -129,6 +129,37 @@ function getTime(text: string) {
 }
 
 // Variable to store
+//
+const useNimble = ({
+  title,
+  name,
+  sempro,
+  semhas,
+}: {
+  title: string;
+  name: string;
+  sempro: boolean;
+  semhas: boolean;
+}) => {
+  if (sempro) {
+    return {
+      title: `${title} 😄`,
+      name: name.split(" ")[0],
+    };
+  }
+
+  if (semhas) {
+    return {
+      title: `${title} 😁`,
+      name: name.split(" ")[1],
+    };
+  }
+
+  return {
+    title: `${title} 😆`,
+    name,
+  };
+};
 
 const getData = async (sheet: SlugID, search: SlugID = "") => {
   const arrays: Seminar[] = [];
@@ -218,10 +249,6 @@ const getData = async (sheet: SlugID, search: SlugID = "") => {
     const isNimble = `${process.env.NEXT_PUBLIC_NIMBLE}` === `${nim}`;
 
     if (index === 0 && e && e.length !== 0) {
-      property.no = no;
-      property.nama = isNimble ? nama.split(" ")[0] : nama;
-      property.nim = nim;
-      property.judul = isNimble ? `${judul} 😄` : judul;
       property.sempro =
         resData?.[i].values?.[4].effectiveFormat?.backgroundColor?.blue === 1 &&
         resData?.[i].values?.[4].effectiveFormat?.backgroundColor?.blue
@@ -232,6 +259,17 @@ const getData = async (sheet: SlugID, search: SlugID = "") => {
         resData?.[i].values?.[4].effectiveFormat?.backgroundColor?.blue
           ? false
           : true;
+      const { title, name } = useNimble({
+        title: judul,
+        name: nama,
+        sempro: property.sempro,
+        semhas: property.semhas,
+      });
+      property.no = no;
+      property.nama = isNimble ? name : nama;
+      property.nim = nim;
+      property.judul = isNimble ? title : judul;
+
       property.pendadaran =
         resData?.[i].values?.[6].effectiveFormat?.backgroundColor?.blue === 1 &&
         resData?.[i].values?.[4].effectiveFormat?.backgroundColor?.blue
