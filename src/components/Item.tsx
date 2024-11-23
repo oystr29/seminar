@@ -40,8 +40,12 @@ const Item = (props: { e: Seminar; type: TypeSem }) => {
       ref.current?.updateOptions({
         opacity: 0.5,
         rocketsPoint: {
-          min: 50,
-          max: 50,
+          min: 0,
+          max: 100,
+        },
+        delay: {
+          min: 60,
+          max: 100,
         },
         hue: {
           min: 0,
@@ -73,7 +77,7 @@ const Item = (props: { e: Seminar; type: TypeSem }) => {
         {isNimble && type === "current" && (
           <Fireworks
             ref={ref}
-            className="top-0 left-0 absolute w-full h-full"
+            className="top-0 z-0 left-0 absolute w-full h-full"
           />
         )}
         <div
@@ -81,13 +85,15 @@ const Item = (props: { e: Seminar; type: TypeSem }) => {
             type === "current" ? "gradient rounded-lg bg-gray-900 p-4" : ""
           }${type === "passed" ? "text-gray-400" : ""}`}
         >
-          <div className={`font-bold text-xl mb-2 `}>{e.judul}</div>
-          <div className="">
+          <div className={`font-bold text-xl mb-2 z-10 relative`}>
+            {e.judul}
+          </div>
+          <div className="z-10 relative">
             <span className="font-semibold">{e.nama} </span>
             <span> - </span>
             <span className="font-semibold">{e.nim}</span>
           </div>
-          <div className="mb-5">
+          <div className="mb-5 z-10 relative">
             {e.date.day.hari !== "" && (
               <div className="flex flex-row items-center my-1">
                 {isNimble ? (
@@ -143,7 +149,7 @@ const Item = (props: { e: Seminar; type: TypeSem }) => {
               </div>
             )}
             {e.date.time.jamMulai && (
-              <div className="flex flex-row items-center mb-1">
+              <div className="flex flex-row items-center mb-1 z-10 relative">
                 {isNimble ? (
                   <svg
                     className="mr-2"
@@ -267,7 +273,7 @@ const Item = (props: { e: Seminar; type: TypeSem }) => {
               </div>
             )}
             {e.jadwal.ruang && (
-              <div className="flex flex-row items-center">
+              <div className="flex flex-row items-center z-10 relative">
                 {isNimble ? (
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -288,7 +294,7 @@ const Item = (props: { e: Seminar; type: TypeSem }) => {
               </div>
             )}
             {e.sempro && (
-              <div className="flex flex-row items-center mt-4">
+              <div className="flex flex-row items-center mt-4 z-10 relative">
                 {isNimble ? (
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -315,7 +321,7 @@ const Item = (props: { e: Seminar; type: TypeSem }) => {
               </div>
             )}
             {e.semhas && (
-              <div className="flex flex-row items-center mt-4">
+              <div className="flex flex-row items-center mt-4 z-10 relative">
                 {isNimble ? (
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -340,7 +346,7 @@ const Item = (props: { e: Seminar; type: TypeSem }) => {
               </div>
             )}
             {e.pendadaran && (
-              <div className="flex flex-row items-center mt-4">
+              <div className="flex flex-row items-center mt-4 z-10 relative">
                 {isNimble ? (
                   <div className="mr-2">🎓</div>
                 ) : (
@@ -353,7 +359,7 @@ const Item = (props: { e: Seminar; type: TypeSem }) => {
             )}
           </div>
           {Date.now() <= e.dateInt.akhir && type === "current" && (
-            <>
+            <div className="z-10 relative">
               <div className="mb-2 font-medium">Berakhir dalam:</div>
               <FlipClockCountdown
                 showSeparators={false}
@@ -364,10 +370,10 @@ const Item = (props: { e: Seminar; type: TypeSem }) => {
                 }}
                 to={e.dateInt.akhir}
               />
-            </>
+            </div>
           )}
           {Date.now() <= e.dateInt.mulai && type === "notyet" && (
-            <div>
+            <div className="z-10 relative">
               <div className="mb-2 font-medium">Dimulai dalam:</div>
               <FlipClockCountdown
                 showSeparators={false}

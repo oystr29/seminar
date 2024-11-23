@@ -18,7 +18,8 @@ interface BeforeInstallPromptEvent extends Event {
 }
 
 export default function Layout({ children }: { children: React.ReactNode }) {
-  const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
+  const [deferredPrompt, setDeferredPrompt] =
+    useState<BeforeInstallPromptEvent | null>(null);
   const [isInstall, setIsInstall] = useState(true);
 
   async function listenUserAction() {
@@ -45,11 +46,13 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     <>
       <Header isInstall={isInstall} listenUserAction={listenUserAction} />
       <main className="container px-4 mt-10 h-full min-h-screen sm:px-0 sm:mx-auto">
-        <div className="flex fixed right-5 bottom-5 flex-col gap-2 justify-center items-center">
+        <div className="z-40 flex fixed right-5 bottom-5 flex-col gap-2 justify-center items-center">
           <ScrollToTopBtn />
           <ScrollToBottomBtn />
         </div>
-        <ErrorBoundary fallback={<ErrorPage emoji="😭" />}>{children}</ErrorBoundary>
+        <ErrorBoundary fallback={<ErrorPage emoji="😭" />}>
+          {children}
+        </ErrorBoundary>
       </main>
 
       <Footer />
