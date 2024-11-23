@@ -10,6 +10,7 @@
     "vercel": "vercel build && vercel --prod"
   },
   "dependencies": {
+    "@fireworks-js/react": "^2.10.8",
     "@tanstack/react-query": "^4.29.15",
     "@trpc/client": "^10.32.0",
     "@trpc/next": "^10.32.0",

@@ -10,13 +10,15 @@ import FlipClockCountdown from "~/components/FlipClockCountdown";
 import { cn } from "~/lib/utils";
 import type { Seminar } from "~/server/routers/hello";
 import { trpc } from "~/utils/trpc";
-import { useCallback } from "react";
+import { useCallback, useRef, useEffect } from "react";
+import { Fireworks, type FireworksHandlers } from "@fireworks-js/react";
 
 type TypeSem = "current" | "notyet" | "scheduled" | "passed";
 
 const iconSize = 18;
 const nimble = `${process.env.NEXT_PUBLIC_NIMBLE}`;
 const Item = (props: { e: Seminar; type: TypeSem }) => {
+  const ref = useRef<FireworksHandlers>(null);
   const utils = trpc.useContext();
 
   const { e, type } = props;
@@ -32,6 +34,22 @@ const Item = (props: { e: Seminar; type: TypeSem }) => {
     },
     [type],
   );
+
+  useEffect(() => {
+    if (isNimble) {
+      ref.current?.updateOptions({
+        opacity: 0.5,
+        rocketsPoint: {
+          min: 50,
+          max: 50,
+        },
+        hue: {
+          min: 0,
+          max: 345,
+        },
+      });
+    }
+  }, []);
 
   return (
     <>
@@ -52,6 +70,12 @@ const Item = (props: { e: Seminar; type: TypeSem }) => {
         type !== "current" ? "p-5" : ""
       }  text-white ${getClasess(type)}`} */
       >
+        {isNimble && type === "current" && (
+          <Fireworks
+            ref={ref}
+            className="top-0 left-0 absolute w-full h-full"
+          />
+        )}
         <div
           className={`${
             type === "current" ? "gradient rounded-lg bg-gray-900 p-4" : ""
