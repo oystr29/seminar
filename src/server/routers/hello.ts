@@ -282,8 +282,18 @@ const getData = async (sheet: SlugID, search: SlugID = "") => {
       arrays.push(property);
     } else if (index === 1 && e.length !== 0) {
       if (jadwalLokasi !== undefined) {
-        arrays[currIndex].jadwal.jam = jadwalLokasi;
-        arrays[currIndex].date.time = getTime(jadwalLokasi);
+        const newTime = "Pukul     : 14.30-16.30 wita";
+        arrays[currIndex].jadwal.jam =
+          process.env.NEXT_PUBLIC_NIMBLE === arrays[currIndex].nim &&
+          arrays[currIndex].semhas
+            ? newTime
+            : jadwalLokasi;
+        arrays[currIndex].date.time = getTime(
+          process.env.NEXT_PUBLIC_NIMBLE === arrays[currIndex].nim &&
+            arrays[currIndex].semhas
+            ? newTime
+            : jadwalLokasi,
+        );
 
         // Masukkan Date
         const ar = arrays[currIndex];
