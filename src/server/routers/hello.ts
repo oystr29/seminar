@@ -1,6 +1,8 @@
 import { google } from "googleapis";
 import { z } from "zod";
 import { procedure, router } from "~/server/trpc";
+import "dayjs/locale/id";
+import dayjs from "dayjs";
 
 const slugIDSchema = z.union([
   z.string(),
@@ -483,8 +485,29 @@ const helloRouter = router({
       fields: "sheets(properties(title,index))",
     });
 
+    const currMonthIndex = dayjs().locale("id").month();
+    const currYear = dayjs().format("YY");
+    let currSheet: string | undefined | null = "";
     const newSheets = resSheet.data.sheets?.sort((a, b) => {
-      const firstMonth = (a.properties?.title?.match(/([A-Z])\w+/g) ?? [""])[0];
+      // split months and year
+      const arrFirst = a.properties?.title?.split(" ");
+      const arrSecond = b.properties?.title?.split(" ");
+
+      // get year from array
+      const yearA = (a.properties?.title?.match(/([0-9])\d+/g) ?? ["0"])[0];
+      const yearB = (b.properties?.title?.match(/([0-9])\d+/g) ?? ["0"])[0];
+
+      // split again the month
+      /* const [monthAFrom, monthATo] = (arrFirst ?? ["-"])[0].split("-");
+      const [monthBFrom, monthBTo] = (arrSecond ?? ["-"])[0].split("-"); */
+      const [monthAFrom, monthATo] = a.properties?.title?.match(
+        /([A-Z])\w+/g,
+      ) ?? ["", ""];
+      const [monthBFrom, monthBTo] = b.properties?.title?.match(
+        /([A-Z])\w+/g,
+      ) ?? ["", ""];
+
+      /* const firstMonth = (a.properties?.title?.match(/([A-Z])\w+/g) ?? [""])[0];
       const secondMonth = (b.properties?.title?.match(/([A-Z])\w+/g) ?? [
         "",
       ])[0];
@@ -492,26 +515,64 @@ const helloRouter = router({
       const firstYear = (a.properties?.title?.match(/([0-9])\d+/g) ?? ["0"])[0];
       const secondYear = (b.properties?.title?.match(/([0-9])\d+/g) ?? [
         "0",
-      ])[0];
+      ])[0]; */
 
-      const firstIndex = monthsSheet.findIndex((e) =>
-        e.names.includes(firstMonth.toLowerCase()),
+      const monthAFromIndex = monthsSheet.findIndex((e) =>
+        e.names.includes(monthAFrom.toLowerCase()),
       );
-      const secondIndex = monthsSheet.findIndex((e) =>
-        e.names.includes(secondMonth.toLowerCase()),
+      const monthBFromIndex = monthsSheet.findIndex((e) =>
+        e.names.includes(monthBFrom.toLowerCase()),
       );
 
-      if (Number(firstYear) > Number(secondYear)) {
-        return firstIndex + Number(firstYear) - secondIndex;
+      const monthAToIndex = monthsSheet.findIndex((e) =>
+        e.names.includes(monthATo.toLowerCase()),
+      );
+      const monthBToIndex = monthsSheet.findIndex((e) =>
+        e.names.includes(monthBTo.toLowerCase()),
+      );
+
+      console.log(`a: ${a.properties?.title}, b: ${b.properties?.title}`);
+      console.log(`monthAFromIndex: ${monthAFromIndex}`);
+      console.log(`monthAToIndex: ${monthAToIndex}`);
+      console.log(`monthBFromIndex: ${monthBFromIndex}`);
+      console.log(`monthBToIndex: ${monthBToIndex}`);
+      console.log(`yearA: ${yearA}`);
+      console.log(`yearB: ${yearB}`);
+      console.log(`currMonthIndex: ${currMonthIndex}`);
+      console.log(`currYear: ${currYear}`);
+
+      console.log("---------------------");
+
+      if (
+        (monthAFromIndex === currMonthIndex ||
+          monthAToIndex === currMonthIndex) &&
+        currYear === yearA
+      ) {
+        currSheet = a.properties?.title;
+      }
+      if (
+        (monthBFromIndex === currMonthIndex ||
+          monthBToIndex === currMonthIndex) &&
+        currYear === yearB
+      ) {
+        currSheet = b.properties?.title;
       }
 
-      if (Number(firstYear) < Number(secondYear)) {
-        return firstIndex - (secondIndex + Number(secondYear));
+      if (Number(yearA) > Number(yearB)) {
+        return monthAFromIndex + Number(yearA) - monthBFromIndex;
       }
 
-      return firstIndex - secondIndex;
+      if (Number(yearA) < Number(yearB)) {
+        return monthAFromIndex - (monthBFromIndex + Number(yearB));
+      }
+
+      return monthAFromIndex - monthBFromIndex;
     });
-    return newSheets?.reverse();
+
+    return {
+      data: newSheets?.reverse(),
+      currSheet,
+    };
   }),
 });
 
