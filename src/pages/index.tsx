@@ -42,9 +42,9 @@ export default function Home() {
 
   const { data, isError, isLoading } = trpc.hello.seminar.useQuery(
     {
-      sheet_name: sheets?.some((e) => e.properties?.title === sheet)
+      sheet_name: sheets?.data?.some((e) => e.properties?.title === sheet)
         ? sheet
-        : sheets?.[0].properties?.title,
+        : sheets?.currSheet,
       search: s,
     },
     { enabled: !!sheets },
@@ -91,12 +91,12 @@ export default function Home() {
               3,
             )}
           >
-            {sheets?.map((sh, i) => {
+            {sheets?.data?.map((sh) => {
               const isActive =
                 sheet === sh.properties?.title ||
                 ((!sheet ||
-                  !sheets.some((e) => e.properties?.title === sheet)) &&
-                  i === 0);
+                  !sheets?.data?.some((e) => e.properties?.title === sheet)) &&
+                  sh.properties?.title === sheets.currSheet);
 
               const isLoad = isActive && isLoading;
 
