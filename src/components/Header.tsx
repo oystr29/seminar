@@ -88,10 +88,10 @@ export default function Header({ isInstall, listenUserAction }: HeaderProps) {
         scrollDirection === "down" ? "-top-24" : "top-0"
       } transition-all duration-500`} */
     >
-      <div className="container flex justify-between items-center mx-auto gap-4">
-        <Link href="/" className="flex items-center">
+      <div className="container flex sm:justify-between items-center mx-auto gap-4">
+        <Link href="/" className="flex items-center sm:flex-1">
           <Logo />
-          <div className="self-center ml-4 hidden md:flex items-center text-xl font-semibold whitespace-nowrap dark:text-white">
+          <div className="self-center ml-4 hidden sm:flex items-center text-xl font-semibold whitespace-nowrap dark:text-white">
             Seminar{" "}
             {pathname === "/berkas" && (
               <div className="rounded-full text-xs font-bold px-1.5 p-1 bg-gray-800 ml-1">
@@ -100,8 +100,8 @@ export default function Header({ isInstall, listenUserAction }: HeaderProps) {
             )}
           </div>
         </Link>
-        <div className="items-center flex gap-4">
-          <div className="relative">
+        <div className="items-center flex gap-4 flex-1 sm:flex-none">
+          <div className="relative flex-1 sm:max-w-xs">
             <div className="pointer-events-none absolute inset-y-0 start-0 flex items-center ps-3 text-muted-foreground">
               <SearchIcon size={18} />
             </div>
