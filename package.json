@@ -32,7 +32,9 @@
     "react-error-boundary": "^4.0.12",
     "react-loading-skeleton": "^3.3.1",
     "react-share": "^5.1.0",
+    "react-tooltip": "^5.28.0",
     "tailwind-merge": "^2.2.0",
+    "use-debounce": "^10.0.4",
     "zod": "^3.21.4"
   },
   "devDependencies": {

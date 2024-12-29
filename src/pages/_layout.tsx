@@ -7,6 +7,7 @@ import ScrollToTopBtn from "~/components/ScrollToTopBtn";
 
 import { ErrorBoundary } from "react-error-boundary";
 import ErrorPage from "~/components/ErrorPage";
+import { Tooltip } from "react-tooltip";
 
 interface BeforeInstallPromptEvent extends Event {
   readonly platforms: string[];
@@ -44,8 +45,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
   return (
     <>
+      <Tooltip id="tooltip" style={{ zIndex: 60 }} />
       <Header isInstall={isInstall} listenUserAction={listenUserAction} />
-      <main className="container px-4 mt-10 h-full min-h-screen sm:px-0 sm:mx-auto">
+      <main className="container px-4 mt-20 h-full min-h-screen sm:px-0 sm:mx-auto">
         <div className="z-40 flex fixed right-5 bottom-5 flex-col gap-2 justify-center items-center">
           <ScrollToTopBtn />
           <ScrollToBottomBtn />

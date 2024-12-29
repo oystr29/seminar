@@ -531,7 +531,7 @@ const helloRouter = router({
         e.names.includes(monthBTo.toLowerCase()),
       );
 
-      console.log(`a: ${a.properties?.title}, b: ${b.properties?.title}`);
+      /* console.log(`a: ${a.properties?.title}, b: ${b.properties?.title}`);
       console.log(`monthAFromIndex: ${monthAFromIndex}`);
       console.log(`monthAToIndex: ${monthAToIndex}`);
       console.log(`monthBFromIndex: ${monthBFromIndex}`);
@@ -541,7 +541,7 @@ const helloRouter = router({
       console.log(`currMonthIndex: ${currMonthIndex}`);
       console.log(`currYear: ${currYear}`);
 
-      console.log("---------------------");
+      console.log("---------------------"); */
 
       if (
         (monthAFromIndex === currMonthIndex ||

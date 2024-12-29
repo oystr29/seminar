@@ -1,47 +1,37 @@
 /* eslint-disable @next/next/no-img-element */
-import { useDebounce } from "@uidotdev/usehooks";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Flashlist from "~/components/Flashlist";
-import Search from "~/components/Search";
 import SkeletonLoad from "~/components/SkeletonLoad";
 import { cn, listSkel } from "~/lib/utils";
 import { trpc } from "~/utils/trpc";
 
 export default function Berkas() {
+  const tabsRef = useRef<Record<string, HTMLElement | null>>({});
+  const [tabUnderlineWidth, setTabUnderlineWidth] = useState(0);
+  const [tabUnderlineLeft, setTabUnderlineLeft] = useState(0);
   const router = useRouter();
-  const { dir, q } = router.query;
-
-  const [search, setSearch] = useState(q ?? undefined);
-  const debouncedSearch = useDebounce(search, 600);
-
-  const [directory, setDirectory] = useState(dir ?? undefined);
+  const { dir, s } = router.query;
 
   const { data: folders, isLoading: loadFolders } = trpc.docs.folder.useQuery();
 
   const { data: files, isLoading: loadFiles } = trpc.docs.berkas.useQuery(
-    { dir_id: folders?.some((e) => e.id === dir) ? dir : folders?.[0].id, search: q ?? "" },
+    {
+      dir_id: folders?.some((e) => e.id === dir) ? dir : folders?.[0].id,
+      search: s ?? "",
+    },
     {
       enabled: !!folders,
-    }
+    },
   );
 
   useEffect(() => {
-    if (debouncedSearch !== undefined) {
-      router.replace({ pathname: "", query: { ...router.query, q: debouncedSearch } }, undefined, {
-        shallow: true,
-      });
-    }
-  }, [debouncedSearch]);
-
-  useEffect(() => {
-    if (directory !== undefined) {
-      router.replace({ pathname: "", query: { ...router.query, dir: directory } }, undefined, {
-        shallow: true,
-      });
-    }
-  }, [directory]);
+    const currDir = `${dir ?? folders?.[0].id}`;
+    const currentTab = tabsRef.current[currDir] as HTMLElement;
+    setTabUnderlineLeft(currentTab?.offsetLeft ?? 0);
+    setTabUnderlineWidth(currentTab?.clientWidth ?? 0);
+  }, [dir, folders]);
 
   return (
     <>
@@ -49,54 +39,86 @@ export default function Berkas() {
         <title>Seminar IF - Berkas</title>
       </Head>
       <div className="pb-10 flex items-center flex-col justify-center sm:block">
-        <div className="flex flex-col-reverse md:flex-row items-center gap-4 mb-4">
-          <div className="flex items-center gap-4 overflow-x-auto w-full scrollbar-thin scrollbar-track-gray-900 scrollbar-thumb-gray-900 p-1 md:p-0">
-            <Flashlist
-              isLoading={loadFolders}
-              loadingRender={listSkel(
-                (k) => (
-                  <SkeletonLoad key={`folder-${k}`} width={97} height={23} />
-                ),
-                3
+        <div
+          id="tabs-container"
+          className="relative flex items-center h-12 gap-2 overflow-x-auto w-full p-1 md:p-0 mb-4"
+        >
+          <span
+            className="absolute bottom-0 top-0 -z-10 flex overflow-hidden rounded-3xl py-2 transition-all duration-300"
+            style={{ left: tabUnderlineLeft, width: tabUnderlineWidth }}
+          >
+            <span
+              className={cn(
+                "h-full w-full rounded-3xl bg-violet-600 transition-all",
               )}
-            >
-              {folders?.map((folder, i) => (
+            />
+          </span>
+          <Flashlist
+            isLoading={loadFolders}
+            loadingRender={listSkel(
+              (k) => (
+                <SkeletonLoad key={`folder-${k}`} width={97} height={23} />
+              ),
+              3,
+            )}
+          >
+            {folders?.map((folder) => {
+              const currDir = dir ?? folders?.[0].id;
+              const isActive = folder.id === currDir;
+
+              return (
                 <button
+                  ref={(el) => {
+                    if (folder.id) {
+                      tabsRef.current[folder.id] = el;
+                    }
+                  }}
                   onClick={async () => {
-                    setDirectory(folder.id ?? undefined);
+                    if (dir === folder.id) return;
+
+                    if (folder.id === folders?.[0].id) {
+                      router.replace("");
+                      return;
+                    }
+
+                    router.replace(
+                      {
+                        pathname: "",
+                        query: {
+                          ...router.query,
+                          dir: folder.id,
+                        },
+                      },
+                      undefined,
+                      {
+                        shallow: true,
+                      },
+                    );
                   }}
                   className={cn(
-                    "py-1 px-2 rounded-lg whitespace-nowrap bg-gray-950/50 hover:bg-gray-950/90 text-white/80",
-                    (dir === folder.id ||
-                      ((!dir || !folders.some((e) => e.id === dir)) && i === 0)) &&
-                      "bg-violet-950 text-violet-400 border-violet-400 hover:bg-violet-950/90 font-semibold"
+                    "whitespace-nowrap my-auto cursor-pointer select-none rounded-full px-4 text-center font-light text-white",
+                    !isActive && "hover:text-neutral-300",
                   )}
                   key={folder.id}
                 >
                   {folder.name}
                 </button>
-              ))}
-            </Flashlist>
-          </div>
-          <Search
-            disabled={loadFolders}
-            defaultValue={q as string}
-            placeholder={loadFolders ? "Loading..." : "Cari Berkas"}
-            onChange={(e) => setSearch(e.target.value)}
-          />
+              );
+            })}
+          </Flashlist>
         </div>
         <div
           className={cn(
             "grid justify-items-center md:justify-items-start grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 w-full",
-            files?.length === 0 && "block"
+            files?.length === 0 && "block",
           )}
         >
           <Flashlist
             isFallback={files?.length === 0}
             fallbackRender={
               <div className="text-xl w-full text-clip">
-                {q
-                  ? `Pencarian Berkas '${q as string}' tidak ditemukan 🤔`
+                {s
+                  ? `Pencarian Berkas '${s as string}' tidak ditemukan 🤔`
                   : "Sepertinya tidak ada berkas yang muncul 🤨"}
               </div>
             }
@@ -117,7 +139,7 @@ export default function Berkas() {
                   />
                 </div>
               ),
-              6
+              6,
             )}
           >
             {files?.map((file) => (
@@ -125,18 +147,19 @@ export default function Berkas() {
                 href={file.webViewLink ?? ""}
                 target="_blank"
                 rel="noreferrer"
-                className="rounded-lg flex flex-col h-72 w-72 bg-gray-950 pt-3 px-2 pb-2 hover:scale-105 transition"
+                className="relative rounded-lg flex flex-col h-72 w-72 hover:scale-105 transition-all group"
                 key={file.id}
               >
-                <div className="flex items-center gap-2">
+                <div className="flex items-start gap-2 transition-all absolute top-0 left-0 w-full right-0 bg-gray-900/80 px-4 py-2.5  rounded-t-lg">
                   <img
                     loading="lazy"
                     src={file.iconLink ?? ""}
                     alt={"icon"}
                     width={20}
                     height={20}
+                    className="transition-all mt-0.5"
                   />
-                  <div className="truncate">{file.name}</div>
+                  <div className="">{file.name}</div>
                 </div>
                 <img
                   loading="lazy"
@@ -146,7 +169,7 @@ export default function Berkas() {
                   // blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mN0dnc+AwADPQGbOTvFkgAAAABJRU5ErkJggg=="
                   alt={file.name ?? ""}
                   src={file.thumbnailLink ?? ""}
-                  className="flex-1 w-full h-9 mt-1 rounded-lg object-cover object-top"
+                  className="flex-1 w-full h-9 rounded-lg object-cover object-top transition-all"
                 />
               </a>
             ))}

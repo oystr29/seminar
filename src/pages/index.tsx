@@ -4,12 +4,10 @@ import Item from "~/components/Item";
 import ErrorPage from "~/components/ErrorPage";
 import ItemLoading from "~/components/ItemLoading";
 import { useRouter } from "next/router";
-import { useDebounce } from "@uidotdev/usehooks";
 import Flashlist from "~/components/Flashlist";
 import SkeletonLoad from "~/components/SkeletonLoad";
-import Search from "~/components/Search";
 import { cn, listSkel } from "~/lib/utils";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const HomeClientLoading = () => {
   const arrayLoading = Array.from({ length: 6 }, (_, i) => i);
@@ -27,52 +25,29 @@ const HomeClientLoading = () => {
 };
 
 export default function Home() {
+  const tabsRef = useRef<Record<string, HTMLElement | null>>({});
+  const [tabUnderlineWidth, setTabUnderlineWidth] = useState(0);
+  const [tabUnderlineLeft, setTabUnderlineLeft] = useState(0);
+
   const router = useRouter();
   const { s, sh } = router.query;
-  const [search, setSearch] = useState<string | undefined | string[]>(
-    s ?? undefined,
-  );
-  const [sheet, setSheet] = useState<string | undefined | string[]>(
-    sh ?? undefined,
-  );
-
-  const debouncedSearch = useDebounce(search, 600);
 
   const { data: sheets, isLoading: loadSheets } = trpc.hello.sheets.useQuery();
 
   const { data, isError, isLoading } = trpc.hello.seminar.useQuery(
     {
-      sheet_name: sheets?.data?.some((e) => e.properties?.title === sheet)
-        ? sheet
-        : sheets?.currSheet,
+      sheet_name: sh ?? sheets?.currSheet,
       search: s,
     },
     { enabled: !!sheets },
   );
 
   useEffect(() => {
-    if (debouncedSearch !== undefined) {
-      router.replace(
-        { pathname: "", query: { ...router.query, s: debouncedSearch } },
-        undefined,
-        {
-          shallow: true,
-        },
-      );
-    }
-  }, [debouncedSearch]);
-
-  useEffect(() => {
-    if (sheet !== undefined) {
-      router.replace(
-        { pathname: "", query: { ...router.query, sh: sheet } },
-        undefined,
-        {
-          shallow: true,
-        },
-      );
-    }
-  }, [sheet]);
+    const currSheet = `${sh ?? sheets?.currSheet}`;
+    const currentTab = tabsRef.current[currSheet] as HTMLElement;
+    setTabUnderlineLeft(currentTab?.offsetLeft ?? 0);
+    setTabUnderlineWidth(currentTab?.clientWidth ?? 0);
+  }, [sh, sheets?.currSheet]);
 
   if (isError) {
     return <ErrorPage />;
@@ -81,7 +56,24 @@ export default function Home() {
   return (
     <>
       <div className="flex flex-col-reverse md:flex-row items-center gap-4 mb-4">
-        <div className="flex items-center gap-2 overflow-x-auto w-full p-1 md:p-0">
+        <div
+          id="tabs-container"
+          className="relative flex items-center h-12 gap-2 overflow-x-auto w-full p-1 md:p-0"
+        >
+          <span
+            className="absolute bottom-0 top-0 -z-10 flex overflow-hidden rounded-3xl py-2 transition-all duration-300"
+            style={{ left: tabUnderlineLeft, width: tabUnderlineWidth }}
+          >
+            <span
+              className={cn(
+                "h-full w-full rounded-3xl bg-gray-200/30 transition-all",
+                !!data?.scheduled.length && "bg-yellow-500",
+                !!data?.notyet.length && "bg-violet-600",
+                !!data?.currents.length &&
+                  "bg-gradient-to-tr from-emerald-400 to-sky-600 text-white",
+              )}
+            />
+          </span>
           <Flashlist
             isLoading={loadSheets}
             loadingRender={listSkel(
@@ -91,56 +83,53 @@ export default function Home() {
               3,
             )}
           >
-            {sheets?.data?.map((sh) => {
-              const isActive =
-                sheet === sh.properties?.title ||
-                ((!sheet ||
-                  !sheets?.data?.some((e) => e.properties?.title === sheet)) &&
-                  sh.properties?.title === sheets.currSheet);
-
-              const isLoad = isActive && isLoading;
-
-              const isComing =
-                isActive && !!data?.notyet && data?.notyet?.length > 0;
-              const isPresent =
-                isActive && !!data?.currents && data?.currents?.length > 0;
-              const isDone =
-                isActive && !!data?.passed && data?.passed?.length > 0;
-              const isScheduled =
-                isActive && !!data?.scheduled && data.scheduled.length > 0;
+            {sheets?.data?.map((sheett) => {
+              const currSheet = sh ?? sheets.currSheet;
+              const isActive = sheett.properties?.title === currSheet;
 
               return (
                 <button
-                  id={sh.properties?.title ?? ""}
+                  id={sheett.properties?.title ?? ""}
+                  ref={(el) => {
+                    if (sheett?.properties?.title) {
+                      tabsRef.current[sheett.properties.title] = el;
+                    }
+                  }}
                   onClick={async () => {
-                    setSheet(sh.properties?.title ?? undefined);
+                    if (sh === sheett.properties?.title) return;
+
+                    if (sheett.properties?.title === sheets.currSheet) {
+                      router.replace("");
+                      return;
+                    }
+
+                    router.replace(
+                      {
+                        pathname: "",
+                        query: {
+                          ...router.query,
+                          sh: sheett.properties?.title,
+                        },
+                      },
+                      undefined,
+                      {
+                        shallow: true,
+                      },
+                    );
+                    // setSheet(sheett.properties?.title ?? undefined);
                   }}
                   className={cn(
-                    "py-1 px-2 rounded-lg whitespace-nowrap bg-gray-950/50 hover:bg-gray-950/90 text-white/80",
-                    isLoad && "bg-white text-black hover:bg-white/90",
-                    (isDone || isActive) &&
-                      "bg-gray-300 text-black hover:bg-gray-400",
-                    isScheduled &&
-                      "bg-yellow-950 text-yellow-400  hover:bg-yellow-950/90",
-                    isComing &&
-                      "bg-violet-950 text-violet-400  hover:bg-violet-950/90",
-                    isPresent &&
-                      "bg-gradient-to-tr from-green-500 to-sky-500 text-white",
+                    "whitespace-nowrap my-auto cursor-pointer select-none rounded-full px-4 text-center font-light text-white",
+                    !isActive && "hover:text-neutral-300",
                   )}
-                  key={sh.properties?.title}
+                  key={sheett.properties?.title}
                 >
-                  {sh.properties?.title}
+                  {sheett.properties?.title}
                 </button>
               );
             })}
           </Flashlist>
         </div>
-        <Search
-          disabled={loadSheets}
-          defaultValue={search as string}
-          placeholder={loadSheets ? "Loading..." : "Cari Judul, Nama, atau NIM"}
-          onChange={(e) => setSearch(e.target.value ?? "")}
-        />
       </div>
       <Flashlist
         isFallback={
@@ -150,8 +139,8 @@ export default function Home() {
         }
         fallbackRender={
           <div className="text-xl w-full text-clip">
-            {search
-              ? `Pencarian jadwal '${search as string}' tidak ditemukan 🤔`
+            {s
+              ? `Pencarian jadwal '${s as string}' tidak ditemukan 🤔`
               : "Sepertinya tidak ada jadwal yang muncul 🤨"}
           </div>
         }
