@@ -152,7 +152,7 @@ export default function Home() {
             return <Item e={e} key={`${e.nim}${i}`} type="current" />;
           })}
         {data?.notyet.length !== 0 && (
-          <div className="p-1 px-2 mt-3 mb-2 w-max text-base text-purple-300 rounded-xl border-2 border-purple-800 flex items-center gap-2">
+          <div className="z-50 p-1 px-2 mt-3 mb-2 w-max text-base text-purple-300 rounded-xl border-2 border-purple-800 flex items-center gap-2 bg-gray-900/70">
             Coming Soon!{" "}
             <span className="text-xs px-1 py-0.5 rounded-full bg-violet-950 text-violet-400">
               {data?.notyet.length}

@@ -9,6 +9,9 @@ import { trpc } from "~/utils/trpc";
 
 export default function Berkas() {
   const tabsRef = useRef<Record<string, HTMLElement | null>>({});
+  const imgsRef = useRef<Record<string, HTMLImageElement | null | undefined>>(
+    {},
+  );
   const [tabUnderlineWidth, setTabUnderlineWidth] = useState(0);
   const [tabUnderlineLeft, setTabUnderlineLeft] = useState(0);
   const router = useRouter();
@@ -96,7 +99,7 @@ export default function Berkas() {
                     );
                   }}
                   className={cn(
-                    "whitespace-nowrap my-auto cursor-pointer select-none rounded-full px-4 text-center font-light text-white",
+                    "whitespace-nowrap my-auto cursor-pointer select-none rounded-full px-4 text-center font-light text-white capitalize",
                     !isActive && "hover:text-neutral-300",
                   )}
                   key={folder.id}
@@ -162,6 +165,11 @@ export default function Berkas() {
                   <div className="">{file.name}</div>
                 </div>
                 <img
+                  ref={(el) => {
+                    if (file.id) {
+                      imgsRef.current[file.id] = el;
+                    }
+                  }}
                   loading="lazy"
                   width={200}
                   height={0}
@@ -169,6 +177,18 @@ export default function Berkas() {
                   // blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mN0dnc+AwADPQGbOTvFkgAAAABJRU5ErkJggg=="
                   alt={file.name ?? ""}
                   src={file.thumbnailLink ?? ""}
+                  onError={(e) => {
+                    console.error(e);
+                    if (
+                      file.id &&
+                      imgsRef.current &&
+                      imgsRef.current[file.id]
+                    ) {
+                      // @ts-expect-error gapapa gan
+                      imgsRef.current[file.id].src =
+                        "https://placehold.co/600x400?text=(•ᴗ•)";
+                    }
+                  }}
                   className="flex-1 w-full h-9 rounded-lg object-cover object-top transition-all"
                 />
               </a>

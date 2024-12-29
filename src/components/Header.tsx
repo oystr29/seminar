@@ -2,12 +2,12 @@ import Logo from "~/components/Logo";
 import { useScrollDirection } from "~/utils/scroll";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { Download, Files, Home, ScrollText, SearchIcon } from "lucide-react";
+import { Download, ScrollText, SearchIcon } from "lucide-react";
 import { cn } from "~/lib/utils";
-import Search from "./Search";
 import { usePathname } from "next/navigation";
-import { ChangeEventHandler, useEffect, useRef } from "react";
+import { type ChangeEventHandler, useEffect, useRef } from "react";
 import { useDebouncedCallback } from "use-debounce";
+import { trpc } from "~/utils/trpc";
 
 type HeaderProps = {
   isInstall: boolean;
@@ -38,7 +38,14 @@ export default function Header({ isInstall, listenUserAction }: HeaderProps) {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const pathname = usePathname();
   const router = useRouter();
-  const { s } = router.query;
+  const { s, dir } = router.query;
+
+  const { data: folders } = trpc.docs.folder.useQuery(undefined, {
+    enabled: pathname === "/berkas",
+  });
+
+  const currFolder = folders?.filter((f, i) => (dir ? f.id === dir : i === 0));
+  const textSearchBerkas = currFolder ? `- ${currFolder[0].name}` : "";
 
   const scrollDirection = useScrollDirection();
 
@@ -99,11 +106,14 @@ export default function Header({ isInstall, listenUserAction }: HeaderProps) {
               <SearchIcon size={18} />
             </div>
             <input
+              defaultValue={s}
               ref={inputRef}
               onChange={handleSearch}
               className="flex peer h-10 w-full rounded-md border border-gray-600 px-2 py-1 text-sm focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-ring focus-visible:ring-offset-0 disabled:cursor-not-allowed disabled:opacity-50 bg-gray-900/10 pl-10 focus:border-violet-600"
               placeholder={
-                pathname === "/" ? "Cari Judul, Nama, atau NIM" : "Cari Berkas"
+                pathname === "/"
+                  ? "Cari Judul, Nama, atau NIM"
+                  : `Cari Berkas ${textSearchBerkas}`
               }
               type="search"
             />
