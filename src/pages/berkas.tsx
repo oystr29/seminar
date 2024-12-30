@@ -1,4 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
+import dayjs from "dayjs";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
@@ -150,10 +151,10 @@ export default function Berkas() {
                 href={file.webViewLink ?? ""}
                 target="_blank"
                 rel="noreferrer"
-                className="relative rounded-lg flex flex-col h-72 w-72 hover:scale-105 transition-all group"
+                className="relative rounded-lg flex flex-col h-72 w-72 hover:scale-105 transition-all group antialiased"
                 key={file.id}
               >
-                <div className="flex items-start gap-2 transition-all absolute top-0 left-0 w-full right-0 bg-gray-900/80 px-4 py-2.5  rounded-t-lg">
+                <div className="flex items-start gap-2 transition-all absolute top-0 left-0 w-full right-0 bg-gray-900/80 px-4 py-2.5  rounded-t-md antialiased">
                   <img
                     loading="lazy"
                     src={file.iconLink ?? ""}
@@ -163,6 +164,9 @@ export default function Berkas() {
                     className="transition-all mt-0.5"
                   />
                   <div className="">{file.name}</div>
+                </div>
+                <div className="bg-gray-900/80 p-2 absolute bottom-0 right-0 rounded-br-md text-xs rounded-tl-md antialiased">
+                  {dayjs(file.modifiedTime).format("MMMM YY")}
                 </div>
                 <img
                   ref={(el) => {

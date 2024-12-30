@@ -89,7 +89,7 @@ export default function Header({ isInstall, listenUserAction }: HeaderProps) {
       } transition-all duration-500`} */
     >
       <div className="container flex sm:justify-between items-center mx-auto gap-4">
-        <Link href="/" className="flex items-center sm:flex-1">
+        <Link href="/" className="flex items-center">
           <Logo />
           <div className="self-center ml-4 hidden sm:flex items-center text-xl font-semibold whitespace-nowrap dark:text-white">
             Seminar{" "}
