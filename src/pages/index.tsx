@@ -135,7 +135,8 @@ export default function Home() {
         isFallback={
           data?.currents.length === 0 &&
           data?.passed.length === 0 &&
-          data.notyet.length === 0
+          data?.notyet.length === 0 &&
+          data?.scheduled.length === 0
         }
         fallbackRender={
           <div className="text-xl w-full text-clip">

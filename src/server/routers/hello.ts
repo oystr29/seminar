@@ -517,7 +517,40 @@ const helloRouter = router({
         "0",
       ])[0]; */
 
-      const monthAFromIndex = monthsSheet.findIndex((e) =>
+      let monthAFromIndex = -1;
+      let monthBFromIndex = -1;
+      let monthAToIndex = -1;
+      let monthBToIndex = -1;
+
+      monthsSheet.forEach((e, i) => {
+        if (
+          e.names.includes(monthAFrom.toLowerCase()) &&
+          monthAFromIndex === -1
+        ) {
+          monthAFromIndex = i;
+          return;
+        }
+
+        if (e.names.includes(monthATo.toLowerCase()) && monthAToIndex === -1) {
+          monthAToIndex = i;
+          return;
+        }
+
+        if (
+          e.names.includes(monthBFrom.toLowerCase()) &&
+          monthBFromIndex === -1
+        ) {
+          monthBFromIndex = i;
+          return;
+        }
+
+        if (e.names.includes(monthBTo.toLowerCase()) && monthBToIndex === -1) {
+          monthBToIndex = i;
+          return;
+        }
+      });
+
+      /* const monthAFromIndex = monthsSheet.findIndex((e) =>
         e.names.includes(monthAFrom.toLowerCase()),
       );
       const monthBFromIndex = monthsSheet.findIndex((e) =>
@@ -529,7 +562,7 @@ const helloRouter = router({
       );
       const monthBToIndex = monthsSheet.findIndex((e) =>
         e.names.includes(monthBTo.toLowerCase()),
-      );
+      ); */
 
       /* console.log(`a: ${a.properties?.title}, b: ${b.properties?.title}`);
       console.log(`monthAFromIndex: ${monthAFromIndex}`);
