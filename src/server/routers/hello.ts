@@ -487,35 +487,19 @@ const helloRouter = router({
 
     const currMonthIndex = dayjs().locale("id").month();
     const currYear = dayjs().format("YY");
-    let currSheet: string | undefined | null = "";
+    let currSheet: string | undefined | null = null;
     const newSheets = resSheet.data.sheets?.sort((a, b) => {
-      // split months and year
-      const arrFirst = a.properties?.title?.split(" ");
-      const arrSecond = b.properties?.title?.split(" ");
-
       // get year from array
       const yearA = (a.properties?.title?.match(/([0-9])\d+/g) ?? ["0"])[0];
       const yearB = (b.properties?.title?.match(/([0-9])\d+/g) ?? ["0"])[0];
 
       // split again the month
-      /* const [monthAFrom, monthATo] = (arrFirst ?? ["-"])[0].split("-");
-      const [monthBFrom, monthBTo] = (arrSecond ?? ["-"])[0].split("-"); */
       const [monthAFrom, monthATo] = a.properties?.title?.match(
         /([A-Z])\w+/g,
       ) ?? ["", ""];
       const [monthBFrom, monthBTo] = b.properties?.title?.match(
         /([A-Z])\w+/g,
       ) ?? ["", ""];
-
-      /* const firstMonth = (a.properties?.title?.match(/([A-Z])\w+/g) ?? [""])[0];
-      const secondMonth = (b.properties?.title?.match(/([A-Z])\w+/g) ?? [
-        "",
-      ])[0];
-
-      const firstYear = (a.properties?.title?.match(/([0-9])\d+/g) ?? ["0"])[0];
-      const secondYear = (b.properties?.title?.match(/([0-9])\d+/g) ?? [
-        "0",
-      ])[0]; */
 
       let monthAFromIndex = -1;
       let monthBFromIndex = -1;
@@ -550,20 +534,7 @@ const helloRouter = router({
         }
       });
 
-      /* const monthAFromIndex = monthsSheet.findIndex((e) =>
-        e.names.includes(monthAFrom.toLowerCase()),
-      );
-      const monthBFromIndex = monthsSheet.findIndex((e) =>
-        e.names.includes(monthBFrom.toLowerCase()),
-      );
-
-      const monthAToIndex = monthsSheet.findIndex((e) =>
-        e.names.includes(monthATo.toLowerCase()),
-      );
-      const monthBToIndex = monthsSheet.findIndex((e) =>
-        e.names.includes(monthBTo.toLowerCase()),
-      ); */
-
+      // uncomment ini kalau sheet nya error
       /* console.log(`a: ${a.properties?.title}, b: ${b.properties?.title}`);
       console.log(`monthAFromIndex: ${monthAFromIndex}`);
       console.log(`monthAToIndex: ${monthAToIndex}`);
@@ -577,15 +548,15 @@ const helloRouter = router({
       console.log("---------------------"); */
 
       if (
-        (monthAFromIndex === currMonthIndex ||
-          monthAToIndex === currMonthIndex) &&
+        monthAFromIndex <= currMonthIndex &&
+        monthAToIndex >= currMonthIndex &&
         currYear === yearA
       ) {
         currSheet = a.properties?.title;
       }
       if (
-        (monthBFromIndex === currMonthIndex ||
-          monthBToIndex === currMonthIndex) &&
+        monthBFromIndex <= currMonthIndex &&
+        monthBToIndex >= currMonthIndex &&
         currYear === yearB
       ) {
         currSheet = b.properties?.title;

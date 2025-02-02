@@ -36,18 +36,19 @@ export default function Home() {
 
   const { data, isError, isLoading } = trpc.hello.seminar.useQuery(
     {
-      sheet_name: sh ?? sheets?.currSheet,
+      sheet_name:
+        sh ?? sheets?.currSheet ?? sheets?.data?.[0].properties?.title,
       search: s,
     },
     { enabled: !!sheets },
   );
 
   useEffect(() => {
-    const currSheet = `${sh ?? sheets?.currSheet}`;
+    const currSheet = `${sh ?? sheets?.currSheet ?? sheets?.data?.[0].properties?.title}`;
     const currentTab = tabsRef.current[currSheet] as HTMLElement;
     setTabUnderlineLeft(currentTab?.offsetLeft ?? 0);
     setTabUnderlineWidth(currentTab?.clientWidth ?? 0);
-  }, [sh, sheets?.currSheet]);
+  }, [sh, sheets?.currSheet, sheets?.data]);
 
   if (isError) {
     return <ErrorPage />;

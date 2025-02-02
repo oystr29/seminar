@@ -182,7 +182,7 @@ export default function Berkas() {
                   alt={file.name ?? ""}
                   src={file.thumbnailLink ?? ""}
                   onError={(e) => {
-                    console.error(e);
+                    // console.error(e);
                     if (
                       file.id &&
                       imgsRef.current &&
