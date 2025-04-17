@@ -117,6 +117,53 @@ export default function Home() {
                         shallow: true,
                       },
                     );
+                    /* console.log(history);
+                    const currSheet =
+                      sh ??
+                      sheets?.currSheet ??
+                      sheets?.data?.[0].properties?.title;
+                    if (currSheet === sheett.properties?.title) return;
+
+                    if (history.state.as === "/" && history.length === 1) {
+                      router.push(
+                        {
+                          pathname: "",
+                          query: {
+                            ...router.query,
+                            sh: sheett.properties?.title,
+                          },
+                        },
+                        undefined,
+                      );
+                      return;
+                    }
+
+                    if (
+                      history.length > 1 &&
+                      sheett.properties?.title === sheets.currSheet
+                    ) {
+                      router.back();
+                      return;
+                    }
+
+                    if (sheett.properties?.title === sheets.currSheet) {
+                      router.replace("");
+                      return;
+                    }
+
+                    router.replace(
+                      {
+                        pathname: "",
+                        query: {
+                          ...router.query,
+                          sh: sheett.properties?.title,
+                        },
+                      },
+                      undefined,
+                      {
+                        shallow: true,
+                      },
+                    ); */
                     // setSheet(sheett.properties?.title ?? undefined);
                   }}
                   className={cn(

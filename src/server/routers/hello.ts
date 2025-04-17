@@ -158,8 +158,8 @@ const useNimble = ({
   }
 
   return {
-    title: `${title} 😆`,
-    name,
+    title: `${title}`,
+    name: "oystr",
   };
 };
 
@@ -312,8 +312,7 @@ const getData = async (sheet: SlugID, search: SlugID = "") => {
       if (jadwalLokasi !== "") {
         const ruang = jadwalLokasi as string;
         const ruangArr = ruang.split(":");
-        arrays[currIndex].jadwal.ruang =
-          ruangArr[ruangArr.length - 1].normalize();
+        arrays[currIndex].jadwal.ruang = ruangArr[ruangArr.length - 1].trim();
       }
     }
 

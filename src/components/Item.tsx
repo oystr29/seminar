@@ -10,8 +10,9 @@ import FlipClockCountdown from "~/components/FlipClockCountdown";
 import { cn } from "~/lib/utils";
 import type { Seminar } from "~/server/routers/hello";
 import { trpc } from "~/utils/trpc";
-import { useCallback, useRef, useEffect } from "react";
+import { useMemo, useCallback, useRef, useEffect } from "react";
 import { Fireworks, type FireworksHandlers } from "@fireworks-js/react";
+import { Meteors } from "~/components/Meteors";
 
 type TypeSem = "current" | "notyet" | "scheduled" | "passed";
 
@@ -34,6 +35,14 @@ const Item = (props: { e: Seminar; type: TypeSem }) => {
     },
     [type],
   );
+
+  const classNamePdd = useMemo(() => {
+    return (
+      type === "notyet" &&
+      isNimble &&
+      "bg-300% bg-gradient-to-r from-orange-700 via-blue-500 to-green-400 text-transparent bg-clip-text animate-gradient"
+    );
+  }, [type, isNimble]);
 
   useEffect(() => {
     if (isNimble) {
@@ -74,24 +83,34 @@ const Item = (props: { e: Seminar; type: TypeSem }) => {
         type !== "current" ? "p-5" : ""
       }  text-white ${getClasess(type)}`} */
       >
-        {isNimble && type === "current" && (
-          <Fireworks
-            ref={ref}
-            className="top-0 z-0 left-0 absolute w-full h-full"
-          />
+        {isNimble && type === "notyet" && (
+          <>
+            {/* <Fireworks
+              ref={ref}
+              className="top-0 z-0 left-0 absolute w-full h-full"
+            />
+            <Meteors /> */}
+          </>
         )}
         <div
           className={`${
             type === "current" ? "gradient rounded-lg bg-gray-900 p-4" : ""
           }${type === "passed" ? "text-gray-400" : ""}`}
         >
-          <div className={`font-bold text-xl mb-2 z-10 relative`}>
+          <div
+            className={cn(
+              "font-bold text-xl mb-2 z-10 relative",
+              type === "notyet" &&
+                isNimble &&
+                "bg-300% bg-gradient-to-r from-orange-700 via-blue-500 to-green-400 text-transparent bg-clip-text animate-gradient",
+            )}
+          >
             {e.judul}
           </div>
           <div className="z-10 relative">
-            <span className="font-semibold">{e.nama} </span>
+            <span className={cn("font-semibold", classNamePdd)}>{e.nama} </span>
             <span> - </span>
-            <span className="font-semibold">{e.nim}</span>
+            <span className={cn("font-semibold", classNamePdd)}>{e.nim}</span>
           </div>
           <div className="mb-5 z-10 relative">
             {e.date.day.hari !== "" && (
@@ -142,7 +161,7 @@ const Item = (props: { e: Seminar; type: TypeSem }) => {
                 ) : (
                   <CalendarDays size={iconSize} className="mr-2" />
                 )}
-                <span>
+                <span className={cn(classNamePdd)}>
                   {e.date.day.hari}, {e.date.day.tanggal} {e.date.day.bulanAsli}{" "}
                   {e.date.day.tahun}
                 </span>
@@ -267,7 +286,7 @@ const Item = (props: { e: Seminar; type: TypeSem }) => {
                 ) : (
                   <Clock className="mr-2" size={iconSize} />
                 )}
-                <span>
+                <span className={cn(classNamePdd)}>
                   {e.date.time.jamMulai} - {e.date.time.jamAkhir} WITA
                 </span>
               </div>
@@ -290,7 +309,7 @@ const Item = (props: { e: Seminar; type: TypeSem }) => {
                 ) : (
                   <MapPin className="mr-2" size={iconSize} />
                 )}
-                <span>{e.jadwal.ruang}</span>
+                <span className={cn(classNamePdd)}>{e.jadwal.ruang}</span>
               </div>
             )}
             {e.sempro && (
@@ -348,19 +367,32 @@ const Item = (props: { e: Seminar; type: TypeSem }) => {
             {e.pendadaran && (
               <div className="flex flex-row items-center mt-4 z-10 relative">
                 {isNimble ? (
-                  <div className="mr-2">🎓</div>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="20"
+                    height="20"
+                    viewBox="0 0 512 512"
+                    className="mr-2"
+                  >
+                    <path
+                      fill={fillin("#44ef83", "#9a44ef")}
+                      d="M256 89.61L22.486 177.18L256 293.937l111.22-55.61l-104.337-31.9A16 16 0 0 1 256 208a16 16 0 0 1-16-16a16 16 0 0 1 16-16l-2.646 8.602l18.537 5.703l.008.056l27.354 8.365L455 246.645v12.146a16 16 0 0 0-7 13.21a16 16 0 0 0 7.293 13.406C448.01 312.932 448 375.383 448 400c16 10.395 16 10.775 32 0c0-24.614-.008-87.053-7.29-114.584A16 16 0 0 0 480 272a16 16 0 0 0-7-13.227v-25.42L413.676 215.1l75.838-37.92zM119.623 249L106.5 327.74c26.175 3.423 57.486 18.637 86.27 36.627c16.37 10.232 31.703 21.463 44.156 32.36c7.612 6.66 13.977 13.05 19.074 19.337c5.097-6.288 11.462-12.677 19.074-19.337c12.453-10.897 27.785-22.128 44.156-32.36c28.784-17.99 60.095-33.204 86.27-36.627L392.375 249h-6.25L256 314.063L125.873 249z"
+                    ></path>
+                  </svg>
                 ) : (
                   <GraduationCap size={iconSize + 2} className="mr-2" />
                 )}
 
                 {/* <MdSchool className="mr-2" /> */}
-                <span>Sidang Akhir</span>
+                <span className={cn(classNamePdd)}>Sidang Akhir</span>
               </div>
             )}
           </div>
           {Date.now() <= e.dateInt.akhir && type === "current" && (
             <div className="z-10 relative">
-              <div className="mb-2 font-medium">Berakhir dalam:</div>
+              <div className={cn("mb-2 font-medium", classNamePdd)}>
+                Berakhir dalam:
+              </div>
               <FlipClockCountdown
                 showSeparators={false}
                 className="flip-clock"

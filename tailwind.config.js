@@ -10,10 +10,14 @@ module.exports = {
       animation: {
         animation: {
           shimmer: "shimmer 8s infinite",
+          gradient: "animatedgradient 6s ease infinite alternate",
         },
         "meteor-effect": "meteor 5s linear infinite",
         border: "border 4s ease infinite",
         "border-beam": "border-beam calc(var(--duration)*1s) infinite linear",
+      },
+      backgroundSize: {
+        "300%": "300%",
       },
       keyframes: {
         shimmer: {
@@ -51,6 +55,11 @@ module.exports = {
           to: {
             "background-position": "0% 0%",
           },
+        },
+        animatedgradient: {
+          "0%": { backgroundPosition: "0% 50%" },
+          "50%": { backgroundPosition: "100% 50%" },
+          "100%": { backgroundPosition: "0% 50%" },
         },
       },
     },
