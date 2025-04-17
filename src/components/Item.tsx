@@ -100,10 +100,7 @@ const Item = (props: { e: Seminar; type: TypeSem }) => {
           <div
             className={cn(
               "font-bold text-xl mb-2 z-10 relative",
-              type === "notyet" &&
-                isNimble &&
-                "bg-300% bg-gradient-to-r from-orange-700 via-blue-500 to-green-400 text-transparent bg-clip-text animate-gradient",
-            )}
+              classNamePdd            )}
           >
             {e.judul}
           </div>
