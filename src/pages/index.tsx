@@ -100,7 +100,11 @@ export default function Home() {
                     if (sh === sheett.properties?.title) return;
 
                     if (sheett.properties?.title === sheets.currSheet) {
-                      router.replace("");
+                      const query = s ? { s } : {};
+                      router.replace({
+                        pathname: "",
+                        query,
+                      });
                       return;
                     }
 
@@ -117,54 +121,6 @@ export default function Home() {
                         shallow: true,
                       },
                     );
-                    /* console.log(history);
-                    const currSheet =
-                      sh ??
-                      sheets?.currSheet ??
-                      sheets?.data?.[0].properties?.title;
-                    if (currSheet === sheett.properties?.title) return;
-
-                    if (history.state.as === "/" && history.length === 1) {
-                      router.push(
-                        {
-                          pathname: "",
-                          query: {
-                            ...router.query,
-                            sh: sheett.properties?.title,
-                          },
-                        },
-                        undefined,
-                      );
-                      return;
-                    }
-
-                    if (
-                      history.length > 1 &&
-                      sheett.properties?.title === sheets.currSheet
-                    ) {
-                      router.back();
-                      return;
-                    }
-
-                    if (sheett.properties?.title === sheets.currSheet) {
-                      router.replace("");
-                      return;
-                    }
-
-                    router.replace(
-                      {
-                        pathname: "",
-                        query: {
-                          ...router.query,
-                          sh: sheett.properties?.title,
-                        },
-                      },
-                      undefined,
-                      {
-                        shallow: true,
-                      },
-                    ); */
-                    // setSheet(sheett.properties?.title ?? undefined);
                   }}
                   className={cn(
                     "whitespace-nowrap my-auto cursor-pointer select-none rounded-full px-4 text-center font-light text-white",

@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import { Download, ScrollText, SearchIcon } from "lucide-react";
 import { cn } from "~/lib/utils";
 import { usePathname } from "next/navigation";
-import { type ChangeEventHandler, useEffect, useRef } from "react";
+import { type ChangeEventHandler, useEffect, useRef, useMemo } from "react";
 import { useDebouncedCallback } from "use-debounce";
 import { trpc } from "~/utils/trpc";
 
@@ -46,6 +46,12 @@ export default function Header({ isInstall, listenUserAction }: HeaderProps) {
 
   const currFolder = folders?.filter((f, i) => (dir ? f.id === dir : i === 0));
   const textSearchBerkas = currFolder ? `- ${currFolder[0].name}` : "";
+
+  const placeholder = useMemo(() => {
+    if (pathname === "/berkas") return `Cari Berkas ${textSearchBerkas}`;
+    if (pathname === "/alumni") return "Cari Nama atau NIM";
+    if (pathname === "/") return "Cari Judul, Nama, atau NIM";
+  }, [pathname, textSearchBerkas]);
 
   const scrollDirection = useScrollDirection();
 
@@ -98,6 +104,11 @@ export default function Header({ isInstall, listenUserAction }: HeaderProps) {
                 Berkas
               </div>
             )}
+            {pathname === "/alumni" && (
+              <div className="rounded-full text-xs font-bold px-1.5 p-1 bg-gray-800 ml-1">
+                Alumni
+              </div>
+            )}
           </div>
         </Link>
         <div className="items-center flex gap-4 flex-1 sm:flex-none">
@@ -110,11 +121,7 @@ export default function Header({ isInstall, listenUserAction }: HeaderProps) {
               ref={inputRef}
               onChange={handleSearch}
               className="flex peer h-10 w-full rounded-md border border-gray-600 px-2 py-1 text-sm focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-ring focus-visible:ring-offset-0 disabled:cursor-not-allowed disabled:opacity-50 bg-gray-900/10 pl-10 focus:border-violet-600"
-              placeholder={
-                pathname === "/"
-                  ? "Cari Judul, Nama, atau NIM"
-                  : `Cari Berkas ${textSearchBerkas}`
-              }
+              placeholder={placeholder}
               type="search"
             />
             <kbd className="peer-focus:hidden pointer-events-none absolute right-2.5 top-2.5 hidden h-5 select-none items-center gap-1 rounded bg-gray-800 px-1 font-mono text-[10px] font-medium text-gray-100 opacity-100 md:flex">

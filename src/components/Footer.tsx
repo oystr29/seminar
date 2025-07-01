@@ -70,7 +70,7 @@ const Footer = () => {
             title="Instagram ku"
             target="_blank"
             rel="noopener noreferrer"
-            href="https://www.instagram.com/oystr_29"
+            href="https://www.instagram.com/oystr29"
           >
             <InstagramIcon className="h-6 w-6 " />
           </a>
