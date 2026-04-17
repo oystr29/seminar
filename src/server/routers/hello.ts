@@ -215,6 +215,9 @@ const getData = async (sheet: SlugID, search: SlugID = "") => {
   const array = response.data.values as string[][] | null | undefined;
 
   array?.forEach((e, i) => {
+    const skip = e.length === 0 || e.join("").trim() === "";
+    if (skip) return;
+    console.log(e);
     const [no, nama, nim, judul, , , , jadwalLokasi] = e;
     const property: Seminar = {
       no: "",
