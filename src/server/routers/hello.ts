@@ -217,11 +217,7 @@ const getData = async (sheet: SlugID, search: SlugID = "") => {
   array?.forEach((e, i) => {
     const skip = e.length === 0 || e.join("").trim() === "";
     if (skip) {
-      if (index === 2) {
-        index = 0;
-      } else {
-        index += 1;
-      }
+      index = index === 2 ? 0 : index++;
       return;
     }
     const [no, nama, nim, judul, , , , jadwalLokasi] = e;
