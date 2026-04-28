@@ -42,3 +42,4 @@ next-env.d.ts
 .netlify
 public/sw.*
 public/workbox.*
+secret.json
